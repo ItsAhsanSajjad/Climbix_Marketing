@@ -1,0 +1,37 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# env
+.env*.local
+.env
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# editor / tooling
+/.claude/
+/.vscode/
+/.idea/
+
+# internal build notes (not part of the shipped product)
+PHASE_*_REPORT.md
+PREMIUM_TRANSFORMATION_REPORT.md
