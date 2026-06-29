@@ -1,9 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Sora, JetBrains_Mono } from "next/font/google";
+import { Inter, Sora, JetBrains_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 import { MotionProvider } from "@/components/motion/MotionProvider";
-import { BackgroundOrbs } from "@/components/motion/BackgroundOrbs";
-import { FrameRails } from "@/components/motion/FrameRails";
 import { CtaTracker } from "@/components/motion/CtaTracker";
 import { SiteJsonLd } from "@/components/seo/StructuredData";
 import { AnalyticsScripts } from "@/components/seo/AnalyticsScripts";
@@ -33,6 +31,15 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
+// Editorial serif - display headlines for the redesigned homepage.
+const editorial = Fraunces({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-editorial",
+  display: "swap",
+});
+
 const description =
   "Climbix is a performance marketing agency helping growing international brands turn clicks into customers with paid ads, SEO, landing pages, and tracking-first strategy.";
 
@@ -59,9 +66,6 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: "/" },
   formatDetection: { telephone: false, address: false, email: false },
-  // TODO (launch): drop a 1200x630 PNG at src/app/opengraph-image.png (and one in
-  // free-marketing-audit/) - Next auto-wires og:image/twitter:image. Until then
-  // OG/Twitter previews use title + description only.
   openGraph: {
     type: "website",
     siteName: site.fullName,
@@ -69,12 +73,14 @@ export const metadata: Metadata = {
     title: "Climbix Marketing - Performance Marketing That Converts",
     description:
       "Paid ads, SEO, landing pages, and tracking - built into one measurable growth system.",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Climbix Marketing" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Climbix Marketing - Performance Marketing That Converts",
     description:
       "Paid ads, SEO, landing pages, and tracking - built into one measurable growth system.",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
@@ -84,8 +90,9 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#05070d",
-  colorScheme: "dark",
+  // Editorial light theme - ivory canvas.
+  themeColor: "#f7f5ef",
+  colorScheme: "light",
   width: "device-width",
   initialScale: 1,
 };
@@ -96,7 +103,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${sora.variable} ${mono.variable}`}>
+    <html lang="en" className={`${inter.variable} ${sora.variable} ${mono.variable} ${editorial.variable}`}>
       <body className="font-sans antialiased">
         {/* No-JS safety net: Framer Motion serializes its `hidden` variant
             (opacity:0 + transform + blur) into the SSR HTML. With scripts
@@ -107,8 +114,6 @@ export default function RootLayout({
         </noscript>
         <SiteJsonLd />
         <AnalyticsScripts />
-        <BackgroundOrbs />
-        <FrameRails />
         <CtaTracker />
         <MotionProvider>{children}</MotionProvider>
       </body>

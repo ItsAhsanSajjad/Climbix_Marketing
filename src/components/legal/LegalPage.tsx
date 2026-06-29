@@ -1,13 +1,14 @@
 import Link from "next/link";
-import { Container } from "@/components/ui/Container";
 import { Logo } from "@/components/layout/Logo";
 import { IconArrow } from "@/components/ui/Icon";
+import { Reveal } from "@/components/motion/Reveal";
 import { site } from "@/lib/site";
 
 /**
- * Minimal shell for legal pages. Honest placeholder content - the full policy is
- * marked as being finalised rather than inventing binding legal text. Gives the
- * footer Privacy/Terms links a real destination instead of dead "#" anchors.
+ * Premium editorial document shell for legal pages. Calm ivory layout, Fraunces
+ * heading, generous reading rhythm, contact card. Honest placeholder content -
+ * the full policy is marked as being finalised. Only the header gets a subtle
+ * reveal; the legal body stays static for distraction-free reading.
  */
 export function LegalPage({
   title,
@@ -19,24 +20,37 @@ export function LegalPage({
   children?: React.ReactNode;
 }) {
   return (
-    <main className="relative min-h-screen py-12 md:py-16">
-      <Container className="max-w-3xl">
-        <Link href="/" className="inline-flex items-center gap-2.5" aria-label={`${site.fullName} home`}>
-          <Logo />
-          <span className="font-display text-lg font-bold tracking-tight text-white">
-            {site.name}
-            <span className="text-accent-400">.</span>
-          </span>
-        </Link>
+    <main className="relative min-h-screen overflow-hidden py-14 md:py-20">
+      <div aria-hidden className="blueprint-light pointer-events-none absolute inset-x-0 top-0 h-80 opacity-50" />
 
-        <h1 className="mt-10 font-display text-display-sm text-paper">{title}</h1>
-        <p className="mt-4 text-lg leading-relaxed text-mist-200">{intro}</p>
+      <div className="relative mx-auto w-full max-w-3xl px-5 lg:px-8">
+        <Reveal blur={false}>
+          <div>
+            <Link href="/" className="inline-flex items-center gap-2.5" aria-label={`${site.fullName} home`}>
+              <Logo />
+              <span className="font-display text-lg font-bold tracking-tight text-graphite-900">
+                {site.name}
+                <span className="text-cobalt-600">.</span>
+              </span>
+            </Link>
 
-        <div className="mt-8 space-y-5 text-sm leading-relaxed text-mist-300">{children}</div>
+            <span className="mt-10 block font-mono text-[0.7rem] uppercase tracking-[0.18em] text-cobalt-600">
+              Legal
+            </span>
+            <h1 className="mt-3 font-editorial text-edito-sm text-graphite-900 md:text-edito-md">{title}</h1>
+            <p className="mt-4 text-lg leading-relaxed text-graphite-600">{intro}</p>
+          </div>
+        </Reveal>
 
-        <div className="mt-10 rounded-2xl border border-ink-600/70 bg-ink-900/40 p-5 text-sm text-mist-300">
+        <div className="mt-10 border-t border-graphite-900/10 pt-10">
+          <div className="space-y-6 text-[0.95rem] leading-7 text-graphite-600 [&_strong]:font-semibold">
+            {children}
+          </div>
+        </div>
+
+        <div className="surface-card mt-12 rounded-2xl p-6 text-sm text-graphite-600">
           Questions about your data? Email{" "}
-          <a href={`mailto:${site.email}`} className="font-medium text-accent-300 hover:text-accent-200">
+          <a href={`mailto:${site.email}`} className="font-medium text-cobalt-600 hover:text-cobalt-700">
             {site.email}
           </a>
           .
@@ -44,12 +58,12 @@ export function LegalPage({
 
         <Link
           href="/"
-          className="mt-10 inline-flex items-center gap-2 text-sm font-semibold text-accent-300 transition-colors hover:text-accent-200"
+          className="mt-10 inline-flex items-center gap-2 text-sm font-semibold text-cobalt-600 transition-colors hover:text-cobalt-700"
         >
           Back to homepage
           <IconArrow className="h-4 w-4" />
         </Link>
-      </Container>
+      </div>
     </main>
   );
 }

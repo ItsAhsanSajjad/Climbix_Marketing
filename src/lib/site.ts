@@ -18,7 +18,7 @@ export const site = {
   name: "Climbix",
   fullName: "Climbix Marketing",
   tagline: "Turn scattered marketing into a measurable growth system.",
-  email: "hello@climbix.com",
+  email: "info@climbix.com",
   // Primary action - books the strategy call (homepage lead form at #contact).
   ctaPrimary: { label: "Book a Free Strategy Call", href: "#contact" },
   // Secondary action - the lower-friction offer now has its own PPC landing page.
@@ -299,8 +299,16 @@ export const auditIncludes = [
     body: "Where qualified visitors drop off - and what's costing you conversions.",
   },
   {
-    title: "Prioritised action list",
-    body: "The 2-3 highest-leverage fixes to make first, ranked by impact.",
+    title: "Funnel friction map",
+    body: "Where the path from click to lead stalls, and the steps quietly losing you conversions.",
+  },
+  {
+    title: "Campaign message alignment",
+    body: "Whether your ads, landing pages, and offer actually tell one consistent story.",
+  },
+  {
+    title: "Prioritised action plan",
+    body: "The 2-3 highest-leverage fixes to make first, ranked by impact, plus the next step.",
   },
 ] as const;
 

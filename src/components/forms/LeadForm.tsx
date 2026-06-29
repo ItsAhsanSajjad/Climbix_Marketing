@@ -40,10 +40,12 @@ const UTM_KEYS = [
 export function LeadForm({
   source = "home",
   submitLabel = "Book My Strategy Call",
+  tone = "dark",
   className,
 }: {
   source?: "home" | "audit";
   submitLabel?: string;
+  tone?: "light" | "dark";
   className?: string;
 }) {
   const router = useRouter();
@@ -147,6 +149,7 @@ export function LeadForm({
           id="name"
           label="Name"
           required
+          tone={tone}
           placeholder="Your full name"
           autoComplete="name"
           value={values.name}
@@ -159,6 +162,7 @@ export function LeadForm({
           type="email"
           inputMode="email"
           required
+          tone={tone}
           placeholder="you@company.com"
           autoComplete="email"
           value={values.email}
@@ -170,6 +174,7 @@ export function LeadForm({
           label="Website URL"
           type="url"
           inputMode="url"
+          tone={tone}
           placeholder="https://"
           autoComplete="url"
           value={values.website}
@@ -180,26 +185,27 @@ export function LeadForm({
           label="Phone or WhatsApp"
           type="tel"
           inputMode="tel"
+          tone={tone}
           placeholder="+1 ..."
           autoComplete="tel"
           value={values.phone}
           onChange={set("phone")}
         />
-        <GoalSelect value={values.goal} onChange={set("goal")} error={errors.goal} />
-        <BudgetSelect value={values.budget} onChange={set("budget")} />
+        <GoalSelect value={values.goal} onChange={set("goal")} error={errors.goal} tone={tone} />
+        <BudgetSelect value={values.budget} onChange={set("budget")} tone={tone} />
       </div>
 
       <button
         type="submit"
         disabled={submitting}
-        className="group/btn relative mt-1 inline-flex h-12 items-center justify-center gap-2 overflow-hidden rounded-full bg-accent-gradient px-7 text-sm font-semibold text-ink-950 shadow-glow transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950 disabled:cursor-not-allowed disabled:opacity-70"
+        className="relative mt-1 inline-flex h-12 items-center justify-center gap-2 overflow-hidden rounded-full bg-cobalt-gradient px-7 text-sm font-semibold text-white shadow-lift transition-all duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-900 disabled:cursor-not-allowed disabled:opacity-70"
       >
         {submitting ? "Sending..." : submitLabel}
         {!submitting && <IconArrow className="h-4 w-4" />}
       </button>
 
-      <p className="flex items-center gap-2 text-xs text-mist-400">
-        <IconCheck className="h-3.5 w-3.5 shrink-0 text-cyan-400" />
+      <p className={cn("flex items-center gap-2 text-xs", tone === "light" ? "text-graphite-500" : "text-white/55")}>
+        <IconCheck className="h-3.5 w-3.5 shrink-0 text-cobalt-400" />
         We only use this to prepare your audit. No spam, no sharing - ever.
       </p>
     </form>

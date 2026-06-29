@@ -10,8 +10,10 @@
 */
 
 :root {
-  --background: #05070d;
-  --foreground: #eef2f8;
+  /* Editorial Growth Studio base. Whole site is light now; deep-navy is applied
+     locally on contrast panels, not globally. */
+  --background: #f7f5ef; /* warm ivory canvas */
+  --foreground: #15171c; /* graphite */
 }
 
 @layer base {
@@ -30,115 +32,82 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Atmospheric background field - light fields + a faint architectural grid +
-     a vignette so the page never reads as flat black voids between sections. */
+  ::selection {
+    background-color: rgba(35, 80, 214, 0.18);
+    color: #15171c;
+  }
+
+  :focus-visible {
+    outline: 2px solid #2350d6;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Soft editorial ambient - faint cobalt + champagne washes behind all
+     content, site-wide. Fixed and decorative; never a hard band. */
   body::before {
     content: "";
     position: fixed;
     inset: 0;
     z-index: -1;
     background:
-      radial-gradient(60rem 60rem at 15% -10%, rgba(18, 131, 255, 0.12), transparent 60%),
-      radial-gradient(50rem 50rem at 100% 0%, rgba(17, 207, 214, 0.08), transparent 55%),
-      radial-gradient(40rem 40rem at 50% 120%, rgba(123, 92, 255, 0.07), transparent 60%),
-      linear-gradient(to right, rgba(170, 182, 204, 0.025) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(170, 182, 204, 0.025) 1px, transparent 1px);
-    background-size: 100% 100%, 100% 100%, 100% 100%, 64px 64px, 64px 64px;
+      radial-gradient(60rem 40rem at 12% -5%, rgba(59, 107, 240, 0.08), transparent 60%),
+      radial-gradient(50rem 40rem at 100% 8%, rgba(216, 184, 120, 0.1), transparent 55%);
     pointer-events: none;
-  }
-
-  /* Vignette + grain-free depth so edges fall off softly. */
-  body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    background: radial-gradient(120% 90% at 50% 0%, transparent 55%, rgba(2, 4, 9, 0.55) 100%);
-    pointer-events: none;
-  }
-
-  ::selection {
-    background-color: rgba(58, 160, 255, 0.28);
-    color: #f7f9fc;
-  }
-
-  :focus-visible {
-    outline: 2px solid #3aa0ff;
-    outline-offset: 2px;
-    border-radius: 4px;
   }
 }
 
 @layer components {
-  /* Hairline grid texture used behind feature/process surfaces. */
-  .bg-grid {
-    background-image:
-      linear-gradient(to right, rgba(170, 182, 204, 0.06) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(170, 182, 204, 0.06) 1px, transparent 1px);
-    background-size: 56px 56px;
+  /* FAQ chevron - rotates when its native <details> is open. CSS-only so it
+     needs no motion JS and honours reduced motion via the global media query. */
+  details[open] .faq-chev {
+    transform: rotate(180deg);
+    border-color: rgba(35, 80, 214, 0.5);
   }
 
-  /* Gradient text used sparingly on key headline words. */
-  .text-gradient {
-    background: linear-gradient(120deg, #7cc4ff 0%, #34e3e3 100%);
+  /* ==================================================================
+   * Redesign - "Editorial Growth Studio" light surfaces.
+   * The base (body) is light site-wide, so these are global utilities;
+   * the soft ambient wash lives on body::before in the base layer.
+   * ================================================================== */
+
+  /* Premium light card surface. */
+  .surface-card {
+    background-color: #ffffff;
+    border: 1px solid #ece9e1; /* canvas-200 */
+    box-shadow: theme("boxShadow.soft");
+  }
+
+  /* Lightly-frosted glass panel for the blueprint visual. */
+  .glass-light {
+    background-color: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: theme("boxShadow.soft");
+    backdrop-filter: blur(12px);
+  }
+
+  /* Cobalt gradient text for accent words on light headlines. */
+  .text-cobalt-gradient {
+    background: linear-gradient(120deg, #2350d6 0%, #5d83ef 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
 
-  /* Signature glass panel - the dashboard/proof surfaces share this base. */
-  .glass-panel {
-    background-color: rgba(10, 14, 26, 0.72);
-    background-image: theme("backgroundImage.panel-sheen");
-    border: 1px solid rgba(39, 50, 77, 0.7);
-    box-shadow: theme("boxShadow.panel");
-    backdrop-filter: blur(14px);
-  }
-
-  /* Mono metric chip - floating data tokens around panels. */
-  .metric-chip {
-    background-color: rgba(16, 23, 40, 0.85);
-    border: 1px solid rgba(58, 160, 255, 0.18);
-    box-shadow: theme("boxShadow.chip");
-    backdrop-filter: blur(10px);
-  }
-
-  /* FAQ chevron - rotates when its native <details> is open. CSS-only so it
-     needs no motion JS and honours reduced motion via the global media query. */
-  details[open] .faq-chev {
-    transform: rotate(180deg);
-    border-color: rgba(58, 160, 255, 0.5);
-  }
-
-  /* Editorial blueprint grid behind framework/process sections. */
-  .blueprint {
+  /* Faint blueprint grid for light surfaces. */
+  .blueprint-light {
     background-image:
-      linear-gradient(to right, rgba(170, 182, 204, 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(170, 182, 204, 0.05) 1px, transparent 1px);
-    background-size: 40px 40px;
-    -webkit-mask-image: radial-gradient(120% 80% at 50% 0%, black 40%, transparent 85%);
-    mask-image: radial-gradient(120% 80% at 50% 0%, black 40%, transparent 85%);
+      linear-gradient(to right, rgba(27, 63, 176, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(27, 63, 176, 0.06) 1px, transparent 1px);
+    background-size: 38px 38px;
   }
 }
 
 @layer utilities {
-  /* Ambient background orbs - slow drift. Pure translate of a pre-rasterized
-     blurred layer: composite-only, no per-frame re-raster (no scale()). */
-  .orb-drift-a {
-    animation: orb-drift-a 26s ease-in-out infinite;
-  }
-  .orb-drift-b {
-    animation: orb-drift-b 32s ease-in-out infinite;
-  }
-  .orb-drift-c {
-    animation: orb-drift-c 30s ease-in-out infinite;
-  }
-
-  /* Subtle vertical float for the hero dashboard panel. */
+  /* Subtle vertical float for the blueprint panel + its floating chips. */
   .animate-float {
     animation: float 9s ease-in-out infinite;
   }
-  /* Slower, offset floats for layered metric chips. */
   .animate-float-slow {
     animation: float 11s ease-in-out infinite;
   }
@@ -147,40 +116,41 @@
     animation-delay: -3s;
   }
 
-  /* Animated dash travelling along signal-path connectors. */
-  .signal-dash {
-    stroke-dasharray: 4 8;
-    animation: signal-dash 1.6s linear infinite;
-  }
-
-  /* Pulsing ring for the campaign-health score. */
+  /* Pulsing ring for live dots. */
   .animate-ring {
     animation: ring-pulse 3.2s ease-in-out infinite;
   }
+
+  /* Travelling signal along the Growth-OS connector lines. */
+  .animate-signal {
+    stroke-dasharray: 3 10;
+    animation: signal-flow 2.4s linear infinite;
+  }
+
+  /* Edge-fade mask for horizontal marquee strips. */
+  .marquee-mask {
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+  .animate-marquee {
+    animation: marquee 38s linear infinite;
+  }
 }
 
-@keyframes orb-drift-a {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(5%, 7%, 0); }
-}
-@keyframes orb-drift-b {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(-6%, -4%, 0); }
-}
-@keyframes orb-drift-c {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(4%, -5%, 0); }
-}
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
 }
-@keyframes signal-dash {
-  to { stroke-dashoffset: -12; }
-}
 @keyframes ring-pulse {
-  0%, 100% { opacity: 0.55; }
-  50% { opacity: 1; }
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.12); }
+}
+@keyframes signal-flow {
+  to { stroke-dashoffset: -26; }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
 /* Respect the user's motion preference: kill ambient/loop animation and smooth
@@ -189,14 +159,12 @@
   html {
     scroll-behavior: auto;
   }
-  .orb-drift-a,
-  .orb-drift-b,
-  .orb-drift-c,
   .animate-float,
   .animate-float-slow,
   .animate-float-delayed,
-  .signal-dash,
-  .animate-ring {
+  .animate-ring,
+  .animate-signal,
+  .animate-marquee {
     animation: none !important;
   }
   /* The FAQ chevron rotates via a CSS transition (not an animation) - suppress

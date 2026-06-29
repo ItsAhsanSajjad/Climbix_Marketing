@@ -1,15 +1,12 @@
-import { Section } from "@/components/ui/Section";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { Reveal } from "@/components/motion/Reveal";
+import { EditorialSection, EditorialHeading } from "@/components/ui/EditorialSection";
 import { StaggerContainer, StaggerItem } from "@/components/motion/Stagger";
-import { FAQItem } from "@/components/sections/FAQItem";
-import { Button } from "@/components/ui/Button";
+import { EditorialButton } from "@/components/ui/EditorialButton";
 import { faqs, site } from "@/lib/site";
 
 /**
- * FAQ - objection handling. Two-column accordion of honest answers (no
- * guaranteed-results claims). Emits FAQPage JSON-LD for rich results. The "still
- * have questions" CTA keeps the conversion path one tap away.
+ * FAQ - objection handling. Sticky editorial intro on the left, a single-column
+ * accordion on the right (native <details>, keyboard accessible, no JS). Emits
+ * FAQPage JSON-LD for rich results.
  */
 export function FAQSection() {
   const jsonLd = {
@@ -22,51 +19,48 @@ export function FAQSection() {
     })),
   };
 
-  const mid = Math.ceil(faqs.length / 2);
-  const columns = [faqs.slice(0, mid), faqs.slice(mid)];
-
   return (
-    <Section id="faq">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <Reveal>
-        <SectionHeading
-          index="05 / 05"
-          eyebrow="Questions, answered"
-          title={
-            <>
-              Everything you&apos;d ask on the{" "}
-              <span className="text-gradient">first call</span>
-            </>
-          }
-          description="Straight answers - including the ones agencies usually dodge."
-        />
-      </Reveal>
+    <EditorialSection id="faq">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <div className="mx-auto mt-12 grid max-w-5xl gap-4 md:grid-cols-2">
-        {columns.map((col, ci) => (
-          <StaggerContainer key={ci} stagger={0.07} className="flex flex-col gap-4">
-            {col.map((f) => (
-              <StaggerItem key={f.q}>
-                <FAQItem q={f.q} a={f.a} />
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        ))}
-      </div>
-
-      <Reveal delay={0.1}>
-        <div className="mx-auto mt-10 flex max-w-5xl flex-col items-center justify-between gap-4 rounded-2xl border border-ink-600/70 bg-ink-900/40 px-6 py-5 sm:flex-row">
-          <p className="text-sm text-mist-200">
-            Still have a question? Get it answered on a free call.
-          </p>
-          <Button href={site.ctaPrimary.href} size="md" data-cta="faq">
-            {site.ctaPrimary.label}
-          </Button>
+      <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <div className="lg:sticky lg:top-28 lg:self-start">
+          <EditorialHeading
+            index="05 / 05"
+            eyebrow="Questions, answered"
+            title={
+              <>
+                Everything you would ask on the{" "}
+                <span className="text-cobalt-gradient">first call</span>
+              </>
+            }
+            lead="Straight answers - including the ones agencies usually dodge."
+          />
+          <div className="mt-8 hidden lg:block">
+            <EditorialButton href={site.ctaPrimary.href} size="md">
+              {site.ctaPrimary.label}
+            </EditorialButton>
+          </div>
         </div>
-      </Reveal>
-    </Section>
+
+        <StaggerContainer stagger={0.06} className="flex flex-col gap-3">
+          {faqs.map((f) => (
+            <StaggerItem key={f.q}>
+              <details className="group surface-card rounded-2xl open:border-cobalt-200">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-base font-semibold text-graphite-900 [&::-webkit-details-marker]:hidden">
+                  <h3 className="contents">{f.q}</h3>
+                  <span className="faq-chev flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-graphite-900/15 text-cobalt-600 transition-transform duration-300" aria-hidden>
+                    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M6 9l6 6 6-6" />
+                    </svg>
+                  </span>
+                </summary>
+                <p className="px-5 pb-5 text-sm leading-relaxed text-graphite-600">{f.a}</p>
+              </details>
+            </StaggerItem>
+          ))}
+        </StaggerContainer>
+      </div>
+    </EditorialSection>
   );
 }

@@ -35,3 +35,6 @@ next-env.d.ts
 # internal build notes (not part of the shipped product)
 PHASE_*_REPORT.md
 PREMIUM_TRANSFORMATION_REPORT.md
+REDESIGN_*.md
+VISUAL_*.md
+GROWTH_OS_*.md
