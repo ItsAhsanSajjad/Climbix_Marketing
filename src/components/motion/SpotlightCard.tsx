@@ -31,7 +31,7 @@ export function SpotlightCard({
       ref={ref}
       onMouseMove={onMove}
       className={cn(
-        "group/spot relative overflow-hidden rounded-2xl border border-ink-600/70 bg-ink-800/50 p-6 shadow-card backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent-400/40 hover:shadow-card-hover md:p-7",
+        "group/spot relative overflow-hidden rounded-3xl border border-platinum-300 bg-white p-7 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-lift md:p-8",
         className,
       )}
     >
@@ -41,13 +41,13 @@ export function SpotlightCard({
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover/spot:opacity-100"
         style={{
           background:
-            "radial-gradient(22rem 22rem at var(--mx, 50%) var(--my, 0%), rgba(58,160,255,0.14), transparent 60%)",
+            "radial-gradient(22rem 22rem at var(--mx, 50%) var(--my, 0%), rgba(37,99,235,0.08), transparent 60%)",
         }}
       />
-      {/* Top hairline that lights up on hover. */}
+      {/* Top champagne hairline that lights up on hover. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent-400/60 to-transparent opacity-0 transition-opacity duration-300 group-hover/spot:opacity-100"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-champagne-line opacity-0 transition-opacity duration-300 group-hover/spot:opacity-100"
       />
       <div className="relative">{children}</div>
     </div>

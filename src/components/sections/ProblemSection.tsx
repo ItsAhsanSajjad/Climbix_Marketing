@@ -1,45 +1,82 @@
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { Card } from "@/components/ui/Card";
 import { Reveal } from "@/components/motion/Reveal";
 import { StaggerContainer, StaggerItem } from "@/components/motion/Stagger";
+import { RevenueLeakMemo } from "@/components/sections/RevenueLeakMemo";
 import { problems } from "@/lib/site";
 
 /**
- * Problem / value section. Names the pain before pitching the solution. Heading
- * is sticky on desktop; the pain cards stagger in as they enter view.
+ * The Problem - the emotionally sharp diagnosis. Left: a sticky editorial
+ * heading naming the real cause (a disconnected system, not bad traffic).
+ * Right: the Revenue Leak Memo artifact followed by the five ways the
+ * disconnect shows up - a numbered editorial stack with hairline rules, not a
+ * grid of icon cards. Reduced-motion safe via Reveal/Stagger.
  */
 export function ProblemSection() {
   return (
-    <Section id="about">
-      <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-        <Reveal className="lg:sticky lg:top-28 lg:self-start">
-          <SectionHeading
-            align="left"
-            index="01 / 05"
-            eyebrow="The growth gap"
-            title={
-              <>
-                Most marketing budgets leak before they ever{" "}
-                <span className="text-gradient">reach revenue</span>
-              </>
-            }
-            description="Traffic isn't the problem. The system around it is. Here's where growing brands quietly lose money every month."
-          />
-        </Reveal>
+    <Section id="about" className="bg-ivory-50">
+      <div className="grid gap-14 lg:grid-cols-[1fr_0.9fr] lg:items-start lg:gap-20">
+        {/* Sticky diagnosis heading */}
+        <div className="lg:sticky lg:top-28 lg:self-start">
+          <Reveal>
+            <SectionHeading
+              align="left"
+              eyebrow="The problem"
+              title={
+                <>
+                  You are not losing because of bad traffic.{" "}
+                  <span className="mt-2 block">
+                    You are losing because the system is{" "}
+                    <span className="text-bronze">disconnected</span>.
+                  </span>
+                </>
+              }
+              description="When ads, pages, and tracking don't talk to each other, money leaks out every single week - and nothing in your reports will ever tell you where."
+            />
+          </Reveal>
+          <Reveal delay={0.15}>
+            <div className="bronze-rule mt-10 max-w-[16rem]" aria-hidden />
+            <p className="mt-6 max-w-reading font-editorial text-xl italic leading-relaxed text-slate-500">
+              None of these leaks announce themselves. They compound quietly
+              until the budget runs out.
+            </p>
+          </Reveal>
+        </div>
 
-        <StaggerContainer className="grid gap-5 sm:grid-cols-2">
-          {problems.map((p) => (
-            <StaggerItem key={p.title} className="h-full">
-              <Card className="h-full">
-                <h3 className="text-lg font-semibold text-paper">{p.title}</h3>
-                <p className="mt-2.5 text-sm leading-relaxed text-mist-200">
-                  {p.body}
-                </p>
-              </Card>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
+        {/* Visual artifact + the five ways the disconnect shows up */}
+        <div className="flex flex-col gap-12">
+          <Reveal delay={0.1}>
+            <RevenueLeakMemo />
+          </Reveal>
+
+          <div>
+            <Reveal>
+              <span className="doc-kicker">How it shows up</span>
+            </Reveal>
+            <StaggerContainer className="mt-5 flex flex-col gap-8">
+              {problems.map((p, i) => (
+                <StaggerItem
+                  key={p.title}
+                  className="border-t border-platinum-300 pt-6"
+                >
+                  <div className="flex gap-6">
+                    <span className="font-editorial text-3xl leading-none text-bronze-500">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div>
+                      <h3 className="text-xl font-semibold text-graphite">
+                        {p.title}
+                      </h3>
+                      <p className="mt-2 text-base leading-relaxed text-slate-600">
+                        {p.body}
+                      </p>
+                    </div>
+                  </div>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          </div>
+        </div>
       </div>
     </Section>
   );

@@ -26,7 +26,7 @@ const steps = [
 /**
  * Thank-you confirmation. Fires the conversion event on view (the moment a real
  * GTM/GA4 setup will count the lead) and tells the visitor exactly what happens
- * next so the experience feels finished, not abandoned.
+ * next so the experience feels finished, not abandoned. Calm light luxury.
  */
 export function ThankYouContent() {
   const params = useSearchParams();
@@ -44,44 +44,44 @@ export function ThankYouContent() {
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-5 py-16">
       <div
-        className="pointer-events-none absolute left-1/2 top-1/4 h-[34rem] w-[34rem] -translate-x-1/2 rounded-full bg-accent-500/10 blur-3xl"
         aria-hidden
+        className="pointer-events-none absolute left-1/2 top-1/4 h-[30rem] w-[30rem] -translate-x-1/2 rounded-full bg-cobalt-500/10 blur-[100px]"
       />
       <div className="relative w-full max-w-xl text-center">
         <Link href="/" className="mb-10 inline-flex items-center gap-2.5" aria-label={`${site.fullName} home`}>
           <Logo />
-          <span className="font-display text-lg font-bold tracking-tight text-white">
+          <span className="font-display text-lg font-bold tracking-tight text-graphite">
             {site.name}
-            <span className="text-accent-400">.</span>
+            <span className="text-cobalt-500">.</span>
           </span>
         </Link>
 
-        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-accent-400/30 bg-accent-500/15 text-cyan-400 shadow-glow">
-          <IconCheck className="h-7 w-7" />
+        <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-teal-500/12 text-teal-500 shadow-soft">
+          <IconCheck className="h-8 w-8" />
         </span>
 
-        <h1 className="mt-6 font-display text-display-sm text-paper md:text-[2.6rem] md:leading-[1.05]">
+        <h1 className="mt-7 font-display text-lux-sm text-graphite md:text-lux-md">
           {isAudit ? "Your audit request is in." : "You're booked in."}
         </h1>
-        <p className="mx-auto mt-4 max-w-md text-lg leading-relaxed text-mist-200">
+        <p className="mx-auto mt-4 max-w-md text-lux-body text-slate-600">
           {isAudit
             ? "Thanks - we've got your details and we'll start reviewing your marketing right away."
             : "Thanks - we've got your details and we'll be in touch to lock in your strategy call."}
         </p>
 
-        <div className="mt-10 grid gap-4 text-left sm:grid-cols-3">
+        <div className="mt-12 grid gap-4 text-left sm:grid-cols-3">
           {steps.map((s, i) => (
-            <div key={s.title} className="glass-panel rounded-2xl p-5">
-              <span className="font-mono text-sm font-bold text-accent-300">0{i + 1}</span>
-              <h2 className="mt-2 text-sm font-semibold text-paper">{s.title}</h2>
-              <p className="mt-1.5 text-xs leading-relaxed text-mist-300">{s.body}</p>
+            <div key={s.title} className="lux-card p-6">
+              <span className="text-lg font-semibold text-cobalt-600">0{i + 1}</span>
+              <h2 className="mt-2 text-base font-semibold text-graphite">{s.title}</h2>
+              <p className="mt-1.5 text-sm leading-relaxed text-slate-600">{s.body}</p>
             </div>
           ))}
         </div>
 
         <Link
           href="/"
-          className="mt-10 inline-flex items-center gap-2 text-sm font-semibold text-accent-300 transition-colors hover:text-accent-200"
+          className="mt-12 inline-flex items-center gap-2 text-base font-semibold text-cobalt-600 transition-colors hover:text-cobalt-700"
         >
           Back to homepage
           <IconArrow className="h-4 w-4" />

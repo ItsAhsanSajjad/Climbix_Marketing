@@ -5,26 +5,32 @@ import { cn } from "@/lib/cn";
 import { ease, duration } from "@/lib/motion";
 
 /**
- * Small uppercase label that sits above section headings. The leading hairline
- * wipes in (scaleX) on first view - the same line-draw gesture used by the nav
- * underline and process rail, so headings feel part of the motion language.
+ * Small uppercase label above section headings. A short champagne hairline wipes
+ * in (scaleX) on first view. Used sparingly - luxury means fewer tiny labels.
+ * tone="dark" adapts it for obsidian sections.
  */
 export function Eyebrow({
   children,
+  tone = "light",
   className,
 }: {
   children: React.ReactNode;
+  tone?: "light" | "dark";
   className?: string;
 }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-2 text-eyebrow uppercase text-accent-300",
+        "inline-flex items-center gap-2.5 text-eyebrow uppercase",
+        tone === "dark" ? "text-champagne-300" : "text-cobalt-600",
         className,
       )}
     >
       <m.span
-        className="h-px w-6 origin-left bg-accent-400/70"
+        className={cn(
+          "h-px w-7 origin-left",
+          tone === "dark" ? "bg-champagne-400/70" : "bg-champagne-400",
+        )}
         initial={{ scaleX: 0, opacity: 0 }}
         whileInView={{ scaleX: 1, opacity: 1 }}
         viewport={{ once: true, margin: "0px 0px -10% 0px" }}

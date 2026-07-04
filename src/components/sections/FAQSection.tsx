@@ -9,7 +9,7 @@ import { faqs, site } from "@/lib/site";
 /**
  * FAQ - objection handling. Two-column accordion of honest answers (no
  * guaranteed-results claims). Emits FAQPage JSON-LD for rich results. The "still
- * have questions" CTA keeps the conversion path one tap away.
+ * have questions" CTA keeps the conversion path one tap away. Light luxury room.
  */
 export function FAQSection() {
   const jsonLd = {
@@ -33,21 +33,20 @@ export function FAQSection() {
       />
       <Reveal>
         <SectionHeading
-          index="05 / 05"
           eyebrow="Questions, answered"
           title={
             <>
-              Everything you&apos;d ask on the{" "}
-              <span className="text-gradient">first call</span>
+              Everything you&apos;d ask on the first{" "}
+              <span className="text-bronze">call</span>
             </>
           }
-          description="Straight answers - including the ones agencies usually dodge."
+          description="Straight, considered answers - including the ones most firms prefer to leave unspoken."
         />
       </Reveal>
 
-      <div className="mx-auto mt-12 grid max-w-5xl gap-4 md:grid-cols-2">
+      <div className="mx-auto mt-20 grid max-w-5xl gap-5 md:grid-cols-2">
         {columns.map((col, ci) => (
-          <StaggerContainer key={ci} stagger={0.07} className="flex flex-col gap-4">
+          <StaggerContainer key={ci} stagger={0.07} className="flex flex-col gap-5">
             {col.map((f) => (
               <StaggerItem key={f.q}>
                 <FAQItem q={f.q} a={f.a} />
@@ -58,11 +57,17 @@ export function FAQSection() {
       </div>
 
       <Reveal delay={0.1}>
-        <div className="mx-auto mt-10 flex max-w-5xl flex-col items-center justify-between gap-4 rounded-2xl border border-ink-600/70 bg-ink-900/40 px-6 py-5 sm:flex-row">
-          <p className="text-sm text-mist-200">
-            Still have a question? Get it answered on a free call.
-          </p>
-          <Button href={site.ctaPrimary.href} size="md" data-cta="faq">
+        <div className="lux-card mx-auto mt-20 flex max-w-5xl flex-col items-center justify-between gap-8 px-10 py-10 text-center sm:flex-row sm:text-left">
+          <div className="flex flex-col gap-2">
+            <p className="doc-kicker">Still deciding</p>
+            <p className="text-lux-body text-slate-600">
+              Have a question we didn&apos;t cover?{" "}
+              <span className="text-graphite">
+                Bring it to a private, no-pressure conversation.
+              </span>
+            </p>
+          </div>
+          <Button href={site.ctaPrimary.href} size="lg" data-cta="faq">
             {site.ctaPrimary.label}
           </Button>
         </div>

@@ -3,174 +3,179 @@
 @tailwind utilities;
 
 /*
-  Climbix Marketing - global base layer.
-  Dark-first premium surface. CSS variables hold a couple of runtime tokens
-  (fonts injected by next/font, the page background field). Everything else
-  lives in tailwind.config.ts so components stay token-driven.
+  Climbix Marketing - Luxury Growth Intelligence Studio.
+  Light-first: warm ivory reading surface, rich graphite text, obsidian navy
+  reserved for hero / strategy / final CTA. Calm, spacious, high-contrast.
 */
 
 :root {
-  --background: #05070d;
-  --foreground: #eef2f8;
+  --canvas: #f8f5ef; /* soft ivory base */
+  --foreground: #182333; /* charcoal ink */
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
-    /* Production safety net against decorative-element overflow. `clip` (not
-       `hidden`) doesn't create a scroll container, so sticky positioning still
-       works. */
+    /* Overflow safety net for decorative bleed. `clip` keeps sticky working. */
     overflow-x: clip;
+    /* Base reading size lifted for comfort. */
+    font-size: 100%;
   }
 
   body {
-    background-color: var(--background);
+    background-color: var(--canvas);
     color: var(--foreground);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
 
-  /* Atmospheric background field - light fields + a faint architectural grid +
-     a vignette so the page never reads as flat black voids between sections. */
+  /* Quiet luxury light field - a barely-there warm wash, no grid, no glow. */
   body::before {
     content: "";
     position: fixed;
     inset: 0;
     z-index: -1;
     background:
-      radial-gradient(60rem 60rem at 15% -10%, rgba(18, 131, 255, 0.12), transparent 60%),
-      radial-gradient(50rem 50rem at 100% 0%, rgba(17, 207, 214, 0.08), transparent 55%),
-      radial-gradient(40rem 40rem at 50% 120%, rgba(123, 92, 255, 0.07), transparent 60%),
-      linear-gradient(to right, rgba(170, 182, 204, 0.025) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(170, 182, 204, 0.025) 1px, transparent 1px);
-    background-size: 100% 100%, 100% 100%, 100% 100%, 64px 64px, 64px 64px;
-    pointer-events: none;
-  }
-
-  /* Vignette + grain-free depth so edges fall off softly. */
-  body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    background: radial-gradient(120% 90% at 50% 0%, transparent 55%, rgba(2, 4, 9, 0.55) 100%);
+      radial-gradient(60rem 60rem at 14% -10%, rgba(198, 161, 91, 0.05), transparent 60%),
+      radial-gradient(52rem 52rem at 100% 2%, rgba(36, 88, 255, 0.035), transparent 58%),
+      linear-gradient(180deg, #fcfaf5 0%, #f8f5ef 100%);
     pointer-events: none;
   }
 
   ::selection {
-    background-color: rgba(58, 160, 255, 0.28);
-    color: #f7f9fc;
+    background-color: rgba(36, 88, 255, 0.14);
+    color: #061522;
   }
 
   :focus-visible {
-    outline: 2px solid #3aa0ff;
+    outline: 2px solid #2458ff;
     outline-offset: 2px;
-    border-radius: 4px;
+    border-radius: 6px;
+  }
+
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
   }
 }
 
 @layer components {
-  /* Hairline grid texture used behind feature/process surfaces. */
-  .bg-grid {
-    background-image:
-      linear-gradient(to right, rgba(170, 182, 204, 0.06) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(170, 182, 204, 0.06) 1px, transparent 1px);
-    background-size: 56px 56px;
+  /* ---- Luxury light card: white surface, soft shadow, warm hairline. ---- */
+  .lux-card {
+    background-color: #ffffff;
+    border: 1px solid rgba(222, 216, 204, 0.9);
+    box-shadow: theme("boxShadow.soft");
+    border-radius: theme("borderRadius.3xl");
   }
 
-  /* Gradient text used sparingly on key headline words. */
-  .text-gradient {
-    background: linear-gradient(120deg, #7cc4ff 0%, #34e3e3 100%);
+  /* Warm platinum sub-surface for insets on light. */
+  .platinum-inset {
+    background-color: #f4f2ec;
+    border: 1px solid rgba(222, 216, 204, 0.85);
+  }
+
+  /* ---- Private-audit document panel: white sheet, warm hairline, a thin
+     bronze top edge - reads as a premium strategic artifact, not a dashboard. */
+  .doc-panel {
+    position: relative;
+    background-color: #ffffff;
+    border: 1px solid rgba(222, 216, 204, 0.95);
+    box-shadow: theme("boxShadow.lift");
+    border-radius: theme("borderRadius.4xl");
+  }
+  .doc-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    border-radius: theme("borderRadius.4xl") theme("borderRadius.4xl") 0 0;
+    background-image: linear-gradient(90deg, #C6A15B 0%, #D1AA62 45%, transparent 100%);
+  }
+
+  /* ---- Dark section surfaces (hero / strategy / final CTA). ---- */
+  .dark-section {
+    background-image: theme("backgroundImage.obsidian-fade");
+    color: #eef2f8;
+  }
+  /* Panel that sits on a dark section. */
+  .dark-panel {
+    background-image: linear-gradient(180deg, rgba(18, 30, 53, 0.85), rgba(7, 17, 31, 0.92));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: theme("boxShadow.dark-panel");
+    backdrop-filter: blur(14px);
+  }
+
+  /* Cobalt->teal gradient text for a single emphasis word. */
+  .text-signal {
+    background: theme("backgroundImage.cobalt-gradient");
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .text-champagne {
+    background: linear-gradient(120deg, #d8c08c 0%, #b4914f 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  /* Champagne gradient text - the signature premium emphasis. */
+  .text-bronze {
+    background: linear-gradient(120deg, #D1AA62 0%, #C6A15B 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
 
-  /* Signature glass panel - the dashboard/proof surfaces share this base. */
-  .glass-panel {
-    background-color: rgba(10, 14, 26, 0.72);
-    background-image: theme("backgroundImage.panel-sheen");
-    border: 1px solid rgba(39, 50, 77, 0.7);
-    box-shadow: theme("boxShadow.panel");
-    backdrop-filter: blur(14px);
+  /* Thin champagne rule - premium divider detail. */
+  .champagne-rule {
+    height: 1px;
+    background-image: theme("backgroundImage.champagne-line");
+  }
+  /* Thin bronze rule - centered premium divider. */
+  .bronze-rule {
+    height: 1px;
+    background-image: theme("backgroundImage.bronze-line");
+  }
+  /* Small uppercase index/kicker in champagne - editorial document marker. */
+  .doc-kicker {
+    font-family: theme("fontFamily.mono");
+    font-size: 0.75rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #C6A15B;
   }
 
-  /* Mono metric chip - floating data tokens around panels. */
-  .metric-chip {
-    background-color: rgba(16, 23, 40, 0.85);
-    border: 1px solid rgba(58, 160, 255, 0.18);
-    box-shadow: theme("boxShadow.chip");
-    backdrop-filter: blur(10px);
-  }
-
-  /* FAQ chevron - rotates when its native <details> is open. CSS-only so it
-     needs no motion JS and honours reduced motion via the global media query. */
+  /* FAQ chevron rotates when its native <details> is open. */
   details[open] .faq-chev {
     transform: rotate(180deg);
-    border-color: rgba(58, 160, 255, 0.5);
+    border-color: rgba(36, 88, 255, 0.5);
   }
 
-  /* Editorial blueprint grid behind framework/process sections. */
-  .blueprint {
+  /* Faint blueprint grid for dark strategy panels only. */
+  .signal-grid {
     background-image:
-      linear-gradient(to right, rgba(170, 182, 204, 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(170, 182, 204, 0.05) 1px, transparent 1px);
-    background-size: 40px 40px;
-    -webkit-mask-image: radial-gradient(120% 80% at 50% 0%, black 40%, transparent 85%);
-    mask-image: radial-gradient(120% 80% at 50% 0%, black 40%, transparent 85%);
+      linear-gradient(to right, rgba(120, 150, 210, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(120, 150, 210, 0.08) 1px, transparent 1px);
+    background-size: 44px 44px;
   }
 }
 
 @layer utilities {
-  /* Ambient background orbs - slow drift. Pure translate of a pre-rasterized
-     blurred layer: composite-only, no per-frame re-raster (no scale()). */
-  .orb-drift-a {
-    animation: orb-drift-a 26s ease-in-out infinite;
-  }
-  .orb-drift-b {
-    animation: orb-drift-b 32s ease-in-out infinite;
-  }
-  .orb-drift-c {
-    animation: orb-drift-c 30s ease-in-out infinite;
-  }
-
-  /* Subtle vertical float for the hero dashboard panel. */
+  /* Subtle vertical float for the hero panel. */
   .animate-float {
     animation: float 9s ease-in-out infinite;
   }
-  /* Slower, offset floats for layered metric chips. */
-  .animate-float-slow {
-    animation: float 11s ease-in-out infinite;
-  }
-  .animate-float-delayed {
-    animation: float 10s ease-in-out infinite;
-    animation-delay: -3s;
-  }
-
-  /* Animated dash travelling along signal-path connectors. */
   .signal-dash {
     stroke-dasharray: 4 8;
     animation: signal-dash 1.6s linear infinite;
   }
-
-  /* Pulsing ring for the campaign-health score. */
   .animate-ring {
     animation: ring-pulse 3.2s ease-in-out infinite;
   }
 }
 
-@keyframes orb-drift-a {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(5%, 7%, 0); }
-}
-@keyframes orb-drift-b {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(-6%, -4%, 0); }
-}
-@keyframes orb-drift-c {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(4%, -5%, 0); }
-}
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
@@ -179,29 +184,19 @@
   to { stroke-dashoffset: -12; }
 }
 @keyframes ring-pulse {
-  0%, 100% { opacity: 0.55; }
+  0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
 }
 
-/* Respect the user's motion preference: kill ambient/loop animation and smooth
-   scroll. Framer Motion reveals are handled separately via MotionConfig. */
+/* Respect the user's motion preference: kill loop animation + smooth scroll.
+   Framer reveals are handled via MotionConfig reducedMotion="user". */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  .orb-drift-a,
-  .orb-drift-b,
-  .orb-drift-c,
   .animate-float,
-  .animate-float-slow,
-  .animate-float-delayed,
   .signal-dash,
   .animate-ring {
     animation: none !important;
-  }
-  /* The FAQ chevron rotates via a CSS transition (not an animation) - suppress
-     it too so reduced-motion users get an instant toggle. */
-  .faq-chev {
-    transition: none !important;
   }
 }

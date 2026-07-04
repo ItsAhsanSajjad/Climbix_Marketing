@@ -5,12 +5,12 @@ import { StaggerContainer, StaggerItem } from "@/components/motion/Stagger";
 import { navLinks, footerServices, site } from "@/lib/site";
 
 /**
- * Site footer. Brand summary + structured link columns + legal row. Contact and
- * legal links are placeholders wired to Phase 3/4 destinations.
+ * Site footer. Obsidian bookend that anchors the light page and echoes the hero.
+ * Brand summary + structured link columns + legal row.
  */
 export function Footer() {
   return (
-    <footer className="border-t border-white/5 bg-ink-950/60">
+    <footer className="dark-section border-t border-white/10">
       <Container>
         <StaggerContainer
           stagger={0.08}
@@ -21,16 +21,16 @@ export function Footer() {
               <Logo />
               <span className="font-display text-lg font-bold tracking-tight text-white">
                 {site.name}
-                <span className="text-accent-400">.</span>
+                <span className="text-bronze-400">.</span>
               </span>
             </Link>
-            <p className="max-w-xs text-sm leading-relaxed text-mist-300">
-              Performance marketing for growing international brands. Paid ads,
-              SEO, landing pages, and tracking - built into one growth system.
+            <p className="max-w-xs text-base leading-relaxed text-mist-300">
+              Performance marketing for international brands. Paid ads, SEO,
+              landing pages, and tracking - built and measured as one system.
             </p>
             <a
               href={`mailto:${site.email}`}
-              className="text-sm font-medium text-accent-300 hover:text-accent-400"
+              className="text-base font-medium text-bronze-300 hover:text-bronze-400"
             >
               {site.email}
             </a>
@@ -65,13 +65,13 @@ export function Footer() {
           </StaggerItem>
         </StaggerContainer>
 
-        <div className="flex flex-col gap-4 border-t border-white/5 py-6 text-meta text-mist-400 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 border-t border-white/10 py-6 text-sm text-mist-400 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} {site.fullName}. All rights reserved.</p>
           <div className="flex items-center gap-6">
-            <Link href="/privacy" className="hover:text-mist-200">
+            <Link href="/privacy" className="hover:text-white">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="hover:text-mist-200">
+            <Link href="/terms" className="hover:text-white">
               Terms of Service
             </Link>
           </div>
@@ -84,7 +84,7 @@ export function Footer() {
 function FooterCol({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-4">
-      <h3 className="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-mist-400">{title}</h3>
+      <h3 className="text-sm font-semibold uppercase tracking-wide text-champagne-300">{title}</h3>
       <ul className="flex flex-col gap-3">{children}</ul>
     </div>
   );
@@ -93,7 +93,7 @@ function FooterCol({ title, children }: { title: string; children: React.ReactNo
 function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <li>
-      <Link href={href} className="text-sm text-mist-300 transition-colors hover:text-white">
+      <Link href={href} className="text-base text-mist-300 transition-colors hover:text-white">
         {children}
       </Link>
     </li>

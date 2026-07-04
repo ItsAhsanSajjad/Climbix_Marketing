@@ -8,8 +8,16 @@ import { StaggerContainer, StaggerItem } from "@/components/motion/Stagger";
 import { LandingHeader } from "@/components/landing/LandingHeader";
 import { LandingHero } from "@/components/landing/LandingHero";
 import { AuditOfferSection } from "@/components/landing/AuditOfferSection";
+import { LandingStickyCTA } from "@/components/landing/LandingStickyCTA";
 import { FAQItem } from "@/components/sections/FAQItem";
-import { processSteps, faqs, site, landing } from "@/lib/site";
+import {
+  faqs,
+  site,
+  landing,
+  auditChecklist,
+  auditFinds,
+  auditFor,
+} from "@/lib/site";
 
 const auditDescription =
   "Get a free marketing audit before your next campaign. Find where your ad spend, tracking, and landing pages are leaking growth - and the highest-leverage fixes to make first.";
@@ -31,19 +39,12 @@ export const metadata: Metadata = {
   },
 };
 
-// Condensed audit-to-action flow for paid traffic.
-const flow = [
-  { step: "01", title: "Request", body: "Send your details - takes 30 seconds." },
-  { step: "02", title: "Audit", body: "We review your spend, tracking, and pages." },
-  { step: "03", title: "Action plan", body: "You get your biggest leaks and what to fix first." },
-];
-
 export default function FreeMarketingAuditPage() {
   return (
     <>
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-accent-500 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-ink-950"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-cobalt-500 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
       >
         Skip to content
       </a>
@@ -51,98 +52,155 @@ export default function FreeMarketingAuditPage() {
       <main id="main">
         <LandingHero />
 
-        {/* Trust strip */}
-        <div className="border-y border-white/5 bg-ink-900/30">
-          <Container>
-            <StaggerContainer
-              stagger={0.08}
-              className="flex flex-col gap-3 py-5 text-sm text-mist-200 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-8"
-            >
-              {["Audit-first, no guesswork", "Tracking-first strategy", "International campaigns", "No obligation"].map(
-                (t) => (
-                  <StaggerItem key={t} className="flex items-center gap-2.5">
-                    <span className="h-1.5 w-1.5 rounded-full bg-accent-400" aria-hidden />
-                    {t}
-                  </StaggerItem>
-                ),
-              )}
-            </StaggerContainer>
-          </Container>
-        </div>
-
-        <AuditOfferSection />
-
-        {/* Audit-to-action process */}
-        <Section className="relative">
-          <div className="blueprint pointer-events-none absolute inset-0" aria-hidden />
-          <div className="relative">
-            <Reveal>
+        {/* 1 - What the audit checks: the full-path review */}
+        <Section className="bg-ivory-100">
+          <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+            <Reveal className="lg:sticky lg:top-28 lg:self-start">
               <SectionHeading
-                eyebrow="How it works"
+                align="left"
+                eyebrow="What we check"
                 title={
                   <>
-                    From request to{" "}
-                    <span className="text-gradient">action plan</span>
+                    We follow the whole path, from the{" "}
+                    <span className="text-bronze">click to the lead</span>
                   </>
                 }
-                description="Three steps. No long forms, no obligation, no sales theatre."
+                description="Most budget doesn't leak in one dramatic place. It drains quietly across the journey, so that's where we look - the message, the page, the offer, the form, and the data underneath it all."
               />
             </Reveal>
-            <StaggerContainer stagger={0.1} className="mt-12 grid gap-5 md:grid-cols-3">
-              {flow.map((f) => (
-                <StaggerItem key={f.step} className="h-full">
-                  <div className="glass-panel flex h-full flex-col rounded-2xl p-6">
-                    <span className="font-mono text-sm font-bold text-accent-300">{f.step}</span>
-                    <h3 className="mt-3 text-lg font-semibold text-paper">{f.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-mist-200">{f.body}</p>
-                  </div>
+            <Reveal delay={0.05}>
+              <div className="doc-panel p-8 md:p-10">
+                <StaggerContainer
+                  stagger={0.08}
+                  className="flex flex-col divide-y divide-platinum-300"
+                >
+                  {auditChecklist.map((c, i) => (
+                    <StaggerItem
+                      key={c.label}
+                      className="flex items-start gap-6 py-6 first:pt-0 last:pb-0"
+                    >
+                      <span className="doc-kicker pt-1 tabular-nums">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <div>
+                        <h3 className="text-xl font-semibold text-graphite">
+                          {c.label}
+                        </h3>
+                        <p className="mt-1.5 text-lg leading-relaxed text-slate-600">
+                          {c.note}
+                        </p>
+                      </div>
+                    </StaggerItem>
+                  ))}
+                </StaggerContainer>
+              </div>
+            </Reveal>
+          </div>
+        </Section>
+
+        {/* 2 - What you receive */}
+        <AuditOfferSection />
+
+        {/* 3 - What we usually find: warm ivory panel, bronze dots */}
+        <Section>
+          <Reveal>
+            <div className="rounded-4xl border border-platinum-300 bg-ivory-200 p-8 md:p-12 lg:p-14">
+              <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+                <SectionHeading
+                  align="left"
+                  eyebrow="What we usually find"
+                  title={
+                    <>
+                      The same leaks show up{" "}
+                      <span className="text-bronze">again and again</span>
+                    </>
+                  }
+                  description="A handful of patterns account for most of the wasted spend we see. The audit tells you which ones are costing you - and which deserve attention first."
+                />
+                <ul className="flex flex-col justify-center gap-5">
+                  {auditFinds.map((f) => (
+                    <li
+                      key={f}
+                      className="flex items-start gap-3.5 text-lg leading-relaxed text-slate-600"
+                    >
+                      <span
+                        className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-bronze-400"
+                        aria-hidden
+                      />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </Reveal>
+        </Section>
+
+        {/* 4 - Who it's for */}
+        <Section className="bg-ivory-100">
+          <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+            <Reveal className="lg:sticky lg:top-28 lg:self-start">
+              <SectionHeading
+                align="left"
+                eyebrow="Who it is for"
+                title={
+                  <>
+                    Most useful when there is{" "}
+                    <span className="text-bronze">real spend on the line</span>
+                  </>
+                }
+                description="The audit earns its keep when there's meaningful budget in motion and honest questions about where it's actually going."
+              />
+            </Reveal>
+            <StaggerContainer className="flex flex-col gap-6">
+              {auditFor.map((f) => (
+                <StaggerItem key={f} className="border-l-2 border-bronze-400 pl-6">
+                  <p className="text-lg leading-relaxed text-graphite">{f}</p>
                 </StaggerItem>
               ))}
             </StaggerContainer>
           </div>
         </Section>
 
-        {/* FAQ (focused subset) */}
+        {/* 5 - FAQ (focused subset) */}
         <Section>
           <Reveal>
             <SectionHeading
-              eyebrow="Questions, answered"
+              eyebrow="Before you request"
               title={
                 <>
-                  Before you{" "}
-                  <span className="text-gradient">request</span>
+                  The questions we&apos;re{" "}
+                  <span className="text-bronze">usually asked</span>
                 </>
               }
             />
           </Reveal>
-          <div className="mx-auto mt-10 flex max-w-3xl flex-col gap-4">
+          <div className="mx-auto mt-14 flex max-w-3xl flex-col gap-5">
             {faqs.slice(0, 6).map((f) => (
               <FAQItem key={f.q} q={f.q} a={f.a} />
             ))}
           </div>
         </Section>
 
-        {/* Final CTA */}
+        {/* 6 - Final CTA: one deep navy focus room */}
         <Section>
           <Reveal>
-            <div className="relative overflow-hidden rounded-[1.75rem] border border-accent-400/20 bg-ink-900/70 px-6 py-12 text-center shadow-glow md:px-12 md:py-14">
-              <div
-                className="pointer-events-none absolute left-1/2 top-1/2 h-[24rem] w-[24rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-500/10 blur-3xl"
-                aria-hidden
-              />
+            <div className="dark-section relative overflow-hidden rounded-[2.5rem] px-6 py-16 text-center shadow-lift-lg md:px-12 md:py-24">
               <div className="relative mx-auto flex max-w-2xl flex-col items-center">
-                <h2 className="font-display text-display-sm text-paper md:text-[2.6rem] md:leading-[1.05]">
-                  Find the leaks before you{" "}
-                  <span className="text-gradient">increase spend</span>
+                <span className="doc-kicker">The next step</span>
+                <h2 className="mt-6 font-display text-lux-sm text-white md:text-lux-md">
+                  See where the budget is quietly{" "}
+                  <span className="text-bronze">leaking</span>.
                 </h2>
-                <p className="mt-4 text-lg text-mist-200">
+                <p className="mt-5 text-lux-body text-mist-200">
                   {landing.microcopy}
                 </p>
                 <Link
                   href="#audit-form"
-                  className="mt-8 inline-flex h-14 items-center gap-2 rounded-full bg-accent-gradient px-8 text-base font-semibold text-ink-950 shadow-glow transition-transform hover:-translate-y-0.5"
+                  data-cta="landing-final"
+                  className="mt-10 inline-flex h-16 items-center gap-2 rounded-full bg-cobalt-500 px-9 text-lg font-semibold text-white shadow-cobalt transition-transform hover:-translate-y-0.5 hover:bg-cobalt-600"
                 >
-                  Get My Free Audit
+                  Request a Free Audit
                 </Link>
               </div>
             </div>
@@ -150,15 +208,25 @@ export default function FreeMarketingAuditPage() {
         </Section>
       </main>
 
+      <LandingStickyCTA />
+
       {/* Minimal footer */}
-      <footer className="border-t border-white/5 bg-ink-950/60">
+      <footer className="border-t border-platinum-300 bg-ivory-50">
         <Container>
-          <div className="flex flex-col gap-3 py-8 text-meta text-mist-400 sm:flex-row sm:items-center sm:justify-between">
-            <p>© {new Date().getFullYear()} {site.fullName}. All rights reserved.</p>
+          <div className="flex flex-col gap-3 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+            <p>
+              © {new Date().getFullYear()} {site.fullName}. All rights reserved.
+            </p>
             <div className="flex items-center gap-6">
-              <Link href="/" className="hover:text-mist-200">Home</Link>
-              <Link href="/privacy" className="hover:text-mist-200">Privacy</Link>
-              <Link href="/terms" className="hover:text-mist-200">Terms</Link>
+              <Link href="/" className="hover:text-graphite">
+                Home
+              </Link>
+              <Link href="/privacy" className="hover:text-graphite">
+                Privacy
+              </Link>
+              <Link href="/terms" className="hover:text-graphite">
+                Terms
+              </Link>
             </div>
           </div>
         </Container>

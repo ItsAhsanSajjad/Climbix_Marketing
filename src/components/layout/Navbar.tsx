@@ -51,8 +51,8 @@ export function Navbar() {
         className={cn(
           "border-b transition-all duration-300",
           scrolled
-            ? "border-white/10 bg-ink-950/80 shadow-[0_8px_30px_-12px_rgba(5,7,13,0.8)] backdrop-blur-xl"
-            : "border-white/5 bg-ink-950/50 backdrop-blur-md",
+            ? "border-platinum-300 bg-ivory-100/90 shadow-soft backdrop-blur-xl"
+            : "border-transparent bg-ivory-100/60 backdrop-blur-md",
         )}
       >
         <Container>
@@ -69,9 +69,9 @@ export function Navbar() {
               aria-label={`${site.fullName} home`}
             >
               <Logo />
-              <span className="font-display text-lg font-bold tracking-tight text-white">
+              <span className="font-display text-lg font-bold tracking-tight text-graphite">
                 {site.name}
-                <span className="text-accent-400">.</span>
+                <span className="text-cobalt-500">.</span>
               </span>
             </Link>
 
@@ -80,10 +80,10 @@ export function Navbar() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="group relative text-sm font-medium text-mist-300 transition-colors hover:text-white"
+                    className="group relative text-[0.95rem] font-medium text-slate-600 transition-colors hover:text-graphite"
                   >
                     {link.label}
-                    <span className="absolute -bottom-1.5 left-0 h-px w-full origin-left scale-x-0 bg-accent-gradient transition-transform duration-300 ease-out group-hover:scale-x-100" />
+                    <span className="absolute -bottom-1.5 left-0 h-px w-full origin-left scale-x-0 bg-cobalt-500 transition-transform duration-300 ease-out group-hover:scale-x-100" />
                   </Link>
                 </li>
               ))}
@@ -91,7 +91,7 @@ export function Navbar() {
 
             <div className="hidden md:block">
               <Button href={site.ctaPrimary.href} size="md">
-                Book Strategy Call
+                {site.ctaPrimary.label}
               </Button>
             </div>
 
@@ -99,7 +99,7 @@ export function Navbar() {
               ref={toggleRef}
               type="button"
               onClick={() => setOpen((v) => !v)}
-              className="flex h-10 w-10 items-center justify-center rounded-lg border border-ink-600 text-mist-200 transition-colors hover:border-accent-400/50 md:hidden"
+              className="flex h-10 w-10 items-center justify-center rounded-lg border border-platinum-300 text-graphite transition-colors hover:border-cobalt-500/50 md:hidden"
               aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
               aria-controls={MENU_ID}
@@ -138,7 +138,7 @@ export function Navbar() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.32, ease: easeInOut }}
-            className="overflow-hidden border-b border-white/5 bg-ink-950/95 backdrop-blur-xl md:hidden"
+            className="overflow-hidden border-b border-platinum-300 bg-ivory-100/98 backdrop-blur-xl md:hidden"
           >
             <Container>
               <m.ul
@@ -158,7 +158,7 @@ export function Navbar() {
                     <Link
                       href={link.href}
                       onClick={() => setOpen(false)}
-                      className="block py-3 text-base font-medium text-mist-200"
+                      className="block py-3 text-base font-medium text-graphite"
                     >
                       {link.label}
                     </Link>
@@ -169,7 +169,7 @@ export function Navbar() {
                   className="pt-3"
                 >
                   <Button href={site.ctaPrimary.href} className="w-full" size="lg">
-                    Book Strategy Call
+                    {site.ctaPrimary.label}
                   </Button>
                 </m.li>
               </m.ul>

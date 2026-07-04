@@ -2,129 +2,132 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/motion/Reveal";
 import { StaggerContainer, StaggerItem } from "@/components/motion/Stagger";
-import { SpotlightCard } from "@/components/motion/SpotlightCard";
 import {
   IconTarget,
   IconTrending,
   IconLayout,
   IconShare,
   IconChart,
-  IconArrow,
+  IconCheck,
 } from "@/components/ui/Icon";
 import { services } from "@/lib/site";
-import { cn } from "@/lib/cn";
 
-const icons = [IconTarget, IconTrending, IconLayout, IconShare, IconChart];
+/** Icons for the four grid cards, aligned to the order of `services` 0-3. */
+const cardIcons = [IconTarget, IconTrending, IconLayout, IconShare] as const;
 
-// Bento spans - card 0 is featured and wider, keeping the grid intentional.
-const spans = [
-  "lg:col-span-6",
-  "lg:col-span-3",
-  "lg:col-span-3",
-  "lg:col-span-6",
-  "lg:col-span-6",
-];
+/** First four services render as white cards; the fifth (Analytics &
+ * Conversion Tracking - the differentiator) gets a featured dark treatment. */
+const gridServices = services.slice(0, 4);
+const featured = services[4];
 
 export function ServicesSection() {
   return (
     <Section id="services">
       <Reveal>
         <SectionHeading
-          index="02 / 05"
-          eyebrow="Capabilities"
+          eyebrow="Services"
           title={
             <>
-              A complete growth engine,{" "}
-              <span className="text-gradient">built to convert</span>
+              Five disciplines, run as one{" "}
+              <span className="text-bronze">system</span>
             </>
           }
-          description="Five disciplines run as one system - so your acquisition, conversion, and measurement pull in the same direction instead of fighting each other."
+          description="Each service stands on its own - together they form one measurable path from budget to revenue."
         />
       </Reveal>
 
       <StaggerContainer
         stagger={0.08}
-        className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-12"
+        className="mx-auto mt-16 grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-2"
       >
-        {services.map((service, i) => {
-          const Icon = icons[i];
-          const featured = i === 0;
+        {gridServices.map((service, i) => {
+          const Icon = cardIcons[i];
           return (
-            <StaggerItem key={service.title} className={cn("h-full", spans[i])}>
-              <SpotlightCard className={cn("flex h-full flex-col")}>
-                <div className="flex items-center justify-between">
-                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-accent-400/25 bg-accent-soft text-accent-300 shadow-glow transition-all duration-300 group-hover/spot:scale-110 group-hover/spot:border-accent-400/50 group-hover/spot:text-accent-200">
+            <StaggerItem key={service.title} className="h-full">
+              <article className="lux-card flex h-full flex-col gap-6 p-8 transition duration-300 hover:-translate-y-1 hover:shadow-lift md:p-10">
+                <div className="flex items-center justify-between gap-4">
+                  <span className="inline-flex h-12 w-12 flex-none items-center justify-center rounded-2xl bg-platinum-100 text-cobalt-600">
                     <Icon className="h-6 w-6" />
                   </span>
-                  <span className="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-mist-400">
+                  <span className="text-sm font-medium text-slate-500">
                     {service.tag}
                   </span>
                 </div>
 
-                <h3
-                  className={cn(
-                    "mt-5 font-semibold text-paper",
-                    featured ? "text-2xl" : "text-lg",
-                  )}
-                >
-                  {service.title}
-                </h3>
-                <p
-                  className={cn(
-                    "mt-2.5 leading-relaxed text-mist-200",
-                    featured ? "max-w-md text-base" : "text-sm",
-                  )}
-                >
-                  {service.body}
-                </p>
-
-                {featured && <FeaturedSignal />}
-
-                <dl className="mt-4 space-y-2 border-t border-ink-700/60 pt-4">
-                  <div className="flex gap-2 text-xs leading-snug">
-                    <dt className="shrink-0 font-mono text-[0.6rem] uppercase tracking-wide text-mist-400">
-                      You get
-                    </dt>
-                    <dd className="text-mist-200">{service.gets}</dd>
-                  </div>
-                  <div className="flex gap-2 text-xs leading-snug">
-                    <dt className="shrink-0 font-mono text-[0.6rem] uppercase tracking-wide text-mist-400">
-                      Best for
-                    </dt>
-                    <dd className="text-mist-200">{service.forWho}</dd>
-                  </div>
-                </dl>
-
-                <div className="mt-auto flex items-center justify-between pt-5">
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-accent-400/20 bg-accent-500/10 px-2.5 py-1 font-mono text-[0.65rem] uppercase tracking-wide text-accent-300">
-                    <span className="h-1 w-1 rounded-full bg-cyan-400" aria-hidden />
-                    {service.outcome}
-                  </span>
-                  <IconArrow
-                    className="h-4 w-4 text-mist-400 transition-all duration-300 group-hover/spot:translate-x-1 group-hover/spot:text-accent-300"
-                  />
+                <div className="flex flex-col gap-3">
+                  <h3 className="text-xl font-semibold text-graphite">
+                    {service.title}
+                  </h3>
+                  <p className="text-base text-slate-600">{service.body}</p>
                 </div>
-              </SpotlightCard>
+
+                <div className="mt-auto flex flex-col gap-2 border-t border-platinum-200 pt-6">
+                  <p className="text-sm text-slate-600">
+                    <span className="font-semibold text-graphite">
+                      What you get:{" "}
+                    </span>
+                    {service.gets}
+                  </p>
+                  <p className="text-sm text-slate-600">
+                    <span className="font-semibold text-graphite">
+                      Best for:{" "}
+                    </span>
+                    {service.forWho}
+                  </p>
+                </div>
+              </article>
             </StaggerItem>
           );
         })}
       </StaggerContainer>
-    </Section>
-  );
-}
 
-/** Mini signal-bars visual for the featured card - fills space with substance. */
-function FeaturedSignal() {
-  const bars = [38, 52, 44, 66, 58, 80, 72, 94];
-  return (
-    <div className="mt-6 flex items-end gap-1.5" aria-hidden>
-      {bars.map((h, i) => (
-        <span
-          key={i}
-          className="w-full rounded-sm bg-gradient-to-t from-accent-500/30 to-cyan-400/70"
-          style={{ height: `${h * 0.5}px` }}
-        />
-      ))}
-    </div>
+      {/* Featured differentiator: Analytics & Conversion Tracking. */}
+      <Reveal className="mx-auto mt-6 max-w-5xl">
+        <article className="dark-section overflow-hidden rounded-4xl p-8 shadow-lift md:p-12">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
+            <div className="flex flex-col gap-5">
+              <span className="doc-kicker">Core differentiator</span>
+              <div className="flex items-center gap-4">
+                <span className="inline-flex h-12 w-12 flex-none items-center justify-center rounded-2xl bg-white/10 text-teal-400">
+                  <IconChart className="h-6 w-6" />
+                </span>
+                <span className="text-sm font-medium text-mist-300">
+                  {featured.tag}
+                </span>
+              </div>
+              <h3 className="text-2xl font-semibold text-white">
+                {featured.title}
+              </h3>
+              <p className="max-w-prose text-base text-mist-200">
+                {featured.body}
+              </p>
+            </div>
+
+            <div className="flex flex-col justify-center gap-6 border-t border-white/10 pt-8 lg:border-l lg:border-t-0 lg:pl-12 lg:pt-0">
+              <div className="flex items-start gap-4">
+                <span className="mt-0.5 inline-flex h-8 w-8 flex-none items-center justify-center rounded-xl bg-white/10 text-teal-400">
+                  <IconCheck className="h-5 w-5" />
+                </span>
+                <p className="text-base text-mist-200">
+                  <span className="font-semibold text-white">
+                    What you get:{" "}
+                  </span>
+                  {featured.gets}
+                </p>
+              </div>
+              <div className="flex items-start gap-4">
+                <span className="mt-0.5 inline-flex h-8 w-8 flex-none items-center justify-center rounded-xl bg-white/10 text-teal-400">
+                  <IconCheck className="h-5 w-5" />
+                </span>
+                <p className="text-base text-mist-200">
+                  <span className="font-semibold text-white">Best for: </span>
+                  {featured.forWho}
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+      </Reveal>
+    </Section>
   );
 }

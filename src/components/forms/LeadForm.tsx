@@ -192,14 +192,14 @@ export function LeadForm({
       <button
         type="submit"
         disabled={submitting}
-        className="group/btn relative mt-1 inline-flex h-12 items-center justify-center gap-2 overflow-hidden rounded-full bg-accent-gradient px-7 text-sm font-semibold text-ink-950 shadow-glow transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950 disabled:cursor-not-allowed disabled:opacity-70"
+        className="group/btn relative mt-1 inline-flex h-14 items-center justify-center gap-2 overflow-hidden rounded-full bg-cobalt-500 px-8 text-base font-semibold text-white shadow-cobalt transition-all duration-200 hover:-translate-y-0.5 hover:bg-cobalt-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-70"
       >
         {submitting ? "Sending..." : submitLabel}
         {!submitting && <IconArrow className="h-4 w-4" />}
       </button>
 
-      <p className="flex items-center gap-2 text-xs text-mist-400">
-        <IconCheck className="h-3.5 w-3.5 shrink-0 text-cyan-400" />
+      <p className="flex items-center gap-2 text-sm text-slate-500">
+        <IconCheck className="h-4 w-4 shrink-0 text-teal-500" />
         We only use this to prepare your audit. No spam, no sharing - ever.
       </p>
     </form>

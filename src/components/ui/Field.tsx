@@ -10,7 +10,7 @@ type BaseProps = {
 };
 
 const controlBase =
-  "w-full rounded-lg border bg-ink-900/60 px-3.5 py-2.5 text-sm text-paper placeholder:text-mist-400/70 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950";
+  "w-full rounded-xl border bg-white px-4 py-3 text-base text-graphite placeholder:text-slate-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white";
 
 function Wrapper({
   id,
@@ -24,18 +24,18 @@ function Wrapper({
   const describedBy = error ? `${id}-error` : hint ? `${id}-hint` : undefined;
   return (
     <div className={cn("flex flex-col gap-1.5", className)} data-field={describedBy}>
-      <label htmlFor={id} className="text-sm font-medium text-mist-200">
+      <label htmlFor={id} className="text-sm font-semibold text-graphite">
         {label}
-        {required && <span className="ml-0.5 text-accent-300" aria-hidden> *</span>}
+        {required && <span className="ml-0.5 text-cobalt-600" aria-hidden> *</span>}
       </label>
       {children}
       {hint && !error && (
-        <p id={`${id}-hint`} className="text-xs text-mist-400">
+        <p id={`${id}-hint`} className="text-sm text-slate-500">
           {hint}
         </p>
       )}
       {error && (
-        <p id={`${id}-error`} className="text-xs font-medium text-red-300" role="alert">
+        <p id={`${id}-error`} className="text-sm font-medium text-red-600" role="alert">
           {error}
         </p>
       )}
@@ -44,7 +44,7 @@ function Wrapper({
 }
 
 const borderState = (error?: string) =>
-  error ? "border-red-400/60" : "border-ink-600 hover:border-ink-500";
+  error ? "border-red-400" : "border-platinum-300 hover:border-slate-400";
 
 /** Text-like input field (text / email / url / tel). */
 export function Field({
@@ -109,14 +109,14 @@ export function SelectField({
         className={cn(
           controlBase,
           borderState(base.error),
-          value ? "text-paper" : "text-mist-400/70",
+          value ? "text-graphite" : "text-slate-400",
         )}
       >
         <option value="" disabled>
           {placeholder}
         </option>
         {options.map((o) => (
-          <option key={o} value={o} className="bg-ink-900 text-paper">
+          <option key={o} value={o} className="bg-white text-graphite">
             {o}
           </option>
         ))}

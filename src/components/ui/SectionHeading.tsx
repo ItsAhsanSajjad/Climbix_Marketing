@@ -2,53 +2,47 @@ import { cn } from "@/lib/cn";
 import { Eyebrow } from "./Eyebrow";
 
 /**
- * Standard section header block: optional editorial index + eyebrow + heading +
- * description. The mono index ("01 / 05") gives the page an editorial, deliberate
- * structure. Type hierarchy and max-width stay identical across every section.
+ * Section header block: eyebrow + large elegant heading + comfortable lead
+ * paragraph. Luxury scale - big confident headings, readable lead text, no tiny
+ * mono indices. tone="dark" adapts colors for obsidian sections.
  */
 export function SectionHeading({
-  index,
   eyebrow,
   title,
   description,
   align = "center",
+  tone = "light",
   className,
 }: {
-  index?: string;
   eyebrow?: string;
   title: React.ReactNode;
   description?: React.ReactNode;
   align?: "center" | "left";
+  tone?: "light" | "dark";
   className?: string;
 }) {
   return (
     <div
       className={cn(
-        "flex flex-col gap-4",
+        "flex flex-col gap-5",
         align === "center" ? "items-center text-center" : "items-start text-left",
         className,
       )}
     >
-      <div
+      {eyebrow && <Eyebrow tone={tone}>{eyebrow}</Eyebrow>}
+      <h2
         className={cn(
-          "flex items-center gap-3",
-          align === "center" && "justify-center",
+          "font-display text-lux-sm md:text-lux-md",
+          tone === "dark" ? "text-white" : "text-graphite",
         )}
       >
-        {index && (
-          <span className="font-mono text-[0.7rem] font-medium tracking-widest text-mist-400">
-            {index}
-          </span>
-        )}
-        {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-      </div>
-      <h2 className="font-display text-display-sm text-paper md:text-[2.85rem] md:leading-[1.05]">
         {title}
       </h2>
       {description && (
         <p
           className={cn(
-            "max-w-prose text-base leading-relaxed text-mist-200 md:text-lg",
+            "max-w-prose text-lux-body",
+            tone === "dark" ? "text-mist-200" : "text-slate-600",
             align === "center" && "mx-auto",
           )}
         >

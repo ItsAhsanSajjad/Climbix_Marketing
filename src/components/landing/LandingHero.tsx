@@ -3,74 +3,74 @@ import { IconCheck } from "@/components/ui/Icon";
 import { StaggerContainer, StaggerItem } from "@/components/motion/Stagger";
 import { Reveal } from "@/components/motion/Reveal";
 import { LeadForm } from "@/components/forms/LeadForm";
-import { landing, heroTrustIndicators } from "@/lib/site";
+import { landing, landingChecklist } from "@/lib/site";
 
 /**
- * PPC landing hero - one clear offer + the lead form above the fold. Built for
- * paid traffic: benefit-driven headline, trust right next to the form, no
- * distractions.
+ * PPC landing hero on the ivory canvas - one clear offer on the left, the lead
+ * form visible above the fold in a white lux-card on the right. Direct
+ * response, but advisory in tone: honest present-tense pain, no hype, bronze
+ * reserved for the single emphasis phrase and the small document kicker.
  */
 export function LandingHero() {
   return (
-    <section className="relative overflow-hidden pb-12 pt-12 md:pb-16 md:pt-16">
-      <div
-        className="pointer-events-none absolute -top-40 left-1/4 h-[40rem] w-[40rem] -translate-x-1/2 rounded-full bg-accent-500/10 blur-3xl"
-        aria-hidden
-      />
+    <section className="relative overflow-hidden pb-16 pt-12 md:pb-24 md:pt-16">
       <Container className="relative">
-        <div className="grid items-start gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
+        <div className="grid items-start gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
           {/* Offer */}
-          <StaggerContainer trigger="mount" stagger={0.1} className="flex flex-col items-start gap-5">
+          <StaggerContainer
+            trigger="mount"
+            stagger={0.1}
+            className="flex flex-col items-start gap-7 lg:pt-6"
+          >
             <StaggerItem>
-              <span className="inline-flex items-center gap-2 rounded-full border border-accent-400/25 bg-accent-500/10 px-3 py-1.5 font-mono text-[0.7rem] uppercase tracking-[0.16em] text-accent-300">
-                <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" aria-hidden />
-                Free Marketing Audit
-              </span>
+              <span className="doc-kicker">Free marketing audit</span>
             </StaggerItem>
             <StaggerItem>
-              <h1 className="font-display text-[2.4rem] font-bold leading-[1.05] tracking-tight text-paper sm:text-display-md lg:text-[3.6rem] lg:leading-[1.02]">
+              <h1 className="font-display text-[2.5rem] font-bold leading-[1.04] tracking-tight text-graphite sm:text-lux-md lg:text-lux-lg">
                 {landing.headline}{" "}
-                <span className="text-gradient">{landing.headlineAccent}</span>
+                <span className="text-bronze">{landing.headlineAccent}</span>
               </h1>
             </StaggerItem>
             <StaggerItem>
-              <p className="max-w-prose text-lg leading-relaxed text-mist-200">
+              <p className="max-w-prose text-lux-lead text-slate-600">
                 {landing.subhead}
               </p>
             </StaggerItem>
             <StaggerItem as="div">
-              <ul className="flex flex-col gap-2.5">
-                {heroTrustIndicators.map((t) => (
-                  <li key={t} className="flex items-center gap-2.5 text-sm text-mist-100">
-                    <IconCheck className="h-4 w-4 shrink-0 text-cyan-400" />
+              <ul className="flex flex-col gap-3.5">
+                {landingChecklist.map((t) => (
+                  <li
+                    key={t}
+                    className="flex items-center gap-3 text-base text-graphite sm:text-lg"
+                  >
+                    <IconCheck className="h-5 w-5 shrink-0 text-teal-500" />
                     {t}
                   </li>
                 ))}
               </ul>
             </StaggerItem>
             <StaggerItem>
-              <p className="font-mono text-[0.72rem] uppercase tracking-wide text-mist-400">
+              <p className="text-base font-medium text-slate-500">
                 {landing.microcopy}
               </p>
             </StaggerItem>
           </StaggerContainer>
 
-          {/* Form */}
+          {/* Form - visible above the fold */}
           <Reveal>
-            <div
-              id="audit-form"
-              className="glass-panel scroll-mt-24 rounded-3xl p-6 md:p-8"
-            >
-              <h2 className="font-display text-xl font-bold text-paper">
-                Get your free audit
+            <div id="audit-form" className="lux-card scroll-mt-24 p-7 md:p-9">
+              <span className="doc-kicker">The next step</span>
+              <h2 className="mt-4 font-display text-2xl font-bold text-graphite">
+                Request your free audit
               </h2>
-              <p className="mt-1.5 text-sm text-mist-300">
-                Takes 30 seconds. We&apos;ll review and send back your biggest leaks.
+              <p className="mt-2 text-base leading-relaxed text-slate-600">
+                A few details is all it takes. We review your spend, pages, and
+                tracking, then send back where the budget is leaking first.
               </p>
               <LeadForm
                 source="audit"
-                submitLabel="Get My Free Audit"
-                className="mt-6"
+                submitLabel="Request My Free Audit"
+                className="mt-7"
               />
             </div>
           </Reveal>

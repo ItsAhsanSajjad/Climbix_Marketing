@@ -4,56 +4,69 @@ import { Card } from "@/components/ui/Card";
 import { Reveal } from "@/components/motion/Reveal";
 import { StaggerContainer, StaggerItem } from "@/components/motion/Stagger";
 import { IconCheck } from "@/components/ui/Icon";
-import { auditIncludes, auditFinds } from "@/lib/site";
+import { auditIncludes } from "@/lib/site";
+import { cn } from "@/lib/cn";
 
-/** What the free audit includes + what we typically find. */
+/**
+ * The five deliverables of the free audit, as a calm light card grid - the
+ * fifth (the priority fix list, the payoff) spans the full row. What we
+ * typically find lives on the page itself, so this section stays purely about
+ * what you receive.
+ */
 export function AuditOfferSection() {
   return (
     <Section>
       <Reveal>
         <SectionHeading
-          eyebrow="What you get"
+          eyebrow="What you receive"
+          align="left"
           title={
             <>
-              A real audit -{" "}
-              <span className="text-gradient">not a sales pitch</span>
+              A written read on your funnel -{" "}
+              <span className="text-bronze">not a sales pitch</span>
             </>
           }
-          description="A focused review of where your spend, tracking, and pages are leaking - and exactly what to fix first."
+          description="Five deliverables, in plain English: where your spend, tracking, and pages are leaking - and exactly what deserves attention first."
         />
       </Reveal>
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <StaggerContainer stagger={0.08} className="grid gap-5 sm:grid-cols-2">
-          {auditIncludes.map((a) => (
-            <StaggerItem key={a.title} className="h-full">
-              <Card className="h-full">
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-accent-400/25 bg-accent-500/10 text-cyan-400">
-                  <IconCheck className="h-5 w-5" />
+      <StaggerContainer stagger={0.08} className="mt-16 grid gap-6 sm:grid-cols-2">
+        {auditIncludes.map((a, i) => (
+          <StaggerItem
+            key={a.title}
+            className={cn(
+              "h-full",
+              i === auditIncludes.length - 1 && "sm:col-span-2",
+            )}
+          >
+            <Card className="h-full">
+              <div
+                className={cn(
+                  i === auditIncludes.length - 1 &&
+                    "sm:flex sm:items-start sm:gap-6",
+                )}
+              >
+                <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-teal-500/10 text-teal-500">
+                  <IconCheck className="h-6 w-6" />
                 </span>
-                <h3 className="mt-4 text-base font-semibold text-paper">{a.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-mist-200">{a.body}</p>
-              </Card>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
-
-        <Reveal delay={0.1}>
-          <div className="flex h-full flex-col rounded-3xl border border-ink-600/70 bg-ink-900/40 p-6 md:p-8">
-            <span className="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-accent-300">
-              What we typically find
-            </span>
-            <ul className="mt-5 flex flex-col gap-3.5">
-              {auditFinds.map((f) => (
-                <li key={f} className="flex items-start gap-3 text-sm leading-relaxed text-mist-200">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-400" aria-hidden />
-                  {f}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </Reveal>
-      </div>
+                <div
+                  className={cn(
+                    "mt-5",
+                    i === auditIncludes.length - 1 && "sm:mt-0",
+                  )}
+                >
+                  <h3 className="text-lg font-semibold text-graphite">
+                    {a.title}
+                  </h3>
+                  <p className="mt-2 max-w-prose text-base leading-relaxed text-slate-600">
+                    {a.body}
+                  </p>
+                </div>
+              </div>
+            </Card>
+          </StaggerItem>
+        ))}
+      </StaggerContainer>
     </Section>
   );
 }

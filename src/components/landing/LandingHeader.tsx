@@ -4,27 +4,27 @@ import { Logo } from "@/components/layout/Logo";
 import { site } from "@/lib/site";
 
 /**
- * Minimal PPC-landing header - logo + a single CTA, no full navigation. Removing
- * nav links keeps paid traffic focused on the one offer (fewer exits = higher
- * conversion).
+ * Minimal PPC-landing header - graphite wordmark with a cobalt dot + a single
+ * cobalt CTA, no full navigation. Fewer exits = higher conversion. A quiet
+ * porcelain bar with a warm platinum hairline.
  */
 export function LandingHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-white/5 bg-ink-950/70 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-platinum-300 bg-ivory-100/85 backdrop-blur-xl">
       <Container>
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5" aria-label={`${site.fullName} home`}>
             <Logo />
-            <span className="font-display text-lg font-bold tracking-tight text-white">
+            <span className="font-display text-lg font-bold tracking-tight text-graphite">
               {site.name}
-              <span className="text-accent-400">.</span>
+              <span className="text-cobalt-500">.</span>
             </span>
           </Link>
           <Link
             href="#audit-form"
-            className="inline-flex h-10 items-center rounded-full bg-accent-gradient px-5 text-sm font-semibold text-ink-950 shadow-glow transition-transform hover:-translate-y-0.5"
+            className="inline-flex h-11 items-center rounded-full bg-cobalt-500 px-5 text-[0.95rem] font-semibold text-white shadow-cobalt transition-all hover:-translate-y-0.5 hover:bg-cobalt-600"
           >
-            Get My Free Audit
+            Request a Free Audit
           </Link>
         </div>
       </Container>

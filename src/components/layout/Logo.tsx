@@ -14,14 +14,14 @@ export function Logo({ className }: { className?: string }) {
     <span
       className={
         className ??
-        "flex h-9 w-9 items-center justify-center rounded-xl bg-accent-gradient shadow-glow transition-transform duration-300 hover:scale-105"
+        "flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-cobalt-500 to-teal-500 shadow-soft transition-transform duration-300 hover:scale-105"
       }
       aria-hidden
     >
       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
         <m.path
           d="M4 18h4V12h4V6h8"
-          stroke="#05070d"
+          stroke="#ffffff"
           strokeWidth={2.2}
           strokeLinecap="round"
           strokeLinejoin="round"
