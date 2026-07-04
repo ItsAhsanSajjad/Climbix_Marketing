@@ -3,14 +3,15 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/motion/Reveal";
 import { StaggerContainer, StaggerItem } from "@/components/motion/Stagger";
 import { RevenueLeakMemo } from "@/components/sections/RevenueLeakMemo";
-import { problems } from "@/lib/site";
+import { problem, problems } from "@/lib/site";
 
 /**
  * The Problem - the emotionally sharp diagnosis. Left: a sticky editorial
  * heading naming the real cause (a disconnected system, not bad traffic).
- * Right: the Revenue Leak Memo artifact followed by the five ways the
- * disconnect shows up - a numbered editorial stack with hairline rules, not a
- * grid of icon cards. Reduced-motion safe via Reveal/Stagger.
+ * Right: the Revenue Leak Memo artifact, then the five ways the disconnect
+ * shows up as a tight stack of premium white lux-cards with large bronze
+ * editorial numbers. Closes on a quiet loss-aversion line. Reduced-motion
+ * safe via Reveal/Stagger.
  */
 export function ProblemSection() {
   return (
@@ -21,17 +22,17 @@ export function ProblemSection() {
           <Reveal>
             <SectionHeading
               align="left"
-              eyebrow="The problem"
+              eyebrow={problem.eyebrow}
               title={
                 <>
-                  You are not losing because of bad traffic.{" "}
+                  Your traffic is not the problem.{" "}
                   <span className="mt-2 block">
-                    You are losing because the system is{" "}
+                    Your system is{" "}
                     <span className="text-bronze">disconnected</span>.
                   </span>
                 </>
               }
-              description="When ads, pages, and tracking don't talk to each other, money leaks out every single week - and nothing in your reports will ever tell you where."
+              description={problem.subhead}
             />
           </Reveal>
           <Reveal delay={0.15}>
@@ -53,28 +54,30 @@ export function ProblemSection() {
             <Reveal>
               <span className="doc-kicker">How it shows up</span>
             </Reveal>
-            <StaggerContainer className="mt-5 flex flex-col gap-8">
+            <StaggerContainer className="mt-5 flex flex-col gap-4">
               {problems.map((p, i) => (
-                <StaggerItem
-                  key={p.title}
-                  className="border-t border-platinum-300 pt-6"
-                >
-                  <div className="flex gap-6">
+                <StaggerItem key={p.title}>
+                  <article className="lux-card flex h-full items-start gap-5 p-6">
                     <span className="font-editorial text-3xl leading-none text-bronze-500">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <div>
-                      <h3 className="text-xl font-semibold text-graphite">
+                    <div className="min-w-0">
+                      <h3 className="text-lg font-semibold text-graphite md:text-xl">
                         {p.title}
                       </h3>
-                      <p className="mt-2 text-base leading-relaxed text-slate-600">
+                      <p className="mt-1.5 text-base leading-relaxed text-slate-600">
                         {p.body}
                       </p>
                     </div>
-                  </div>
+                  </article>
                 </StaggerItem>
               ))}
             </StaggerContainer>
+            <Reveal delay={0.1}>
+              <p className="mt-8 font-editorial text-lg italic leading-relaxed text-slate-500">
+                Every unclear campaign keeps spending while you wait.
+              </p>
+            </Reveal>
           </div>
         </div>
       </div>

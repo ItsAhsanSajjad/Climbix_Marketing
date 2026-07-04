@@ -60,16 +60,16 @@ const svg = `
   </g>
 
   <!-- kicker -->
-  <text x="82" y="210" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="600" letter-spacing="4" fill="#C6A15B">PERFORMANCE MARKETING BUILT TO CONVERT</text>
+  <text x="82" y="210" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="600" letter-spacing="4" fill="#C8A45D">FREE GROWTH LEAK AUDIT</text>
 
   <!-- headline -->
-  <text x="80" y="286" font-family="Segoe UI, Arial, sans-serif" font-size="57" font-weight="800" fill="#182333">Stop guessing where</text>
-  <text x="80" y="352" font-family="Segoe UI, Arial, sans-serif" font-size="57" font-weight="800" fill="#182333">your marketing</text>
-  <text x="80" y="418" font-family="Segoe UI, Arial, sans-serif" font-size="57" font-weight="800" fill="url(#gold)">budget is going.</text>
+  <text x="80" y="286" font-family="Segoe UI, Arial, sans-serif" font-size="55" font-weight="800" fill="#142033">Find where your</text>
+  <text x="80" y="352" font-family="Segoe UI, Arial, sans-serif" font-size="55" font-weight="800" fill="#142033">marketing budget is</text>
+  <text x="80" y="418" font-family="Segoe UI, Arial, sans-serif" font-size="55" font-weight="800" fill="url(#gold)">leaking.</text>
 
   <!-- subline -->
-  <text x="82" y="484" font-family="Segoe UI, Arial, sans-serif" font-size="22" fill="#647084">Ads, pages, SEO, funnels and tracking - one measurable</text>
-  <text x="82" y="514" font-family="Segoe UI, Arial, sans-serif" font-size="22" fill="#647084">system tied to leads and revenue, not vanity metrics.</text>
+  <text x="82" y="484" font-family="Segoe UI, Arial, sans-serif" font-size="22" fill="#667085">A free audit of your ads, landing pages, tracking and</text>
+  <text x="82" y="514" font-family="Segoe UI, Arial, sans-serif" font-size="22" fill="#667085">funnel path - what is wasting budget, what to fix first.</text>
 
   <!-- navy diagnostic panel -->
   <g transform="translate(788,120)">

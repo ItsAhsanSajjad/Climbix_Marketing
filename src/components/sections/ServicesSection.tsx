@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/motion/Reveal";
 import { StaggerContainer, StaggerItem } from "@/components/motion/Stagger";
 import {
@@ -28,11 +30,11 @@ export function ServicesSection() {
           eyebrow="Services"
           title={
             <>
-              Five disciplines, run as one{" "}
-              <span className="text-bronze">system</span>
+              Five disciplines, one system built for{" "}
+              <span className="text-bronze">revenue</span>
             </>
           }
-          description="Each service stands on its own - together they form one measurable path from budget to revenue."
+          description="Each service stands on its own - together they form one measurable path from budget to pipeline."
         />
       </Reveal>
 
@@ -61,19 +63,46 @@ export function ServicesSection() {
                   <p className="text-base text-slate-600">{service.body}</p>
                 </div>
 
-                <div className="mt-auto flex flex-col gap-2 border-t border-platinum-200 pt-6">
-                  <p className="text-sm text-slate-600">
-                    <span className="font-semibold text-graphite">
-                      What you get:{" "}
-                    </span>
-                    {service.gets}
+                <div className="flex flex-col gap-2.5">
+                  <p className="text-sm font-semibold text-graphite">
+                    What we fix
                   </p>
-                  <p className="text-sm text-slate-600">
+                  <ul className="flex flex-col gap-2">
+                    {service.fixes.map((fix) => (
+                      <li
+                        key={fix}
+                        className="flex items-center gap-2.5 text-sm text-graphite"
+                      >
+                        <span
+                          aria-hidden
+                          className="h-1.5 w-1.5 flex-none rounded-full bg-bronze-400"
+                        />
+                        {fix}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="mt-auto flex flex-col gap-4 border-t border-platinum-200 pt-6">
+                  <p className="text-sm text-slate-500">
                     <span className="font-semibold text-graphite">
                       Best for:{" "}
                     </span>
                     {service.forWho}
                   </p>
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <Link
+                      href="/free-marketing-audit"
+                      data-cta={"svc-" + service.tag}
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-cobalt-600 transition-colors hover:text-cobalt-700"
+                    >
+                      {service.cta}
+                      <span aria-hidden>&rarr;</span>
+                    </Link>
+                    <span className="text-xs text-slate-500">
+                      Free · No obligation
+                    </span>
+                  </div>
                 </div>
               </article>
             </StaggerItem>
@@ -101,29 +130,35 @@ export function ServicesSection() {
               <p className="max-w-prose text-base text-mist-200">
                 {featured.body}
               </p>
+              <p className="text-sm text-mist-300">
+                <span className="font-semibold text-white">Best for: </span>
+                {featured.forWho}
+              </p>
+              <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
+                <Button
+                  href="/free-marketing-audit"
+                  variant="primary"
+                  size="lg"
+                  data-cta="svc-featured-measurement"
+                >
+                  {featured.cta}
+                </Button>
+                <p className="text-sm text-mist-300">
+                  Free review. No pressure. Clear next steps.
+                </p>
+              </div>
             </div>
 
-            <div className="flex flex-col justify-center gap-6 border-t border-white/10 pt-8 lg:border-l lg:border-t-0 lg:pl-12 lg:pt-0">
-              <div className="flex items-start gap-4">
-                <span className="mt-0.5 inline-flex h-8 w-8 flex-none items-center justify-center rounded-xl bg-white/10 text-teal-400">
-                  <IconCheck className="h-5 w-5" />
-                </span>
-                <p className="text-base text-mist-200">
-                  <span className="font-semibold text-white">
-                    What you get:{" "}
+            <div className="flex flex-col justify-center gap-5 border-t border-white/10 pt-8 lg:border-l lg:border-t-0 lg:pl-12 lg:pt-0">
+              <p className="text-sm font-semibold text-white">What we fix</p>
+              {featured.fixes.map((fix) => (
+                <div key={fix} className="flex items-start gap-4">
+                  <span className="mt-0.5 inline-flex h-8 w-8 flex-none items-center justify-center rounded-xl bg-white/10 text-teal-400">
+                    <IconCheck className="h-5 w-5" />
                   </span>
-                  {featured.gets}
-                </p>
-              </div>
-              <div className="flex items-start gap-4">
-                <span className="mt-0.5 inline-flex h-8 w-8 flex-none items-center justify-center rounded-xl bg-white/10 text-teal-400">
-                  <IconCheck className="h-5 w-5" />
-                </span>
-                <p className="text-base text-mist-200">
-                  <span className="font-semibold text-white">Best for: </span>
-                  {featured.forWho}
-                </p>
-              </div>
+                  <p className="text-base text-mist-200">{fix}</p>
+                </div>
+              ))}
             </div>
           </div>
         </article>

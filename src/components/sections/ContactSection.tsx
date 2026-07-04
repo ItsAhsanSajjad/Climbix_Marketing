@@ -3,14 +3,14 @@ import { IconCheck } from "@/components/ui/Icon";
 import { Reveal } from "@/components/motion/Reveal";
 import { LeadForm } from "@/components/forms/LeadForm";
 import { TrustBadges } from "@/components/ui/TrustBadges";
-import { callOutcomes, formBadges } from "@/lib/site";
+import { callOutcomes, finalCta, formBadges } from "@/lib/site";
 
 /**
- * Final CTA room - deep midnight navy, decisive close (#contact). The spec
- * headline names what the visitor already suspects, the outcome list de-risks
- * the call, and the real lead form sits in a bright ivory sheet so the last
- * step feels effortless. LeadForm (validation, honeypot, source, UTM, tracking,
- * redirect) is used as-is.
+ * Final CTA room - deep midnight navy, decisive close (#contact). The copy is
+ * driven by site.ts finalCta: the headline names the leak the visitor already
+ * suspects, the outcome list de-risks the call, and the real lead form sits in
+ * a bright ivory sheet so the last step feels effortless. LeadForm
+ * (validation, honeypot, source, UTM, tracking, redirect) is used as-is.
  */
 export function ContactSection() {
   return (
@@ -26,15 +26,15 @@ export function ContactSection() {
               <div className="flex flex-col items-start">
                 <span className="flex items-center gap-3">
                   <span className="h-px w-8 bg-bronze-400/70" aria-hidden />
-                  <span className="doc-kicker text-bronze-300">Free strategy call</span>
+                  <span className="doc-kicker text-bronze-300">{finalCta.eyebrow}</span>
                 </span>
+                {/* finalCta.headline with the emotional word carrying the gold */}
                 <h2 className="mt-6 font-display text-lux-sm text-white md:text-lux-md">
-                  You already know your marketing has{" "}
-                  <span className="text-bronze">gaps</span>.
+                  Before you spend another month, know what is{" "}
+                  <span className="text-bronze">leaking</span>.
                 </h2>
                 <p className="mt-5 max-w-reading text-lux-body text-mist-200">
-                  Let us find them before they cost you another month of budget.
-                  Bring your numbers. Leave with a clearer growth plan.
+                  {finalCta.subhead}
                 </p>
 
                 <div className="bronze-rule mt-9 w-full max-w-reading" aria-hidden />
@@ -51,7 +51,7 @@ export function ContactSection() {
                 </ul>
 
                 <p className="mt-8 text-base text-bronze-300/90">
-                  30 minutes. Zero pressure. Honest answers either way.
+                  {finalCta.microcopy}
                 </p>
               </div>
 
@@ -59,16 +59,19 @@ export function ContactSection() {
               <Reveal delay={0.1}>
                 <div className="rounded-4xl bg-white p-6 shadow-lift-lg sm:p-8">
                   <h3 className="text-xl font-semibold text-graphite">
-                    Book your free strategy call
+                    Get your free audit
                   </h3>
                   <p className="mt-1.5 text-base text-slate-600">
-                    Tell us where you are. We&apos;ll come prepared.
+                    Send your site and goal. We&apos;ll do the rest.
                   </p>
                   <LeadForm
                     source="home"
                     submitLabel="Book My Call"
                     className="mt-6 w-full"
                   />
+                  <p className="mt-4 text-sm text-slate-500">
+                    Used only to prepare your audit. No spam. No sharing.
+                  </p>
                   <TrustBadges items={formBadges} className="mt-6" />
                 </div>
               </Reveal>

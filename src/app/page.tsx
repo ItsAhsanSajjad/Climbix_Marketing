@@ -7,9 +7,12 @@ import { OfferSection } from "@/components/sections/OfferSection";
 import { SolutionSection } from "@/components/sections/SolutionSection";
 import { ServicesSection } from "@/components/sections/ServicesSection";
 import { SampleAuditSection } from "@/components/sections/SampleAuditSection";
+import { CaseStudySection } from "@/components/sections/CaseStudySection";
 import { ProcessSection } from "@/components/sections/ProcessSection";
 import { MeasurementSection } from "@/components/sections/MeasurementSection";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
+import { FounderSection } from "@/components/sections/FounderSection";
+import { WhoForSection } from "@/components/sections/WhoForSection";
 import { WhyClimbixSection } from "@/components/sections/WhyClimbixSection";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { ContactSection } from "@/components/sections/ContactSection";
@@ -40,9 +43,12 @@ export default function HomePage() {
         <SolutionSection />
         <ServicesSection />
         <SampleAuditSection />
+        <CaseStudySection />
         <ProcessSection />
         <MeasurementSection />
         <TestimonialsSection />
+        <FounderSection />
+        <WhoForSection />
         <WhyClimbixSection />
         <FAQSection />
         <ContactSection />

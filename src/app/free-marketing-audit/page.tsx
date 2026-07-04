@@ -9,6 +9,7 @@ import { LandingHeader } from "@/components/landing/LandingHeader";
 import { LandingHero } from "@/components/landing/LandingHero";
 import { AuditOfferSection } from "@/components/landing/AuditOfferSection";
 import { LandingStickyCTA } from "@/components/landing/LandingStickyCTA";
+import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { FAQItem } from "@/components/sections/FAQItem";
 import { IconCheck } from "@/components/ui/Icon";
 import {
@@ -205,7 +206,11 @@ export default function FreeMarketingAuditPage() {
           </div>
         </Section>
 
-        {/* 5 - FAQ (focused subset) */}
+        {/* 5 - Trust: launch-stage method framework (switches to real
+            testimonials automatically when site.ts entries flip placeholder:false) */}
+        <TestimonialsSection />
+
+        {/* 6 - FAQ (focused subset) */}
         <Section>
           <Reveal>
             <SectionHeading

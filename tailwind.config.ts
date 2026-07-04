@@ -31,14 +31,14 @@ const config: Config = {
           200: "#EAE6DD",
           300: "#DED8CC", // hairline borders on light (warm)
         },
-        graphite: "#182333", // charcoal ink - primary text on light
-        obsidian: "#061522", // deepest midnight
+        graphite: "#142033", // charcoal ink - primary text on light
+        obsidian: "#04111F", // deepest midnight
         navy: {
-          700: "#12293F",
-          800: "#0A1D30",
+          700: "#11273D",
+          800: "#0B1E32",
           900: "#061522", // deep midnight navy - hero + final CTA
         },
-        midnight: "#0A1D30",
+        midnight: "#0B1E32",
 
         /* ---- Signal accents (sparing) ---- */
         cobalt: {
@@ -48,22 +48,22 @@ const config: Config = {
           700: "#1738AE",
         },
         teal: {
-          400: "#35CDB5",
-          500: "#22B8A0", // success teal
+          400: "#35D2BA",
+          500: "#20BFA9", // success teal
           600: "#17998A",
         },
         // Warm champagne gold - luxury emphasis only.
         bronze: {
-          300: "#E0C084",
-          400: "#D1AA62",
-          500: "#C6A15B",
-          600: "#A8843F",
+          300: "#E0C286",
+          400: "#D4AF67",
+          500: "#C8A45D",
+          600: "#A8863F",
         },
         champagne: {
           200: "#EBD9B4",
-          300: "#E0C084",
-          400: "#D1AA62",
-          500: "#C6A15B",
+          300: "#E0C286",
+          400: "#D4AF67",
+          500: "#C8A45D",
         },
 
         /* ---- Retained deep-authority tokens (dark sections + compat) ---- */
@@ -120,9 +120,9 @@ const config: Config = {
         "display-lg": ["4.5rem", { lineHeight: "1.0", letterSpacing: "-0.035em", fontWeight: "700" }],
       },
       spacing: {
-        // Generous vertical rhythm - luxury needs air.
-        section: "6.5rem",
-        "section-lg": "9rem",
+        // Editorial rhythm - premium air without disconnecting the story.
+        section: "5.5rem",
+        "section-lg": "7.5rem",
       },
       maxWidth: {
         prose: "44rem",
@@ -151,10 +151,10 @@ const config: Config = {
       },
       backgroundImage: {
         "ivory-fade": "linear-gradient(180deg, #FCFAF5 0%, #F8F5EF 100%)",
-        "obsidian-fade": "linear-gradient(155deg, #12293F 0%, #0A1D30 50%, #061522 100%)",
-        "cobalt-gradient": "linear-gradient(120deg, #2458FF 0%, #22B8A0 100%)",
-        "champagne-line": "linear-gradient(90deg, transparent, #D1AA62, transparent)",
-        "bronze-line": "linear-gradient(90deg, transparent, #C6A15B 45%, #C6A15B 55%, transparent)",
+        "obsidian-fade": "linear-gradient(155deg, #11273D 0%, #0B1E32 50%, #04111F 100%)",
+        "cobalt-gradient": "linear-gradient(120deg, #2458FF 0%, #20BFA9 100%)",
+        "champagne-line": "linear-gradient(90deg, transparent, #D4AF67, transparent)",
+        "bronze-line": "linear-gradient(90deg, transparent, #C8A45D 45%, #C8A45D 55%, transparent)",
         "accent-gradient": "linear-gradient(120deg, #1283ff 0%, #11cfd6 100%)",
       },
     },

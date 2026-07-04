@@ -4,7 +4,7 @@ import { Reveal } from "@/components/motion/Reveal";
 import { StaggerContainer, StaggerItem } from "@/components/motion/Stagger";
 import { FAQItem } from "@/components/sections/FAQItem";
 import { Button } from "@/components/ui/Button";
-import { faqs, site } from "@/lib/site";
+import { faqs } from "@/lib/site";
 
 /**
  * FAQ - objection handling. Two-column accordion of honest answers (no
@@ -40,7 +40,7 @@ export function FAQSection() {
               <span className="text-bronze">call</span>
             </>
           }
-          description="Straight, considered answers - including the ones most firms prefer to leave unspoken."
+          description="Straight answers - including the ones agencies usually dodge."
         />
       </Reveal>
 
@@ -60,15 +60,16 @@ export function FAQSection() {
         <div className="lux-card mx-auto mt-20 flex max-w-5xl flex-col items-center justify-between gap-8 px-10 py-10 text-center sm:flex-row sm:text-left">
           <div className="flex flex-col gap-2">
             <p className="doc-kicker">Still deciding</p>
-            <p className="text-lux-body text-slate-600">
-              Have a question we didn&apos;t cover?{" "}
-              <span className="text-graphite">
-                Bring it to a private, no-pressure conversation.
-              </span>
+            <p className="text-lg text-slate-600">
+              Still unsure?{" "}
+              <span className="text-graphite">Get the audit first.</span>
+            </p>
+            <p className="text-sm text-slate-600">
+              Free, no obligation - the findings are yours to keep either way.
             </p>
           </div>
-          <Button href={site.ctaPrimary.href} size="lg" data-cta="faq">
-            {site.ctaPrimary.label}
+          <Button href="/free-marketing-audit" size="lg" data-cta="faq">
+            Get Free Audit
           </Button>
         </div>
       </Reveal>

@@ -6,7 +6,8 @@ import { LeadForm } from "@/components/forms/LeadForm";
 import { Reveal } from "@/components/motion/Reveal";
 import { StaggerContainer, StaggerItem } from "@/components/motion/Stagger";
 import { MagneticButton } from "@/components/motion/MagneticButton";
-import { hero, heroChecklist, heroForm, formBadges, site } from "@/lib/site";
+import Link from "next/link";
+import { hero, heroChecklist, heroForm, formBadges, auditCovers } from "@/lib/site";
 
 /**
  * Hero - the lead-capture machine. Deep midnight navy authority block: left
@@ -38,12 +39,26 @@ export function Hero() {
             </StaggerItem>
 
             <StaggerItem>
-              <h1 className="font-display text-[2.7rem] font-bold leading-[1.05] tracking-tight text-white sm:text-lux-lg lg:text-[4.3rem] lg:leading-[1.02]">
-                {hero.headline}
+              <h1 className="font-display text-[2.75rem] font-bold leading-[1.04] tracking-tight text-white sm:text-lux-lg lg:text-[4.35rem] lg:leading-[1.02]">
+                Find where your marketing budget is{" "}
+                <span className="text-bronze">leaking</span> - before you spend
+                more.
               </h1>
             </StaggerItem>
 
-            <StaggerItem>
+            {/* Trust badges immediately after the headline (mobile-first). */}
+            <StaggerItem as="div">
+              <ul className="flex flex-wrap gap-x-5 gap-y-2">
+                {heroChecklist.map((item) => (
+                  <li key={item} className="flex items-center gap-2 text-[0.95rem] text-mist-100">
+                    <IconCheck className="h-4 w-4 shrink-0 text-teal-400" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </StaggerItem>
+
+            <StaggerItem className="hidden sm:block">
               <p className="font-editorial text-xl italic text-bronze-300 sm:text-2xl">
                 {hero.highlight}
               </p>
@@ -62,24 +77,18 @@ export function Hero() {
                   <IconArrow className="h-5 w-5" />
                 </Button>
               </MagneticButton>
-              <Button href={site.ctaPrimary.href} variant="onDark" size="lg">
-                Book Call
-              </Button>
+              <Link
+                href="#proof"
+                data-cta="hero-see-checks"
+                className="inline-flex items-center gap-2 rounded-full px-2 py-2 text-base font-semibold text-white transition-colors hover:text-bronze-300"
+              >
+                See What We Check
+                <span aria-hidden className="text-bronze-400">→</span>
+              </Link>
             </StaggerItem>
 
             <StaggerItem>
               <p className="text-base text-mist-300">{hero.riskLine}</p>
-            </StaggerItem>
-
-            <StaggerItem as="div" className="pt-1">
-              <ul className="grid grid-cols-1 gap-x-8 gap-y-2.5 sm:grid-cols-2">
-                {heroChecklist.map((item) => (
-                  <li key={item} className="flex items-center gap-2.5 text-[0.95rem] text-mist-100">
-                    <IconCheck className="h-4 w-4 shrink-0 text-teal-400" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
             </StaggerItem>
           </StaggerContainer>
 
@@ -106,6 +115,21 @@ export function Hero() {
                 className="mt-6"
               />
               <TrustBadges items={formBadges} className="mt-5" />
+
+              {/* What the audit covers - instant value scan. */}
+              <div className="mt-5 border-t border-platinum-200 pt-4">
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  Your audit covers
+                </span>
+                <ul className="mt-2.5 flex flex-wrap gap-x-4 gap-y-1.5">
+                  {auditCovers.map((c) => (
+                    <li key={c} className="flex items-center gap-1.5 text-sm font-medium text-graphite">
+                      <span className="h-1 w-1 rounded-full bg-bronze-400" aria-hidden />
+                      {c}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </Reveal>
         </div>

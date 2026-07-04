@@ -7,7 +7,7 @@ import { track } from "@/lib/analytics";
 import { ease } from "@/lib/motion";
 
 const STORAGE_KEY = "climbix-offer-popup-dismissed";
-const SHOW_AFTER_MS = 14000;
+const SHOW_AFTER_MS = 15000;
 const SHOW_AFTER_SCROLL = 0.45;
 
 const bullets = ["No pressure", "No contract", "Clear fixes", "Tracking-first review"] as const;
@@ -148,7 +148,7 @@ export function OfferPopup() {
                 onClick={dismiss}
                 className="inline-flex h-12 items-center justify-center rounded-full px-5 text-base font-medium text-slate-500 transition-colors hover:text-graphite"
               >
-                Maybe Later
+                Not Now
               </button>
             </div>
           </m.div>

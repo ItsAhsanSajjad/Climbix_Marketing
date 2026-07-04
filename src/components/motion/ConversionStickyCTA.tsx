@@ -69,18 +69,18 @@ export function ConversionStickyCTA() {
           >
             <div className="flex items-center gap-3">
               <Link
-                href={site.ctaSecondary.href}
-                className="shrink-0 text-xs font-semibold uppercase tracking-wide text-slate-500"
+                href={site.ctaPrimary.href}
+                className="shrink-0 px-1 text-xs font-semibold uppercase tracking-wide text-slate-500"
               >
-                Free
+                Book
                 <br />
-                audit
+                Call
               </Link>
               <Link
-                href={site.ctaPrimary.href}
+                href={site.ctaSecondary.href}
                 className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-cobalt-500 text-sm font-semibold text-white shadow-cobalt"
               >
-                Book Call
+                Get Free Audit
                 <IconArrow className="h-4 w-4" />
               </Link>
             </div>
