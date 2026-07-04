@@ -32,11 +32,12 @@ type ButtonProps = {
   size?: Size;
   className?: string;
   children: React.ReactNode;
-};
+} & Omit<React.ComponentPropsWithoutRef<typeof Link>, "href" | "className" | "children">;
 
 /**
  * Link-styled button. Primary carries a single light sheen that sweeps once on
- * hover - a premium micro-interaction, not a loop.
+ * hover - a premium micro-interaction, not a loop. Extra props (e.g. data-cta
+ * for the click tracker) are forwarded to the underlying Link.
  */
 export function Button({
   href,
@@ -44,9 +45,10 @@ export function Button({
   size = "md",
   className,
   children,
+  ...rest
 }: ButtonProps) {
   return (
-    <Link href={href} className={cn(base, variants[variant], sizes[size], className)}>
+    <Link href={href} className={cn(base, variants[variant], sizes[size], className)} {...rest}>
       {variant === "primary" && (
         <span
           aria-hidden

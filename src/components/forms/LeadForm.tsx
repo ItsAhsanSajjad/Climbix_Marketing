@@ -39,11 +39,14 @@ const UTM_KEYS = [
  */
 export function LeadForm({
   source = "home",
-  submitLabel = "Book My Strategy Call",
+  submitLabel = "Book My Call",
+  compact = false,
   className,
 }: {
   source?: "home" | "audit";
   submitLabel?: string;
+  /** Hero variant: hides the optional phone field. Logic is identical. */
+  compact?: boolean;
   className?: string;
 }) {
   const router = useRouter();
@@ -175,16 +178,18 @@ export function LeadForm({
           value={values.website}
           onChange={set("website")}
         />
-        <Field
-          id="phone"
-          label="Phone or WhatsApp"
-          type="tel"
-          inputMode="tel"
-          placeholder="+1 ..."
-          autoComplete="tel"
-          value={values.phone}
-          onChange={set("phone")}
-        />
+        {!compact && (
+          <Field
+            id="phone"
+            label="Phone or WhatsApp"
+            type="tel"
+            inputMode="tel"
+            placeholder="+1 ..."
+            autoComplete="tel"
+            value={values.phone}
+            onChange={set("phone")}
+          />
+        )}
         <GoalSelect value={values.goal} onChange={set("goal")} error={errors.goal} />
         <BudgetSelect value={values.budget} onChange={set("budget")} />
       </div>

@@ -10,10 +10,12 @@ import { LandingHero } from "@/components/landing/LandingHero";
 import { AuditOfferSection } from "@/components/landing/AuditOfferSection";
 import { LandingStickyCTA } from "@/components/landing/LandingStickyCTA";
 import { FAQItem } from "@/components/sections/FAQItem";
+import { IconCheck } from "@/components/ui/Icon";
 import {
   faqs,
   site,
   landing,
+  offer,
   auditChecklist,
   auditFinds,
   auditFor,
@@ -51,6 +53,47 @@ export default function FreeMarketingAuditPage() {
       <LandingHeader />
       <main id="main">
         <LandingHero />
+
+        {/* 0 - The offer: one navy split card, deliverables in a white panel */}
+        <Section>
+          <Reveal>
+            <div className="dark-section relative overflow-hidden rounded-[2.5rem] p-8 shadow-lift-lg md:p-12 lg:p-14">
+              <div className="relative grid items-center gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14">
+                <div className="flex flex-col items-start gap-5">
+                  <span className="doc-kicker">{offer.kicker}</span>
+                  <h2 className="font-display text-lux-sm text-white md:text-lux-md">
+                    Free Growth Leak <span className="text-bronze">Audit</span>
+                  </h2>
+                  <p className="text-lux-body text-mist-200">
+                    {offer.positioning}
+                  </p>
+                  <p className="text-base text-mist-200">{offer.value}</p>
+                </div>
+                <div className="rounded-3xl bg-white p-7 shadow-lift md:p-9">
+                  <ul className="flex flex-col gap-3.5">
+                    {offer.deliverables.map((d) => (
+                      <li
+                        key={d}
+                        className="flex items-start gap-3 text-base text-graphite sm:text-lg"
+                      >
+                        <IconCheck className="mt-1 h-5 w-5 shrink-0 text-teal-500" />
+                        {d}
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    href="#audit-form"
+                    data-cta="landing-offer"
+                    className="mt-7 inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-cobalt-500 px-8 text-base font-semibold text-white shadow-cobalt transition-transform hover:-translate-y-0.5 hover:bg-cobalt-600 sm:w-auto"
+                  >
+                    Claim Free Audit
+                  </Link>
+                  <p className="mt-3.5 text-sm text-slate-600">{offer.risk}</p>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </Section>
 
         {/* 1 - What the audit checks: the full-path review */}
         <Section className="bg-ivory-100">
@@ -200,7 +243,7 @@ export default function FreeMarketingAuditPage() {
                   data-cta="landing-final"
                   className="mt-10 inline-flex h-16 items-center gap-2 rounded-full bg-cobalt-500 px-9 text-lg font-semibold text-white shadow-cobalt transition-transform hover:-translate-y-0.5 hover:bg-cobalt-600"
                 >
-                  Request a Free Audit
+                  Get Free Audit
                 </Link>
               </div>
             </div>
@@ -215,7 +258,8 @@ export default function FreeMarketingAuditPage() {
         <Container>
           <div className="flex flex-col gap-3 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
             <p>
-              © {new Date().getFullYear()} {site.fullName}. All rights reserved.
+              © {new Date().getFullYear()} {site.legalName}. All rights
+              reserved.
             </p>
             <div className="flex items-center gap-6">
               <Link href="/" className="hover:text-graphite">
@@ -226,6 +270,9 @@ export default function FreeMarketingAuditPage() {
               </Link>
               <Link href="/terms" className="hover:text-graphite">
                 Terms
+              </Link>
+              <Link href="/refund-policy" className="hover:text-graphite">
+                Refund
               </Link>
             </div>
           </div>

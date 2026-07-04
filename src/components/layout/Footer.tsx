@@ -58,21 +58,29 @@ export function Footer() {
 
           <StaggerItem>
             <FooterCol title="Get started">
-              <FooterLink href={site.ctaPrimary.href}>Book a Strategy Call</FooterLink>
-              <FooterLink href={site.ctaSecondary.href}>Free Marketing Audit</FooterLink>
+              <FooterLink href={site.ctaPrimary.href}>Book Call</FooterLink>
+              <FooterLink href={site.ctaSecondary.href}>Get Free Audit</FooterLink>
               <FooterLink href={`mailto:${site.email}`}>Contact us</FooterLink>
             </FooterCol>
           </StaggerItem>
         </StaggerContainer>
 
         <div className="flex flex-col gap-4 border-t border-white/10 py-6 text-sm text-mist-400 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} {site.fullName}. All rights reserved.</p>
+          <div>
+            <p>© {new Date().getFullYear()} {site.legalName}. All rights reserved.</p>
+            <p className="mt-1 text-xs text-mist-400/80">
+              {site.name} is a marketing brand operated by {site.legalName}.
+            </p>
+          </div>
           <div className="flex items-center gap-6">
             <Link href="/privacy" className="hover:text-white">
               Privacy Policy
             </Link>
             <Link href="/terms" className="hover:text-white">
               Terms of Service
+            </Link>
+            <Link href="/refund-policy" className="hover:text-white">
+              Refund Policy
             </Link>
           </div>
         </div>

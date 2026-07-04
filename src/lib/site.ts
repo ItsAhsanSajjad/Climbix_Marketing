@@ -17,19 +17,30 @@ export const siteUrl = (
 export const site = {
   name: "Climbix",
   fullName: "Climbix Marketing",
+  // Operating company - shown in footer copyright. Owner-approved name.
+  legalName: "M J IT Solution",
   tagline: "Performance marketing built to convert - ads, pages, and tracking as one measurable system.",
   email: "hello@climbix.com",
   // Primary action - books the strategy call (homepage lead form at #contact).
-  ctaPrimary: { label: "Book My Free Strategy Call", href: "#contact" },
+  ctaPrimary: { label: "Book Call", href: "#contact" },
   // Secondary action - the lower-friction offer has its own PPC landing page.
-  ctaSecondary: { label: "Get My Free Marketing Audit", href: "/free-marketing-audit" },
+  ctaSecondary: { label: "Get Free Audit", href: "/free-marketing-audit" },
 } as const;
 
 export const navLinks = [
-  { label: "What We Audit", href: "#audit" },
-  { label: "Services", href: "#services" },
   { label: "Process", href: "#process" },
+  { label: "Results", href: "#results" },
   { label: "FAQ", href: "#faq" },
+  { label: "Contact", href: "#contact" },
+] as const;
+
+/** Services dropdown - title + one short benefit per service. */
+export const servicesNav = [
+  { label: "Paid Ads", benefit: "Qualified leads, not cheap clicks", href: "#services" },
+  { label: "SEO Growth", benefit: "Compounding organic visibility", href: "#services" },
+  { label: "Landing Pages & Funnels", benefit: "Pages that keep the ad's promise", href: "#services" },
+  { label: "Social Media", benefit: "Demand, not just reach", href: "#services" },
+  { label: "Analytics & Tracking", benefit: "Data you can actually trust", href: "#services" },
 ] as const;
 
 /* ---------------------------------------------------------------------------
@@ -37,21 +48,120 @@ export const navLinks = [
  * ------------------------------------------------------------------------- */
 
 export const hero = {
-  eyebrow: "Performance marketing built to convert",
+  eyebrow: "Performance marketing audit",
   headline: "Stop guessing where your marketing budget is going.",
+  highlight: "Find the leaks. Fix the funnel. Scale what works.",
   subhead:
-    "Climbix connects paid ads, landing pages, SEO, funnels, and tracking into one measurable system - so every decision is tied to leads, revenue, and real performance, not vanity metrics.",
-  riskLine:
-    "30 minutes. Zero pressure. You leave with clear growth gaps - even if we never work together.",
+    "Climbix reviews your ads, landing pages, tracking, and funnel path to show exactly where spend is leaking - before you waste another month on guesswork.",
+  riskLine: "Free review. No pressure. Clear next steps.",
 } as const;
 
 /** Hero trust checklist - honest method claims, no invented proof. */
 export const heroChecklist = [
-  "Audit before we touch your budget",
+  "Audit before new spend",
+  "Tracking-first strategy",
   "No vanity metrics",
-  "Tracking comes first",
   "Built for international brands",
-  "Clear next steps, not guesswork",
+] as const;
+
+/** Hero lead-form framing. */
+export const heroForm = {
+  title: "Get your free growth audit",
+  subtitle: "Tell us where to look. We'll show you what is leaking.",
+  submitLabel: "Find My Leaks",
+} as const;
+
+/** Trust badges shown near forms and CTAs - method claims, not certifications. */
+export const formBadges = [
+  "Secure request",
+  "No obligation",
+  "30-minute review",
+  "Tracking-first audit",
+] as const;
+
+/* ---------------------------------------------------------------------------
+ * The offer - Free Growth Leak Audit (homepage + PPC)
+ * ------------------------------------------------------------------------- */
+
+export const offer = {
+  kicker: "The offer",
+  title: "Free Growth Leak Audit",
+  positioning:
+    "A focused review of your ads, landing pages, tracking, and funnel path - built to show where budget is being wasted and what should be fixed first.",
+  deliverables: [
+    "Campaign message clarity review",
+    "Landing page conversion review",
+    "Tracking and attribution check",
+    "Funnel friction scan",
+    "Top 3 priority fixes",
+    "Clear next-step recommendation",
+  ],
+  value: "You leave with a clear diagnosis even if we never work together.",
+  cta: "Claim Free Audit",
+  risk: "No contract. No pressure. No fake guarantees.",
+} as const;
+
+/* ---------------------------------------------------------------------------
+ * Sample audit output - proof through clarity, never fabricated results
+ * ------------------------------------------------------------------------- */
+
+export const sampleAudit = [
+  {
+    title: "Spend Leak Map",
+    body: "Where paid traffic drops off before it ever converts.",
+  },
+  {
+    title: "Tracking Health Snapshot",
+    body: "Missing, duplicate, or unreliable conversion events.",
+  },
+  {
+    title: "Landing Page Friction Score",
+    body: "Message mismatch, slow load, unclear offer, weak form flow.",
+  },
+  {
+    title: "Priority Fix List",
+    body: "Your top 3 actions, ranked by impact on revenue.",
+  },
+] as const;
+
+/* ---------------------------------------------------------------------------
+ * Testimonials - REPLACE WITH REAL CLIENT PROOF BEFORE PRODUCTION.
+ * No real client quotes exist yet, so `placeholder: true` renders the honest
+ * "what to expect" module instead of fake attributed quotes. When a real
+ * testimonial arrives, set placeholder: false and fill every field.
+ * ------------------------------------------------------------------------- */
+
+export const testimonials = [
+  {
+    placeholder: true,
+    quote:
+      "You should expect a partner who shows you exactly where budget leaks before asking for more of it.",
+    expectation: "Clarity before spend",
+    name: "",
+    role: "",
+    company: "",
+    service: "Free Growth Leak Audit",
+  },
+  {
+    placeholder: true,
+    quote:
+      "You should expect reporting a founder can actually read - what worked, what was wasted, what we fix next.",
+    expectation: "Plain-English reporting",
+    name: "",
+    role: "",
+    company: "",
+    service: "Analytics & Tracking",
+  },
+  {
+    placeholder: true,
+    quote:
+      "You should expect ads, pages, and tracking built as one system - not three vendors pointing at each other.",
+    expectation: "One connected system",
+    name: "",
+    role: "",
+    company: "",
+    service: "Full growth system",
+  },
 ] as const;
 
 /** Positioning strip - credibility through method, not fake logos. */

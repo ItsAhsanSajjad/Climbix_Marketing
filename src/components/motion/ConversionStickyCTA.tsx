@@ -47,9 +47,9 @@ export function ConversionStickyCTA() {
               className="group/sticky flex items-center gap-3 rounded-full border border-platinum-300 bg-white/95 py-2.5 pl-5 pr-2.5 shadow-lift backdrop-blur-xl transition-colors hover:border-cobalt-500/40"
             >
               <span className="flex flex-col">
-                <span className="text-sm font-semibold text-graphite">Book My Free Strategy Call</span>
+                <span className="text-sm font-semibold text-graphite">Book Call</span>
                 <span className="text-xs text-slate-500">
-                  30 min · Zero pressure · No obligation
+                  Free · 30 min · Zero pressure
                 </span>
               </span>
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-cobalt-500 text-white transition-transform duration-300 group-hover/sticky:translate-x-0.5">
@@ -80,7 +80,7 @@ export function ConversionStickyCTA() {
                 href={site.ctaPrimary.href}
                 className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-cobalt-500 text-sm font-semibold text-white shadow-cobalt"
               >
-                Book My Free Strategy Call
+                Book Call
                 <IconArrow className="h-4 w-4" />
               </Link>
             </div>

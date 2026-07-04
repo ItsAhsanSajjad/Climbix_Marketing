@@ -46,7 +46,7 @@ export function LandingStickyCTA() {
             data-cta="landing-sticky"
             className="flex h-12 w-full items-center justify-center rounded-full bg-cobalt-500 text-sm font-semibold text-white shadow-cobalt"
           >
-            Request My Free Audit
+            Get Free Audit
           </Link>
         </m.div>
       )}

@@ -2,7 +2,8 @@ import { Container } from "@/components/ui/Container";
 import { IconCheck } from "@/components/ui/Icon";
 import { Reveal } from "@/components/motion/Reveal";
 import { LeadForm } from "@/components/forms/LeadForm";
-import { callOutcomes } from "@/lib/site";
+import { TrustBadges } from "@/components/ui/TrustBadges";
+import { callOutcomes, formBadges } from "@/lib/site";
 
 /**
  * Final CTA room - deep midnight navy, decisive close (#contact). The spec
@@ -65,9 +66,10 @@ export function ContactSection() {
                   </p>
                   <LeadForm
                     source="home"
-                    submitLabel="Book My Free Strategy Call"
+                    submitLabel="Book My Call"
                     className="mt-6 w-full"
                   />
+                  <TrustBadges items={formBadges} className="mt-6" />
                 </div>
               </Reveal>
             </div>

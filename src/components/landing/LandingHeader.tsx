@@ -24,7 +24,7 @@ export function LandingHeader() {
             href="#audit-form"
             className="inline-flex h-11 items-center rounded-full bg-cobalt-500 px-5 text-[0.95rem] font-semibold text-white shadow-cobalt transition-all hover:-translate-y-0.5 hover:bg-cobalt-600"
           >
-            Request a Free Audit
+            Get Free Audit
           </Link>
         </div>
       </Container>

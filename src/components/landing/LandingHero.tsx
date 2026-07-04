@@ -3,7 +3,8 @@ import { IconCheck } from "@/components/ui/Icon";
 import { StaggerContainer, StaggerItem } from "@/components/motion/Stagger";
 import { Reveal } from "@/components/motion/Reveal";
 import { LeadForm } from "@/components/forms/LeadForm";
-import { landing, landingChecklist } from "@/lib/site";
+import { TrustBadges } from "@/components/ui/TrustBadges";
+import { landing, landingChecklist, formBadges } from "@/lib/site";
 
 /**
  * PPC landing hero on the ivory canvas - one clear offer on the left, the lead
@@ -69,9 +70,10 @@ export function LandingHero() {
               </p>
               <LeadForm
                 source="audit"
-                submitLabel="Request My Free Audit"
+                submitLabel="Find My Leaks"
                 className="mt-7"
               />
+              <TrustBadges items={formBadges} tone="light" className="mt-6" />
             </div>
           </Reveal>
         </div>
