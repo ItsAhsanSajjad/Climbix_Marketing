@@ -1,34 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { m, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import {
-  m,
-  AnimatePresence,
-  useScroll,
-  useMotionValueEvent,
-} from "framer-motion";
+import { useStickyCta } from "@/lib/useStickyCta";
 import { ease } from "@/lib/motion";
+
+const SENTINELS = ["audit-form", "landing-footer"] as const;
+const MIN_SCROLL = 600;
 
 /**
  * Mobile-only sticky bottom bar for the PPC landing page. Appears once the
- * visitor has scrolled past the hero (~600px) and hides again whenever the
- * audit form itself is in view - the form is the action there, so a duplicate
- * sticky CTA would only crowd the submit button.
+ * visitor has scrolled past the hero, hides whenever the audit form (or the
+ * footer) is on screen, and can be dismissed for the session.
+ * IntersectionObserver-driven - no layout reads on the scroll path.
  */
 export function LandingStickyCTA() {
-  const [show, setShow] = useState(false);
-  const { scrollY } = useScroll();
-
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    const form = document.getElementById("audit-form");
-    let formInView = false;
-    if (form) {
-      const rect = form.getBoundingClientRect();
-      formInView = rect.top < window.innerHeight * 0.9 && rect.bottom > 80;
-    }
-    setShow(latest > 600 && !formInView);
-  });
+  const { show, dismiss } = useStickyCta(SENTINELS, MIN_SCROLL);
 
   return (
     <AnimatePresence>
@@ -39,15 +26,27 @@ export function LandingStickyCTA() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 24 }}
           transition={{ duration: 0.3, ease }}
-          className="fixed inset-x-0 bottom-0 z-40 border-t border-platinum-300 bg-white/95 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl md:hidden"
+          className="fixed inset-x-0 bottom-0 z-40 border-t border-platinum-300 bg-white/95 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-md md:hidden"
         >
-          <Link
-            href="#audit-form"
-            data-cta="landing-sticky"
-            className="flex h-12 w-full items-center justify-center rounded-full bg-cobalt-500 text-sm font-semibold text-white shadow-cobalt"
-          >
-            Get Free Audit
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link
+              href="#audit-form"
+              data-cta="landing-sticky"
+              className="flex h-12 flex-1 items-center justify-center rounded-full bg-cobalt-500 text-sm font-semibold text-white shadow-cobalt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
+            >
+              Get Free Audit
+            </Link>
+            <button
+              type="button"
+              onClick={dismiss}
+              aria-label="Dismiss this bar"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-platinum-100 hover:text-graphite focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500"
+            >
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden>
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
         </m.div>
       )}
     </AnimatePresence>

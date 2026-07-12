@@ -3,17 +3,19 @@ import { budgetOptions } from "@/lib/site";
 
 /** Monthly ad-budget select - helps qualify fit before the call. */
 export function BudgetSelect({
+  id = "budget",
   value,
   onChange,
   error,
 }: {
+  id?: string;
   value: string;
   onChange: (v: string) => void;
   error?: string;
 }) {
   return (
     <SelectField
-      id="budget"
+      id={id}
       label="Monthly ad budget"
       options={budgetOptions}
       placeholder="Approximate range"

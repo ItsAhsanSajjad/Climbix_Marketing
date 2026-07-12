@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Terms of Service",
   description: "The terms that apply to using the Climbix Marketing website.",
   robots: { index: false, follow: true },
+  alternates: { canonical: "/terms" },
 };
 
 export default function TermsPage() {

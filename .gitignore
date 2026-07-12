@@ -35,3 +35,9 @@ next-env.d.ts
 # internal build notes (not part of the shipped product)
 PHASE_*_REPORT.md
 PREMIUM_TRANSFORMATION_REPORT.md
+
+# internal agent/build reports and planning notes
+*_REPORT.md
+*AUDIT*_PLAN.md
+*REBUILD*_REPORT.md
+*REFINEMENT*_REPORT.md

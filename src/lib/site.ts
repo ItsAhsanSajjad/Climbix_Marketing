@@ -1,6 +1,11 @@
 /**
  * Single source of truth for site-level content and navigation.
  * Centralised so copy/conversion refinement edits data here, not JSX.
+ *
+ * Integrity rules (do not violate):
+ *  - Every published statistic maps to a row in docs/stats-sources.md.
+ *  - No personal names, no fabricated testimonials/logos/awards.
+ *  - Client identities stay anonymized until written permission exists.
  */
 
 /**
@@ -19,28 +24,29 @@ export const site = {
   fullName: "Climbix Marketing",
   // Operating company - shown in footer copyright. Owner-approved name.
   legalName: "M J IT Solution",
-  tagline: "Performance marketing built to convert - ads, pages, and tracking as one measurable system.",
+  tagline:
+    "Performance marketing built to convert - ads, pages, and tracking as one measurable system.",
   email: "hello@climbix.com",
-  // Primary action - books the strategy call (homepage lead form at #contact).
-  ctaPrimary: { label: "Book Call", href: "#contact" },
-  // Secondary action - the lower-friction offer has its own PPC landing page.
-  ctaSecondary: { label: "Get Free Audit", href: "/free-marketing-audit" },
+  /**
+   * The one primary action, used with identical wording everywhere.
+   * Location is tracked via data-cta metadata, never by changing the label.
+   */
+  ctaPrimary: { label: "Get Free Audit", href: "/free-marketing-audit" },
 } as const;
 
-export const navLinks = [
-  { label: "Process", href: "#process" },
-  { label: "Results", href: "#results" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Contact", href: "#contact" },
-] as const;
+/** Single canonical risk-reversal line - used at most twice on a page. */
+export const riskReversal =
+  "Free review. No pressure. The findings are yours either way." as const;
 
-/** Services dropdown - title + one short benefit per service. */
-export const servicesNav = [
-  { label: "Paid Ads", benefit: "Qualified leads, not cheap clicks", href: "#services" },
-  { label: "SEO Growth", benefit: "Compounding organic visibility", href: "#services" },
-  { label: "Landing Pages & Funnels", benefit: "Pages that keep the ad's promise", href: "#services" },
-  { label: "Social Media", benefit: "Demand, not just reach", href: "#services" },
-  { label: "Analytics & Tracking", benefit: "Data you can actually trust", href: "#services" },
+/**
+ * Header navigation. Anchors use the /#id form so they work from every route.
+ * Deliberately short: Services, Case Studies, About, Process + the CTA button.
+ */
+export const navLinks = [
+  { label: "Services", href: "/#services" },
+  { label: "Case Studies", href: "/case-studies" },
+  { label: "About", href: "/about" },
+  { label: "Process", href: "/#process" },
 ] as const;
 
 /* ---------------------------------------------------------------------------
@@ -49,11 +55,14 @@ export const servicesNav = [
 
 export const hero = {
   eyebrow: "Free growth leak audit",
-  headline: "Find where your marketing budget is leaking - before you spend more.",
+  headline: "Know where your marketing budget leaks - before you spend more.",
+  /** Word inside `headline` that carries the visual emphasis. */
+  headlineEmphasis: "leaks",
   highlight: "Find the leaks. Fix the funnel. Scale what works.",
   subhead:
-    "Climbix audits your ads, landing pages, tracking, and funnel path to show what is wasting budget, what is blocking conversions, and what to fix first.",
-  riskLine: "Free review. No pressure. Clear next steps.",
+    "Climbix audits your ads, landing pages, and tracking to show exactly where budget is being lost, what should be fixed first, and where your next growth opportunity is.",
+  riskLine: riskReversal,
+  secondaryCta: { label: "See What We Check", href: "#proof" },
 } as const;
 
 /** Hero trust checklist - honest method claims, no invented proof. */
@@ -78,16 +87,280 @@ export const auditCovers = [
 export const heroForm = {
   title: "Get your free growth audit",
   subtitle: "Tell us where to look. We'll show you what is leaking.",
-  submitLabel: "Find My Leaks",
+  submitLabel: "Get My Free Audit",
 } as const;
 
 /** Trust badges shown near forms and CTAs - method claims, not certifications. */
 export const formBadges = [
   "Secure request",
   "No obligation",
-  "30-minute review",
+  "Plain-English findings",
   "Tracking-first audit",
 ] as const;
+
+/* ---------------------------------------------------------------------------
+ * Trust strip - one merged row of method + platform capability signals.
+ * Never fake client logos.
+ * ------------------------------------------------------------------------- */
+
+export const trustStrip = [
+  "Audit-first growth",
+  "Google Ads campaigns",
+  "Landing page CRO",
+  "GA4 & conversion tracking",
+  "Funnel analysis",
+  "Plain-English reporting",
+  "International campaigns",
+  "Tracking before spend",
+] as const;
+
+/* ---------------------------------------------------------------------------
+ * Verified statistics - the proof layer.
+ *
+ * INTEGRITY: every entry maps 1:1 to a row in docs/stats-sources.md (private).
+ * Values come from Google Ads campaign reporting in /assets. Do not add a
+ * number here without adding its source row first. Aggregates that cannot be
+ * fully verified (e.g. "1,000+ conversions") are intentionally NOT published.
+ * ------------------------------------------------------------------------- */
+
+export type Stat = {
+  /** Numeric target for the count-up animation. */
+  value: number;
+  decimals?: number;
+  prefix?: string;
+  suffix?: string;
+  /** What the number is. */
+  label: string;
+  /** Campaign context + qualifier - always shown with the number. */
+  sublabel: string;
+  /** Outcome framing - what the number means for the client. Optional. */
+  benefit?: string;
+  /** Private pointer into docs/stats-sources.md. Not rendered. */
+  source: string;
+};
+
+export const statsBand = {
+  eyebrow: "Measured, not promised",
+  headline: "Results from campaigns managed across multiple markets",
+  description:
+    "Every figure below comes straight from the campaign's own reporting - shown with its market and period. Nothing rounded up, nothing borrowed.",
+  /** Provenance chip - authority signal rendered beside the header. */
+  verification: "Every figure pulled from Google Ads campaign reporting",
+  /**
+   * Anchor total - honest arithmetic only: the simple sum of the three
+   * published campaigns below (109 + 99 + 148 = 356). No estimates, no
+   * extrapolation, no unverifiable aggregates. Source: stats-sources.md · S5.
+   */
+  aggregate: {
+    value: 356,
+    label: "Tracked leads & conversions delivered",
+    context:
+      "The combined total of the three campaigns below - run across the United States, United Kingdom, UAE, and Pakistan.",
+  },
+  footnote:
+    "Figures taken from Google Ads campaign reporting for accounts managed by the Climbix team. Each metric shows its campaign period; the combined total is the simple sum of the three campaigns shown. Results vary by market, offer, and budget.",
+} as const;
+
+export const stats: readonly Stat[] = [
+  {
+    value: 109,
+    label: "tracked leads in 29 days",
+    sublabel: "Dubai interior-design campaign · AED 1.75 avg. CPC",
+    benefit: "A steady inquiry pipeline in a fiercely competitive market",
+    source: "stats-sources.md · S1",
+  },
+  {
+    value: 99,
+    label: "phone-call leads in 30 days",
+    sublabel: "US local-services campaign · $10.79 per lead",
+    benefit: "Calls straight to the business line - not form fills",
+    source: "stats-sources.md · S2",
+  },
+  {
+    value: 148,
+    label: "conversions at $1.43 each",
+    sublabel: "Search lead-gen campaign · 31.62% conversion rate",
+    benefit: "Nearly 1 in 3 clicks became a conversion",
+    source: "stats-sources.md · S3",
+  },
+  {
+    value: 4,
+    label: "international markets",
+    sublabel: "United States · United Kingdom · UAE · Pakistan",
+    source: "stats-sources.md · S4",
+  },
+] as const;
+
+/* ---------------------------------------------------------------------------
+ * Case studies - anonymized, verified campaign outcomes.
+ * Preview cards on the homepage; full presentations on /case-studies.
+ * ------------------------------------------------------------------------- */
+
+export type CaseStudyMetric = { value: string; label: string };
+
+export type CaseStudy = {
+  slug: string;
+  title: string;
+  industry: string;
+  market: string;
+  campaignType: string;
+  period: string;
+  challenge: string;
+  approach: string;
+  work: readonly string[];
+  primary: CaseStudyMetric;
+  secondary: readonly CaseStudyMetric[];
+  /** Context + anonymization note - always rendered with the numbers. */
+  context: string;
+};
+
+export const caseStudies: readonly CaseStudy[] = [
+  {
+    slug: "dubai-interior-design-lead-generation",
+    title: "Dubai Interior Design Lead Generation",
+    industry: "Interior design & fit-out",
+    market: "UAE · Dubai",
+    campaignType: "Google Ads · Search lead generation",
+    period: "29-day campaign · Apr 2026",
+    challenge:
+      "A Dubai interior design and fit-out firm needed a steady flow of project inquiries from paid search - without overspending on clicks in a competitive local market.",
+    approach:
+      "Tightly themed search campaigns matched to service intent, with conversion tracking configured so every lead traced back to its keyword and ad.",
+    work: [
+      "Search campaign structure & keyword theming",
+      "Ad copy matched to service intent",
+      "Lead conversion tracking",
+      "Ongoing bid & budget optimization",
+    ],
+    primary: { value: "109", label: "tracked leads in 29 days" },
+    secondary: [
+      { value: "AED 1.75", label: "average CPC" },
+      { value: "1.72K", label: "clicks" },
+      { value: "29.8K", label: "impressions" },
+    ],
+    context:
+      "Figures from the campaign's Google Ads reporting, Apr 2026. Client identity anonymized.",
+  },
+  {
+    slug: "us-local-services-phone-call-campaign",
+    title: "US Local Services Phone-Call Campaign",
+    industry: "Local services · Towing",
+    market: "United States",
+    campaignType: "Google Ads · Search call campaign",
+    period: "30-day window · Apr-May",
+    challenge:
+      "A US towing business needed phone calls - not form fills - at a cost per call that left room for profit on every dispatched job.",
+    approach:
+      "Call-focused search campaign with tight geographic targeting and phone-call conversion tracking, paced against a capped daily budget.",
+    work: [
+      "Call-focused campaign structure",
+      "Phone-call conversion tracking",
+      "Tight geographic targeting",
+      "Daily budget pacing",
+    ],
+    primary: { value: "99", label: "phone-call leads in 30 days" },
+    secondary: [
+      { value: "$10.79", label: "cost per lead" },
+      { value: "≈$1.07K", label: "total spend" },
+    ],
+    context:
+      "Campaign ran on a capped daily budget (~$100/day), which limited delivery. Figures from Google Ads reporting for a 30-day window (Apr 12 - May 11). Client identity anonymized.",
+  },
+  {
+    slug: "search-lead-generation-optimization",
+    title: "Search Lead-Generation Optimization",
+    industry: "Lead generation",
+    market: "International",
+    campaignType: "Google Ads · Responsive search ads",
+    period: "Two-week window · Dec-Jan",
+    challenge:
+      "Convert existing search demand into leads at the lowest workable cost per conversion, using responsive search ads to surface the strongest message combinations.",
+    approach:
+      "Responsive search ad variants with conversion-focused bidding, measured on completed local actions and cost per conversion rather than clicks.",
+    work: [
+      "Responsive search ad variants",
+      "Conversion-focused bidding",
+      "Local-action conversion tracking",
+      "Performance monitoring & budget control",
+    ],
+    primary: { value: "148", label: "conversions in two weeks" },
+    secondary: [
+      { value: "$1.43", label: "cost per conversion" },
+      { value: "31.62%", label: "conversion rate" },
+      { value: "468", label: "clicks" },
+    ],
+    context:
+      "Figures from Google Ads reporting, Dec 20 - Jan 2. Published as an anonymized campaign pending client-naming approval.",
+  },
+] as const;
+
+/** Homepage case-studies preview section. */
+export const caseStudiesPreview = {
+  eyebrow: "Selected case studies",
+  headline: "Campaign outcomes, with context",
+  description:
+    "Three anonymized campaigns from paid-search and lead-generation work. Every figure comes from campaign reporting - periods shown, nothing extrapolated.",
+  cta: { label: "View all case studies", href: "/case-studies" },
+} as const;
+
+/**
+ * Visual-evidence section (CampaignEvidence). Renders the SAME verified numbers
+ * as `caseStudies` inside recreated reporting views - the raw Google Ads exports
+ * are deliberately NOT shipped (several contain account emails / client PII; see
+ * docs/stats-sources.md). Honesty is stated on-section: recreated, not stock.
+ */
+export const campaignEvidence = {
+  eyebrow: "Inside the reporting",
+  headline: "The dashboards behind the numbers",
+  description:
+    "Not stock graphics - the real reporting view for three managed campaigns, rebuilt here so client names and account emails stay private. Same figures. Same periods.",
+  /** Which metric each campaign's headline number represents, for the tile. */
+  featuredLabel: "Selected reporting views · Google Ads",
+  footnote:
+    "Reporting views recreated from Google Ads for campaigns managed by the Climbix team. Raw exports are withheld to protect client and account privacy. Results vary by market, offer, and budget.",
+} as const;
+
+/** /case-studies page copy. */
+export const caseStudiesPage = {
+  eyebrow: "Campaign outcomes",
+  headline: "Measured improvements, presented with context",
+  intro:
+    "Selected campaign outcomes from paid media and lead-generation work across different markets. Client identities are anonymized where required.",
+  methodology: {
+    heading: "How we publish results",
+    points: [
+      "Results vary by market, offer, budget, and business model - no figure here is a promise of identical outcomes.",
+      "Published figures are taken directly from managed campaign records, with the reporting period shown.",
+      "Client names are anonymized whenever publishing permission is unavailable.",
+      "Past performance does not guarantee future results - which is exactly why every engagement starts with an audit.",
+    ],
+  },
+  finalCta: {
+    headline:
+      "Find out where your current marketing system is losing opportunities",
+    subhead:
+      "The same diagnostic discipline behind these campaigns is how your free audit works.",
+  },
+} as const;
+
+/* ---------------------------------------------------------------------------
+ * MVP DEMO CONTENT - PHASE TWO: replace with verified client material.
+ *
+ * Everything in this block exists so the client demo shows where real proof
+ * will live. It is labeled "illustrative" in the UI and must be swapped for a
+ * verified, written-approved client quote before paid traffic runs. Swapping
+ * the values here updates the section - no layout changes needed.
+ * ------------------------------------------------------------------------- */
+
+export const sampleTestimonial = {
+  eyebrow: "Client experience preview",
+  quote:
+    "The audit showed us exactly where our ad budget was leaking. The fixes were specific, ranked, and explained in plain English - our team finally trusts the reporting.",
+  role: "Operations Director",
+  company: "B2B services company",
+  /** Rendered under the quote - keeps the preview honest without a warning banner. */
+  note: "Illustrative example of client feedback. Verified client quotes are published here as written approvals arrive.",
+} as const;
 
 /* ---------------------------------------------------------------------------
  * The offer - Free Growth Leak Audit (homepage + PPC)
@@ -99,26 +372,42 @@ export const offer = {
   positioning:
     "A focused review of your marketing system before you spend another month guessing.",
   deliverables: [
-    "Campaign clarity scan",
-    "Landing page conversion review",
-    "Tracking health check",
-    "Funnel friction report",
+    "Advertising account review",
+    "Landing-page conversion review",
+    "Tracking & attribution check",
+    "Conversion-friction analysis",
     "Top 3 priority fixes",
-    "Clear next-step recommendation",
+    "Clear next-step action plan",
   ],
   value: "You leave with a practical diagnosis even if we never work together.",
-  cta: "Claim Free Audit",
-  risk: "No pressure. No forced contract. No fake guarantee.",
+  cta: "Get Free Audit",
+  risk: riskReversal,
 } as const;
 
 /** Final CTA close. */
 export const finalCta = {
   eyebrow: "Before you decide anything else",
   headline: "Before you spend another month, know what is leaking.",
+  headlineEmphasis: "leaking",
   subhead:
-    "Send your site and goal. We will review the funnel path and show the highest-priority fixes.",
+    "Send us your website and growth goal. We'll identify the highest-priority issues across your ads, landing pages, and tracking.",
   microcopy: "No contract. No pressure. Clear next steps.",
 } as const;
+
+/** Contact-section form framing - same promise as the hero: a free audit. */
+export const contactForm = {
+  title: "Request your free audit",
+  subtitle: "Send your site and goal. We'll review the rest.",
+  submitLabel: "Get My Free Audit",
+  privacy: "Used only to prepare your audit. No spam. No sharing.",
+} as const;
+
+/** What happens after the form - sets expectations without invented SLAs. */
+export const callOutcomes = [
+  "We review your site, ads, and tracking setup",
+  "You receive your highest-priority fixes in plain English",
+  "If it makes sense to talk, we suggest a call - no obligation either way",
+] as const;
 
 /* ---------------------------------------------------------------------------
  * Sample audit output - proof through clarity, never fabricated results
@@ -199,159 +488,7 @@ export const sampleAudit = [
 ] as const;
 
 /* ---------------------------------------------------------------------------
- * Platform-readiness badges - capability claims, never partner-status claims.
- * ------------------------------------------------------------------------- */
-
-export const platformBadges = [
-  "Built for Google Ads traffic",
-  "Meta campaign audit ready",
-  "GA4 tracking review",
-  "Conversion-first funnel review",
-  "Landing page CRO",
-  "International campaigns",
-] as const;
-
-/* ---------------------------------------------------------------------------
- * Case study preview - structure ready for real results.
- * MVP placeholder - replace with a verified client case study before claiming
- * real outcomes. The Result step intentionally holds no performance numbers.
- * ------------------------------------------------------------------------- */
-
-export const caseStudy = {
-  eyebrow: "Case study preview",
-  headline: "How we will show results once campaigns go live.",
-  note: "Sample client scenario - replace with a verified case study as campaigns mature.",
-  steps: [
-    {
-      label: "Problem",
-      body: "Paid traffic was running, but lead quality was unclear and reports didn't explain why.",
-    },
-    {
-      label: "Diagnosis",
-      body: "Tracking did not connect campaign source to qualified inquiries, and the page dropped the ad's promise.",
-    },
-    {
-      label: "Action",
-      body: "Fix attribution first, align the landing page message to the ad, reduce form friction.",
-    },
-    {
-      label: "Result",
-      body: "Result data will be published here after verified campaign performance.",
-    },
-  ],
-} as const;
-
-/* ---------------------------------------------------------------------------
- * Founder / company credibility.
- * TODO: replace the initials placeholder with a real founder photo asset.
- * ------------------------------------------------------------------------- */
-
-export const credibility = {
-  eyebrow: "Why Climbix exists",
-  headline: "Built for serious businesses that want clarity before scale.",
-  body: "Climbix started with a simple observation: most marketing budgets don't fail from lack of effort - they fail from lack of visibility. So we built an audit-first, tracking-first practice where every recommendation has to survive one question: does the data actually support this?",
-  card: {
-    initials: "CX",
-    name: "Climbix Strategy Team",
-    role: "Performance, funnel & tracking-led growth",
-    points: [
-      "Built to connect traffic, pages, and attribution",
-      "Plain-English reporting, no vanity dashboards",
-      "Selective by design - fit comes before fees",
-    ],
-  },
-} as const;
-
-/* ---------------------------------------------------------------------------
- * Testimonials.
- * MVP placeholder entries - NOT RENDERED PUBLICLY. While every entry has
- * placeholder: true, TestimonialsSection shows the launch-stage trustFramework
- * module instead (single truth model: no invented reviews on the live site).
- * These entries exist only as the layout-ready data shape. When a REAL,
- * verified, client-approved quote arrives: set placeholder: false and fill
- * every field - the section will then render attributed testimonial cards.
- * ------------------------------------------------------------------------- */
-
-export const testimonials = [
-  {
-    placeholder: true,
-    featured: true,
-    quote:
-      "Climbix helped us understand where our funnel needed attention before increasing ad spend. The audit was specific, calm, and easy to act on - no jargon, no pressure to sign anything.",
-    name: "Sarah",
-    role: "Marketing Lead",
-    company: "E-commerce brand, EU",
-    service: "Free Growth Leak Audit",
-    initials: "S",
-    resultTag: "Clearer priorities before spend",
-  },
-  {
-    placeholder: true,
-    featured: false,
-    quote:
-      "The tracking review alone was worth the call. We finally saw which events were double-firing and why our reports never matched reality.",
-    name: "Daniel",
-    role: "Founder",
-    company: "B2B services, UK",
-    service: "Analytics & Tracking",
-    initials: "D",
-    resultTag: "Tracking we can trust",
-  },
-  {
-    placeholder: true,
-    featured: false,
-    quote:
-      "They told us plainly what not to spend on yet. That kind of honesty is why we kept working with them.",
-    name: "Amira",
-    role: "Growth Manager",
-    company: "SaaS startup, MENA",
-    service: "Paid Ads Management",
-    initials: "A",
-    resultTag: "Honest, plain-English reporting",
-  },
-] as const;
-
-export const testimonialsNote =
-  "Verified client stories will be added once campaigns mature." as const;
-
-/**
- * Launch-stage trust framework - the PUBLIC trust story while no verified
- * testimonials exist (single truth model: launch-stage honest). Rendered by
- * TestimonialsSection whenever every testimonial entry is placeholder:true.
- */
-export const trustFramework = {
-  eyebrow: "Trust without fake proof",
-  headline: "Built to earn trust before claiming results.",
-  body: "Climbix is launch-stage, so we do not invent reviews or borrow logos. The proof we can show today is the method: audit-first strategy, tracking-first execution, and a clear diagnostic process before asking for more spend.",
-  pillars: [
-    {
-      title: "Audit before budget",
-      body: "The leaks get found before a single new dollar is recommended.",
-    },
-    {
-      title: "Tracking before scaling",
-      body: "If the data can't be trusted, nothing else gets decided on top of it.",
-    },
-    {
-      title: "Clear diagnosis before recommendations",
-      body: "You see what's broken and why - in plain English - before any pitch.",
-    },
-  ],
-} as const;
-
-/** Positioning strip - credibility through method, not fake logos. */
-export const trustStrip = [
-  "Audit-first growth",
-  "Tracking before spend",
-  "Paid Ads",
-  "SEO",
-  "Funnels",
-  "Analytics",
-  "International execution",
-] as const;
-
-/* ---------------------------------------------------------------------------
- * Problem - the disconnected system
+ * Problem - the disconnected system, then the contrast that resolves it
  * ------------------------------------------------------------------------- */
 
 export const problem = {
@@ -359,63 +496,48 @@ export const problem = {
   headline: "Your traffic is not the problem. Your system is disconnected.",
   subhead:
     "Most campaigns do not fail at the click. They fail after the click - on the page, in the form, inside broken tracking, or inside reports that do not show what actually produced revenue.",
+  aftermath:
+    "None of these leaks announce themselves. They compound quietly until the budget runs out.",
 } as const;
 
-export const problems = [
-  {
-    title: "You are spending blind",
-    body: "Ad spend is visible. True performance is not.",
-  },
-  {
-    title: "Your landing page leaks trust",
-    body: "Traffic arrives, but the page does not make the next step obvious.",
-  },
-  {
-    title: "Your tracking is unreliable",
-    body: "Conversions fire twice, miss leads, or never connect to real business value.",
-  },
-  {
-    title: "Your offer is unclear",
-    body: "Visitors do not understand why they should act now.",
-  },
-  {
-    title: "Your reports hide the truth",
-    body: "You see clicks and impressions, but not what to fix first.",
-  },
+/**
+ * Funnel story - the six-stage journey after the click, with the leak that
+ * typically strikes each hand-off. Qualitative only, no invented numbers.
+ */
+export const funnelStory = [
+  { stage: "Ad click", leak: "Weak message match" },
+  { stage: "Landing page", leak: "Unclear offer, slow page" },
+  { stage: "Form start", leak: "Form friction" },
+  { stage: "Lead", leak: "Broken conversion event" },
+  { stage: "Qualified lead", leak: "No lead-quality signal" },
+  { stage: "Revenue signal", leak: "No attribution" },
 ] as const;
 
-/** Leak map - the four places budget quietly escapes (visual artifact data). */
-export const leakPoints = [
-  {
-    stage: "Before the click",
-    body: "The ad earns attention, but targets audiences that never convert.",
+/** Guessing vs. knowing - the honest contrast block inside the problem story. */
+export const contrast = {
+  kicker: "The difference",
+  headline: "Guessing versus knowing",
+  without: {
+    title: "Without a connected system",
+    items: [
+      "Ad spend increases without clear answers",
+      "Landing pages are judged by appearance, not behavior",
+      "Lead quality can't be traced to its source",
+      "Reports centre on clicks instead of business outcomes",
+      "Scaling decisions rest on incomplete data",
+    ],
   },
-  {
-    stage: "After the click",
-    body: "The page receives traffic, but drops the promise the ad made.",
+  with: {
+    title: "With Climbix",
+    items: [
+      "Every campaign connects to measurable actions",
+      "Landing-page friction is identified and fixed",
+      "Tracking gaps are found and corrected",
+      "Priorities are set by evidence, not opinion",
+      "You know what to fix before spending more",
+    ],
   },
-  {
-    stage: "At the form",
-    body: "The form exists, but the reason to submit it right now is weak.",
-  },
-  {
-    stage: "In the data",
-    body: "Tracking fires twice or not at all, so decisions rest on bad numbers.",
-  },
-] as const;
-
-/* ---------------------------------------------------------------------------
- * Solution - one connected growth engine
- * ------------------------------------------------------------------------- */
-
-export const engineSteps = [
-  { label: "Traffic", note: "Paid + organic reach" },
-  { label: "Message match", note: "The ad's promise, kept" },
-  { label: "Landing page", note: "Built to continue the story" },
-  { label: "Conversion", note: "A clear, low-friction next step" },
-  { label: "Attribution", note: "Revenue traced to its source" },
-  { label: "Optimization", note: "Cut waste, scale what works" },
-] as const;
+} as const;
 
 /* ---------------------------------------------------------------------------
  * Services
@@ -428,7 +550,6 @@ export const services = [
     body: "For brands spending on traffic but unsure what is actually producing qualified leads.",
     fixes: ["Weak campaign structure", "Poor message match", "Wasted spend", "Unclear attribution"],
     forWho: "Brands ready to scale spend with confidence",
-    cta: "Audit My Ads",
   },
   {
     title: "SEO Growth",
@@ -436,7 +557,6 @@ export const services = [
     body: "For businesses that want traffic that compounds instead of resetting every month.",
     fixes: ["Thin technical foundations", "Content without intent", "Invisible authority", "No organic pipeline"],
     forWho: "Businesses that want lower long-term acquisition cost",
-    cta: "Start Review",
   },
   {
     title: "Landing Pages & Funnels",
@@ -444,7 +564,6 @@ export const services = [
     body: "For teams sending good traffic to pages that quietly lose it.",
     fixes: ["Message mismatch", "Buried offers", "Form friction", "No testing discipline"],
     forWho: "Teams sending good traffic to weak pages",
-    cta: "Fix My Funnel",
   },
   {
     title: "Social Media Marketing",
@@ -452,7 +571,6 @@ export const services = [
     body: "For brands that need to stay visible - and remembered - where their buyers actually are.",
     fixes: ["Inconsistent presence", "Reach without demand", "Content with no direction", "Silent channels"],
     forWho: "Brands building demand, not just reach",
-    cta: "Start Review",
   },
   {
     title: "Analytics & Conversion Tracking",
@@ -460,45 +578,55 @@ export const services = [
     body: "The foundation everything else stands on: clean tracking, honest attribution, dashboards you can trust.",
     fixes: ["Missing conversion events", "Duplicate or phantom leads", "No source attribution", "Reports nobody trusts"],
     forWho: "Anyone optimising blind right now",
-    cta: "Claim Audit",
   },
 ] as const;
 
+export const footerServices = [
+  "Paid Ads Management",
+  "SEO Growth",
+  "Landing Pages & Funnels",
+  "Social Media Marketing",
+  "Analytics & Tracking",
+] as const;
+
 /* ---------------------------------------------------------------------------
- * Process
+ * Process - five steps, measurement folded into the last one
  * ------------------------------------------------------------------------- */
 
 export const processSteps = [
   {
     step: "01",
-    title: "Audit",
-    body: "We review your funnel, ads, landing pages, and tracking before recommending new spend.",
-    deliverable: "Funnel, ad-account & tracking teardown",
+    title: "Discover",
+    body: "We learn the business, the offer, and what a qualified lead is actually worth before touching anything.",
+    deliverable: "Goals, economics & access aligned",
   },
   {
     step: "02",
-    title: "Strategy",
-    body: "We build a prioritized 90-day roadmap tied to revenue goals.",
-    deliverable: "Prioritised 90-day growth roadmap",
+    title: "Audit",
+    body: "We review your ads, landing pages, tracking, and funnel path before recommending any new spend.",
+    deliverable: "Plain-English audit of leaks & quick wins",
   },
   {
     step: "03",
-    title: "Launch",
-    body: "Ads, pages, and tracking go live together as one measurable system.",
-    deliverable: "Ads + pages + tracking, shipped together",
+    title: "Prioritize",
+    body: "Findings become a ranked fix list - highest-leverage first, not a random marketing wishlist.",
+    deliverable: "Ranked priority plan",
   },
   {
     step: "04",
-    title: "Optimize",
-    body: "We cut waste, double down on what works, and report weekly in plain English.",
-    deliverable: "Weekly tests & plain-English reporting",
+    title: "Improve",
+    body: "Campaigns, pages, and tracking are fixed and shipped together as one connected system.",
+    deliverable: "Ads + pages + tracking, shipped together",
+  },
+  {
+    step: "05",
+    title: "Measure & Scale",
+    body: "We report against the numbers that matter, cut what wastes budget, and scale only what earns it.",
+    deliverable: "Weekly plain-English reporting",
   },
 ] as const;
 
-/* ---------------------------------------------------------------------------
- * Measurement / honest proof
- * ------------------------------------------------------------------------- */
-
+/** The measures reported in step 05 - rendered inside the process section. */
 export const measures = [
   { metric: "CPL", label: "Cost per lead" },
   { metric: "CVR", label: "Conversion rate" },
@@ -508,21 +636,15 @@ export const measures = [
   { metric: "Attribution", label: "Revenue traced to source" },
 ] as const;
 
-export const proofStatus = {
-  heading: "Proof we earn, not invent",
-  body: "Climbix is in its launch phase, so we do not fake proof or borrow case studies. Our proof is the method: audit first, tracking first, reporting in plain English, and every recommendation tied to measurable pipeline. Real case studies will be published here as live campaigns mature.",
-  focusLabel: "Current launch focus",
-  focus: ["Tracking quality", "Conversion clarity", "Campaign discipline"],
-} as const;
-
 /* ---------------------------------------------------------------------------
- * Why Climbix
+ * Why Climbix (homepage About preview) + /about page
  * ------------------------------------------------------------------------- */
 
 export const authority = {
-  eyebrow: "Why trust us now",
+  eyebrow: "Why Climbix",
   headline: "Why serious businesses choose an audit-first agency.",
   contrast: "A cheap agency asks for budget first. A serious agency checks the system first.",
+  aboutCta: { label: "More about how we work", href: "/about" },
 } as const;
 
 export const whyClimbix = [
@@ -552,34 +674,83 @@ export const whyClimbix = [
   },
 ] as const;
 
-/* ---------------------------------------------------------------------------
- * Qualification - selectivity builds authority
- * ------------------------------------------------------------------------- */
-
-export const whoFor = {
-  eyebrow: "Who this is for",
-  headline: "This is for brands that want clarity before scale.",
-  forItems: [
-    "You already spend on ads",
-    "You have traffic but weak lead flow",
-    "You do not trust your tracking",
-    "You want international-ready campaigns",
-    "You want landing pages and ads connected",
-    "You want plain-English reporting",
-  ],
-  notForItems: [
-    "You want fake guaranteed results",
-    "You only care about impressions",
-    "You are not ready to measure performance",
-    "You want random marketing activity without strategy",
-  ],
+/** /about page content. No founder biography, no invented history. */
+export const aboutPage = {
+  hero: {
+    eyebrow: "About Climbix",
+    headline: "Marketing decisions should be based on evidence, not assumptions",
+    intro:
+      "Climbix helps businesses connect advertising, landing pages, analytics, and conversion strategy into one measurable growth system.",
+  },
+  whatWeDo: {
+    heading: "What we do",
+    body: "One connected system instead of disconnected marketing activity:",
+    items: [
+      { title: "Campaign strategy", body: "Positioning, offers, and channel plans built around the business goal." },
+      { title: "Paid acquisition", body: "Google, Meta, and search campaigns managed against cost per lead, not clicks." },
+      { title: "Landing-page improvement", body: "Pages that keep the ad's promise and make the next step obvious." },
+      { title: "Conversion tracking", body: "GA4 and ad-platform tracking that can actually be trusted for decisions." },
+      { title: "Funnel analysis", body: "Finding the exact step where paid visitors stop becoming customers." },
+      { title: "Performance reporting", body: "Plain-English reporting on leads, pipeline, and waste - not vanity metrics." },
+    ],
+  },
+  principles: {
+    heading: "Our principles",
+    items: [
+      { title: "Audit before spend", body: "No recommendation to spend more until the current system has been inspected." },
+      { title: "Tracking before scaling", body: "If the data can't be trusted, nothing gets decided on top of it." },
+      { title: "Outcomes before vanity metrics", body: "Leads, pipeline, and cost per result - impressions don't pay invoices." },
+      { title: "Clarity before complexity", body: "Plain-English findings and priorities, never jargon walls." },
+      { title: "Evidence before assumptions", body: "Every recommendation must survive one question: does the data support this?" },
+      { title: "Systems over tactics", body: "Long-term connected improvement beats disconnected one-off campaigns." },
+    ],
+  },
+  howWeWork: {
+    heading: "How we work with clients",
+    steps: [
+      "Understand the business, the offer, and the economics of a lead",
+      "Review the complete customer journey from ad to revenue",
+      "Identify the highest-impact leaks",
+      "Recommend a prioritized, plain-English plan",
+      "Implement measurable improvements",
+      "Continue only while the value is clear",
+    ],
+  },
+  markets: {
+    heading: "Markets and experience",
+    body: "Campaign experience across four international markets.",
+    list: ["United States", "United Kingdom", "United Arab Emirates", "Pakistan"],
+    note: "Campaigns are built for international delivery by default - local market context, currency, and search behavior included.",
+  },
+  fit: {
+    heading: "Who we work with",
+    forTitle: "A good fit if",
+    forItems: [
+      "You already spend on ads",
+      "You have traffic but weak lead flow",
+      "You do not trust your tracking",
+      "You want international-ready campaigns",
+      "You want landing pages and ads connected",
+      "You want plain-English reporting",
+    ],
+    notForTitle: "Not a fit if",
+    notForItems: [
+      "You want guaranteed results - nobody can ethically promise those",
+      "You only care about impressions",
+      "You are not ready to measure performance",
+      "You want random marketing activity without strategy",
+    ],
+  },
+  honesty: {
+    heading: "Trust without fake proof",
+    body: "We do not invent reviews, borrow logos, or publish numbers we cannot trace to campaign records. The proof we show is the method - audit-first strategy, tracking-first execution - and verified campaign outcomes, published with their context on the case studies page.",
+  },
+  finalCta: {
+    headline: "Start with clarity before committing to more spend",
+    subhead:
+      "The free audit shows what is leaking, what to fix first, and whether we are even the right partner for it.",
+  },
 } as const;
-
-export const callOutcomes = [
-  "A clear read on where you're losing spend",
-  "Your 2-3 highest-leverage growth moves",
-  "An honest take on whether we're the right fit",
-] as const;
 
 /* ---------------------------------------------------------------------------
  * FAQ - objection handling. Honest answers, no guaranteed-results claims.
@@ -587,48 +758,52 @@ export const callOutcomes = [
 
 export const faqs = [
   {
-    q: "What happens in the free audit?",
+    q: "What does the free audit include?",
     a: "We review your ads, landing page, tracking, and funnel path, then send back where budget is likely leaking and your top priority fixes. You leave with clear next steps whether or not we ever work together.",
   },
   {
-    q: "Is this really free?",
-    a: "Yes. The audit and the strategy call cost nothing and carry no obligation. It's how we prove the method before asking for anything.",
+    q: "Do I need to give account access?",
+    a: "Read-only access to your ad account and analytics produces the most accurate audit, but we can start from your website and landing pages alone. You control the access and can revoke it at any time.",
   },
   {
-    q: "Is this just a sales pitch?",
-    a: "No. It's a working diagnosis, not a pitch deck. If we're not the right fit, we'll say so - and you keep the findings either way.",
+    q: "Can you improve an existing campaign?",
+    a: "Yes - most engagements start exactly there. We audit the existing structure, keep what performs, and rebuild what leaks, across Google, Meta, and LinkedIn.",
   },
   {
-    q: "What do you check first?",
-    a: "Tracking. If your conversion data can't be trusted, every other decision is guesswork - so we verify the data before judging anything else.",
-  },
-  {
-    q: "Do you manage Google and Meta ads?",
-    a: "Yes - Google, Meta, and LinkedIn are our core paid channels, managed full-funnel from creative and targeting through to conversion tracking.",
-  },
-  {
-    q: "Can you fix landing pages too?",
+    q: "Do you build landing pages?",
     a: "Yes. We build and rebuild conversion-focused pages that keep the ad's promise, so the traffic you pay for actually converts.",
   },
   {
-    q: "What if my tracking is broken?",
-    a: "That's the most common finding - and the first thing we fix. Clean tracking and attribution come before any scaling decision.",
+    q: "Can you repair tracking problems?",
+    a: "That's the most common finding - and the first thing we fix. Clean conversion tracking and attribution come before any scaling decision.",
   },
   {
-    q: "What budget do I need?",
-    a: "It depends on your market and goals. We'll give you an honest read on the call - including whether paid ads are the right first move for you at all.",
+    q: "Which industries do you work with?",
+    a: "Recent campaigns span interior design, local services, publishing, and education. The method - audit, tracking, conversion path - carries across industries, and we tell you plainly if your niche isn't a fit.",
   },
   {
-    q: "How fast can we start?",
-    a: "The audit starts as soon as you submit the form. A typical audit-to-launch engagement runs 2-4 weeks, with tracking and pages prepared in parallel.",
+    q: "Which markets do you serve?",
+    a: "Campaigns have run across the United States, United Kingdom, UAE, and Pakistan. We build for international markets by default.",
+  },
+  {
+    q: "How is pricing decided?",
+    a: "By scope: your market, channels, and how much needs fixing versus building. The audit comes first precisely so any quote is based on evidence - and we'll tell you if paid ads aren't the right first move at all.",
+  },
+  {
+    q: "What happens after the audit?",
+    a: "You receive the findings and priority fixes in plain English. If it makes sense to work together, we propose a scoped engagement; if not, the findings are still yours to act on.",
+  },
+  {
+    q: "Is there any obligation after the free review?",
+    a: "None. The audit costs nothing and carries no obligation - it's how we prove the method before asking for anything.",
+  },
+  {
+    q: "How is client information protected?",
+    a: "Access is read-only wherever possible, credentials are never shared outside the team, and campaign data is only ever published anonymized - or with written client approval.",
   },
   {
     q: "Do you guarantee results?",
-    a: "No - and you should be cautious of anyone who does. We commit to a disciplined method, honest reporting, and an audit before spending. We won't promise numbers we can't ethically guarantee.",
-  },
-  {
-    q: "What if we are not a fit?",
-    a: "Then we tell you that, plainly, and you keep the audit findings. We would rather be trusted next quarter than paid this month for the wrong engagement.",
+    a: "No - and you should be cautious of anyone who does. We commit to a disciplined method, honest reporting, and an audit before spending. We won't promise numbers nobody can ethically guarantee.",
   },
 ] as const;
 
@@ -721,12 +896,4 @@ export const auditFor = [
   "Teams with landing pages but weak conversions",
   "Companies entering international markets",
   "Businesses that need tracking clarity before scaling",
-] as const;
-
-export const footerServices = [
-  "Paid Ads Management",
-  "SEO Growth",
-  "Landing Pages & Funnels",
-  "Social Media Marketing",
-  "Analytics & Tracking",
 ] as const;

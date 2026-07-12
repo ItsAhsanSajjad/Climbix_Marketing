@@ -8,17 +8,25 @@
  * no-op until at least one destination exists.
  *
  * Instrumented triggers:
- *   - "cta_click"      - any primary/secondary CTA (delegated via CtaTracker)
- *   - "lead_submit"    - homepage lead form submitted
- *   - "audit_request"  - audit landing form submitted
- *   - "thank_you_view" - /thank-you viewed (the conversion event)
+ *   - "cta_click"         - any primary/secondary CTA (delegated via CtaTracker)
+ *   - "lead_submit"       - homepage lead form delivered (server-confirmed)
+ *   - "audit_request"     - audit landing form delivered (server-confirmed)
+ *   - "lead_submit_error" - a submission failed (code = server error)
+ *   - "thank_you_view"    - /thank-you viewed (the conversion event)
+ *   - "consent_update"    - visitor accepted/declined marketing cookies
  *
  * TODO (launch): in GTM, map "thank_you_view" / "audit_request" to a GA4
  * conversion + a Google Ads conversion (AW-.../label). The Meta Pixel mapping
  * below sends a standard "Lead" event for form/thank-you steps.
  */
 
-type EventName = "cta_click" | "lead_submit" | "audit_request" | "thank_you_view";
+type EventName =
+  | "cta_click"
+  | "lead_submit"
+  | "audit_request"
+  | "lead_submit_error"
+  | "thank_you_view"
+  | "consent_update";
 
 declare global {
   interface Window {

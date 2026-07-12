@@ -2,11 +2,15 @@ import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { Logo } from "@/components/layout/Logo";
 import { StaggerContainer, StaggerItem } from "@/components/motion/Stagger";
+import { CookieSettingsButton } from "@/components/consent/ConsentBanner";
 import { navLinks, footerServices, site } from "@/lib/site";
+
+const focusRing =
+  "rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-400 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-900";
 
 /**
  * Site footer. Obsidian bookend that anchors the light page and echoes the hero.
- * Brand summary + structured link columns + legal row.
+ * Brand summary + structured link columns + legal row (incl. cookie settings).
  */
 export function Footer() {
   return (
@@ -17,7 +21,11 @@ export function Footer() {
           className="grid gap-12 py-16 md:grid-cols-[1.4fr_1fr_1fr_1fr]"
         >
           <StaggerItem className="flex flex-col gap-4">
-            <Link href="#top" className="flex items-center gap-2.5" aria-label={`${site.fullName} home`}>
+            <Link
+              href="/"
+              className={`flex items-center gap-2.5 ${focusRing}`}
+              aria-label={`${site.fullName} home`}
+            >
               <Logo />
               <span className="font-display text-lg font-bold tracking-tight text-white">
                 {site.name}
@@ -25,12 +33,11 @@ export function Footer() {
               </span>
             </Link>
             <p className="max-w-xs text-base leading-relaxed text-mist-300">
-              Performance marketing for international brands. Paid ads, SEO,
-              landing pages, and tracking - built and measured as one system.
+              {site.tagline}
             </p>
             <a
               href={`mailto:${site.email}`}
-              className="text-base font-medium text-bronze-300 hover:text-bronze-400"
+              className={`text-base font-medium text-bronze-300 hover:text-bronze-400 ${focusRing}`}
             >
               {site.email}
             </a>
@@ -43,13 +50,14 @@ export function Footer() {
                   {l.label}
                 </FooterLink>
               ))}
+              <FooterLink href="/#faq">FAQ</FooterLink>
             </FooterCol>
           </StaggerItem>
 
           <StaggerItem>
             <FooterCol title="Services">
               {footerServices.map((s) => (
-                <FooterLink key={s} href="#services">
+                <FooterLink key={s} href="/#services">
                   {s}
                 </FooterLink>
               ))}
@@ -58,8 +66,10 @@ export function Footer() {
 
           <StaggerItem>
             <FooterCol title="Get started">
-              <FooterLink href={site.ctaPrimary.href}>Book Call</FooterLink>
-              <FooterLink href={site.ctaSecondary.href}>Get Free Audit</FooterLink>
+              <FooterLink href={site.ctaPrimary.href}>
+                {site.ctaPrimary.label}
+              </FooterLink>
+              <FooterLink href="/#contact">Request your audit</FooterLink>
               <FooterLink href={`mailto:${site.email}`}>Contact us</FooterLink>
             </FooterCol>
           </StaggerItem>
@@ -72,16 +82,17 @@ export function Footer() {
               {site.name} is a marketing brand operated by {site.legalName}.
             </p>
           </div>
-          <div className="flex items-center gap-6">
-            <Link href="/privacy" className="hover:text-white">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+            <Link href="/privacy" className={`hover:text-white ${focusRing}`}>
               Privacy Policy
             </Link>
-            <Link href="/terms" className="hover:text-white">
+            <Link href="/terms" className={`hover:text-white ${focusRing}`}>
               Terms of Service
             </Link>
-            <Link href="/refund-policy" className="hover:text-white">
+            <Link href="/refund-policy" className={`hover:text-white ${focusRing}`}>
               Refund Policy
             </Link>
+            <CookieSettingsButton className={`hover:text-white ${focusRing}`} />
           </div>
         </div>
       </Container>
@@ -101,7 +112,10 @@ function FooterCol({ title, children }: { title: string; children: React.ReactNo
 function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <li>
-      <Link href={href} className="text-base text-mist-300 transition-colors hover:text-white">
+      <Link
+        href={href}
+        className={`text-base text-mist-300 transition-colors hover:text-white ${focusRing}`}
+      >
         {children}
       </Link>
     </li>

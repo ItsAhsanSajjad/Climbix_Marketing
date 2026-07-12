@@ -91,10 +91,3 @@ export function IconCheck(p: IconProps) {
   );
 }
 
-export const serviceIcons = {
-  IconTarget,
-  IconTrending,
-  IconLayout,
-  IconShare,
-  IconChart,
-} as const;

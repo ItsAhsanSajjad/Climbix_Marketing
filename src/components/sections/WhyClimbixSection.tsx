@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/motion/Reveal";
@@ -70,6 +71,18 @@ export function WhyClimbixSection() {
           </StaggerItem>
         ))}
       </StaggerContainer>
+
+      {/* Deeper story lives on /about - keep the homepage preview short. */}
+      <Reveal delay={0.1} className="mt-14 flex justify-center">
+        <Link
+          href={authority.aboutCta.href}
+          data-cta="why-about"
+          className="inline-flex min-h-11 items-center gap-2 rounded-full px-4 py-2.5 text-base font-semibold text-cobalt-600 transition-colors hover:text-cobalt-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
+        >
+          {authority.aboutCta.label}
+          <span aria-hidden>&rarr;</span>
+        </Link>
+      </Reveal>
     </Section>
   );
 }

@@ -3,17 +3,19 @@ import { goalOptions } from "@/lib/site";
 
 /** Main-growth-goal select - qualifies the lead and shapes the call. */
 export function GoalSelect({
+  id = "goal",
   value,
   onChange,
   error,
 }: {
+  id?: string;
   value: string;
   onChange: (v: string) => void;
   error?: string;
 }) {
   return (
     <SelectField
-      id="goal"
+      id={id}
       label="Main growth goal"
       required
       options={goalOptions}

@@ -63,3 +63,25 @@ export function ProfessionalServiceJsonLd() {
   };
   return <JsonLd data={data} />;
 }
+
+/**
+ * Breadcrumb trail for inner pages (/case-studies, /about). Items are
+ * (name, path) pairs starting from Home; paths are resolved against siteUrl.
+ */
+export function BreadcrumbJsonLd({
+  items,
+}: {
+  items: readonly { name: string; path: string }[];
+}) {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      item: `${siteUrl}${item.path}`,
+    })),
+  };
+  return <JsonLd data={data} />;
+}

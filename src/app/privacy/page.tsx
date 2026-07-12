@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Privacy Policy",
   description: "How Climbix Marketing handles the information you share with us.",
   robots: { index: false, follow: true },
+  alternates: { canonical: "/privacy" },
 };
 
 export default function PrivacyPage() {
@@ -28,9 +29,10 @@ export default function PrivacyPage() {
         <strong className="text-graphite">Cookies &amp; tracking:</strong> we use
         analytics and advertising tools (such as Google Analytics, Google Ads, and
         the Meta Pixel) to understand how the site is used and to measure ad
-        performance. These set cookies and may share limited usage data with those
-        providers. A consent banner and full cookie list will be added before live
-        advertising traffic runs.
+        performance. None of these load their cookies until you choose
+        &ldquo;Accept all&rdquo; in the consent banner - analytics and advertising
+        storage default to denied, and you can change your choice any time via
+        &ldquo;Cookie settings&rdquo; in the footer.
       </p>
       <p>
         <strong className="text-graphite">Your control:</strong> you can ask us to

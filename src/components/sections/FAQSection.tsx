@@ -36,8 +36,8 @@ export function FAQSection() {
           eyebrow="Questions, answered"
           title={
             <>
-              Everything you&apos;d ask on the first{" "}
-              <span className="text-bronze">call</span>
+              Everything you ask before the first{" "}
+              <span className="text-bronze">call</span>.
             </>
           }
           description="Straight answers - including the ones agencies usually dodge."

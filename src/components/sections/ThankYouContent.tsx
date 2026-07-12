@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Logo } from "@/components/layout/Logo";
@@ -10,16 +10,16 @@ import { site } from "@/lib/site";
 
 const steps = [
   {
-    title: "Check your inbox",
-    body: "A confirmation is on its way. Add us to your contacts so nothing lands in spam.",
+    title: "Request received",
+    body: "Your details are with the team. If anything is unclear, we reply from the email you shared.",
   },
   {
-    title: "We review your details",
-    body: "Within one business day, we go through your spend, tracking, and pages.",
+    title: "We review your setup",
+    body: "We go through your spend, tracking, and pages to find where budget is leaking first.",
   },
   {
     title: "You get clear next steps",
-    body: "We send back your biggest leaks and the highest-leverage fixes - or a call invite.",
+    body: "Your biggest leaks and the highest-leverage fixes, in plain English - and a call invite if it makes sense.",
   },
 ] as const;
 
@@ -31,11 +31,16 @@ const steps = [
 export function ThankYouContent() {
   const params = useSearchParams();
   const from = params.get("from") ?? "home";
+  const fired = useRef(false);
 
   useEffect(() => {
-    // Conversion event. TODO (Phase 4): map this to a GA4 conversion / Google Ads
-    // conversion tag in GTM. Payload includes the source so audit vs call
-    // conversions can be reported separately.
+    // Conversion event - fired exactly once per view (the ref guard also
+    // covers React StrictMode's double-invoked dev effects, so GA4/Ads never
+    // see a duplicated conversion). TODO (launch): map this to a GA4 / Google
+    // Ads conversion tag in GTM. Payload includes the source so audit vs
+    // homepage conversions report separately.
+    if (fired.current) return;
+    fired.current = true;
     track("thank_you_view", { from });
   }, [from]);
 
@@ -45,7 +50,7 @@ export function ThankYouContent() {
     <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-5 py-16">
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-1/4 h-[30rem] w-[30rem] -translate-x-1/2 rounded-full bg-cobalt-500/10 blur-[100px]"
+        className="pointer-events-none absolute left-1/2 top-1/4 h-[30rem] w-[30rem] -translate-x-1/2 rounded-full bg-cobalt-500/10 blur-[90px]"
       />
       <div className="relative w-full max-w-xl text-center">
         <Link href="/" className="mb-10 inline-flex items-center gap-2.5" aria-label={`${site.fullName} home`}>
@@ -61,12 +66,12 @@ export function ThankYouContent() {
         </span>
 
         <h1 className="mt-7 font-display text-lux-sm text-graphite md:text-lux-md">
-          {isAudit ? "Your audit request is in." : "You're booked in."}
+          Your audit request is in.
         </h1>
         <p className="mx-auto mt-4 max-w-md text-lux-body text-slate-600">
           {isAudit
             ? "Thanks - we've got your details and we'll start reviewing your marketing right away."
-            : "Thanks - we've got your details and we'll be in touch to lock in your strategy call."}
+            : "Thanks - we've got your details and we'll start reviewing your ads, pages, and tracking."}
         </p>
 
         <div className="mt-12 grid gap-4 text-left sm:grid-cols-3">
@@ -81,7 +86,7 @@ export function ThankYouContent() {
 
         <Link
           href="/"
-          className="mt-12 inline-flex items-center gap-2 text-base font-semibold text-cobalt-600 transition-colors hover:text-cobalt-700"
+          className="mt-12 inline-flex min-h-11 items-center gap-2 rounded-lg px-2 text-base font-semibold text-cobalt-600 transition-colors hover:text-cobalt-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
         >
           Back to homepage
           <IconArrow className="h-4 w-4" />

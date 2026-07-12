@@ -10,6 +10,24 @@ import Link from "next/link";
 import { hero, heroChecklist, heroForm, formBadges, auditCovers } from "@/lib/site";
 
 /**
+ * Renders hero.headline with hero.headlineEmphasis carrying the bronze accent.
+ * Data-driven from site.ts; falls back to the plain headline if the emphasis
+ * word ever changes without being updated here.
+ */
+function HeadlineWithEmphasis() {
+  const { headline, headlineEmphasis } = hero;
+  const index = headline.indexOf(headlineEmphasis);
+  if (index === -1) return <>{headline}</>;
+  return (
+    <>
+      {headline.slice(0, index)}
+      <span className="text-bronze">{headlineEmphasis}</span>
+      {headline.slice(index + headlineEmphasis.length)}
+    </>
+  );
+}
+
+/**
  * Hero - the lead-capture machine. Deep midnight navy authority block: left
  * names the pain and de-risks the ask; right captures the lead immediately in a
  * bright document sheet layered over a subtle navy diagnostic panel. The real
@@ -19,9 +37,10 @@ import { hero, heroChecklist, heroForm, formBadges, auditCovers } from "@/lib/si
 export function Hero() {
   return (
     <section className="dark-section relative overflow-hidden pb-20 pt-14 md:pb-28 md:pt-20">
-      {/* Controlled light: one cool wash, one warm champagne edge. */}
-      <div aria-hidden className="pointer-events-none absolute -top-36 left-1/3 h-[36rem] w-[36rem] -translate-x-1/2 rounded-full bg-cobalt-500/12 blur-[120px]" />
-      <div aria-hidden className="pointer-events-none absolute -bottom-44 right-0 h-[30rem] w-[30rem] rounded-full bg-bronze-500/10 blur-[120px]" />
+      {/* Cinematic canvas: faint intelligence grid + controlled light. */}
+      <div aria-hidden className="signal-grid pointer-events-none absolute inset-0 opacity-[0.35]" />
+      <div aria-hidden className="pointer-events-none absolute -top-36 left-1/3 h-[36rem] w-[36rem] -translate-x-1/2 rounded-full bg-cobalt-500/12 blur-[90px]" />
+      <div aria-hidden className="pointer-events-none absolute -bottom-44 right-0 h-[30rem] w-[30rem] rounded-full bg-bronze-500/10 blur-[90px]" />
 
       <Container className="relative">
         <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
@@ -40,9 +59,7 @@ export function Hero() {
 
             <StaggerItem>
               <h1 className="font-display text-[2.75rem] font-bold leading-[1.04] tracking-tight text-white sm:text-lux-lg lg:text-[4.35rem] lg:leading-[1.02]">
-                Find where your marketing budget is{" "}
-                <span className="text-bronze">leaking</span> - before you spend
-                more.
+                <HeadlineWithEmphasis />
               </h1>
             </StaggerItem>
 
@@ -72,17 +89,17 @@ export function Hero() {
 
             <StaggerItem className="flex w-full flex-col gap-3 pt-1 sm:w-auto sm:flex-row sm:items-center sm:gap-4">
               <MagneticButton className="w-full sm:w-auto">
-                <Button href="#hero-form" size="xl" className="w-full" data-cta="hero-audit">
+                <Button href="#hero-form" size="xl" className="w-full" data-cta="hero">
                   Get Free Audit
                   <IconArrow className="h-5 w-5" />
                 </Button>
               </MagneticButton>
               <Link
-                href="#proof"
-                data-cta="hero-see-checks"
-                className="inline-flex items-center gap-2 rounded-full px-2 py-2 text-base font-semibold text-white transition-colors hover:text-bronze-300"
+                href={hero.secondaryCta.href}
+                data-cta="hero-secondary"
+                className="inline-flex min-h-11 items-center gap-2 rounded-full px-3 py-2.5 text-base font-semibold text-white transition-colors hover:text-bronze-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
               >
-                See What We Check
+                {hero.secondaryCta.label}
                 <span aria-hidden className="text-bronze-400">→</span>
               </Link>
             </StaggerItem>

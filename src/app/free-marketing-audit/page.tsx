@@ -9,7 +9,8 @@ import { LandingHeader } from "@/components/landing/LandingHeader";
 import { LandingHero } from "@/components/landing/LandingHero";
 import { AuditOfferSection } from "@/components/landing/AuditOfferSection";
 import { LandingStickyCTA } from "@/components/landing/LandingStickyCTA";
-import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
+import { StatsBand } from "@/components/sections/StatsBand";
+import { SampleAuditSection } from "@/components/sections/SampleAuditSection";
 import { FAQItem } from "@/components/sections/FAQItem";
 import { IconCheck } from "@/components/ui/Icon";
 import {
@@ -45,12 +46,6 @@ export const metadata: Metadata = {
 export default function FreeMarketingAuditPage() {
   return (
     <>
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-cobalt-500 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
-      >
-        Skip to content
-      </a>
       <LandingHeader />
       <main id="main">
         <LandingHero />
@@ -85,9 +80,9 @@ export default function FreeMarketingAuditPage() {
                   <Link
                     href="#audit-form"
                     data-cta="landing-offer"
-                    className="mt-7 inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-cobalt-500 px-8 text-base font-semibold text-white shadow-cobalt transition-transform hover:-translate-y-0.5 hover:bg-cobalt-600 sm:w-auto"
+                    className="mt-7 inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-cobalt-500 px-8 text-base font-semibold text-white shadow-cobalt transition-transform hover:-translate-y-0.5 hover:bg-cobalt-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 sm:w-auto"
                   >
-                    Claim Free Audit
+                    Get Free Audit
                   </Link>
                   <p className="mt-3.5 text-sm text-slate-600">{offer.risk}</p>
                 </div>
@@ -148,7 +143,7 @@ export default function FreeMarketingAuditPage() {
         {/* 3 - What we usually find: warm ivory panel, bronze dots */}
         <Section>
           <Reveal>
-            <div className="rounded-4xl border border-platinum-300 bg-ivory-200 p-8 md:p-12 lg:p-14">
+            <div className="rounded-3xl border border-platinum-300 bg-ivory-200 p-8 md:p-12 lg:p-14">
               <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
                 <SectionHeading
                   align="left"
@@ -180,6 +175,9 @@ export default function FreeMarketingAuditPage() {
           </Reveal>
         </Section>
 
+        {/* 3.5 - Audit command center: sample report preview, CTA to the form */}
+        <SampleAuditSection ctaHref="#audit-form" />
+
         {/* 4 - Who it's for */}
         <Section className="bg-ivory-100">
           <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
@@ -206,9 +204,9 @@ export default function FreeMarketingAuditPage() {
           </div>
         </Section>
 
-        {/* 5 - Trust: launch-stage method framework (switches to real
-            testimonials automatically when site.ts entries flip placeholder:false) */}
-        <TestimonialsSection />
+        {/* 5 - Proof: verified campaign statistics (same integrity rules as
+            the homepage band - every figure maps to docs/stats-sources.md) */}
+        <StatsBand />
 
         {/* 6 - FAQ (focused subset) */}
         <Section>
@@ -246,7 +244,7 @@ export default function FreeMarketingAuditPage() {
                 <Link
                   href="#audit-form"
                   data-cta="landing-final"
-                  className="mt-10 inline-flex h-16 items-center gap-2 rounded-full bg-cobalt-500 px-9 text-lg font-semibold text-white shadow-cobalt transition-transform hover:-translate-y-0.5 hover:bg-cobalt-600"
+                  className="mt-10 inline-flex h-16 items-center gap-2 rounded-full bg-cobalt-500 px-9 text-lg font-semibold text-white shadow-cobalt transition-transform hover:-translate-y-0.5 hover:bg-cobalt-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-900"
                 >
                   Get Free Audit
                 </Link>
@@ -258,8 +256,8 @@ export default function FreeMarketingAuditPage() {
 
       <LandingStickyCTA />
 
-      {/* Minimal footer */}
-      <footer className="border-t border-platinum-300 bg-ivory-50">
+      {/* Minimal footer - id doubles as the sticky-bar hide sentinel */}
+      <footer id="landing-footer" className="border-t border-platinum-300 bg-ivory-50">
         <Container>
           <div className="flex flex-col gap-3 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
             <p>
@@ -267,18 +265,20 @@ export default function FreeMarketingAuditPage() {
               reserved.
             </p>
             <div className="flex items-center gap-6">
-              <Link href="/" className="hover:text-graphite">
-                Home
-              </Link>
-              <Link href="/privacy" className="hover:text-graphite">
-                Privacy
-              </Link>
-              <Link href="/terms" className="hover:text-graphite">
-                Terms
-              </Link>
-              <Link href="/refund-policy" className="hover:text-graphite">
-                Refund
-              </Link>
+              {[
+                { href: "/", label: "Home" },
+                { href: "/privacy", label: "Privacy" },
+                { href: "/terms", label: "Terms" },
+                { href: "/refund-policy", label: "Refund" },
+              ].map((l) => (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  className="rounded-sm py-2 hover:text-graphite focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
+                >
+                  {l.label}
+                </Link>
+              ))}
             </div>
           </div>
         </Container>

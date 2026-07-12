@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Thank You",
   description: "Your request has been received. Here's what happens next.",
   robots: { index: false, follow: false },
+  alternates: { canonical: "/thank-you" },
 };
 
 export default function ThankYouPage() {

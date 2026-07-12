@@ -5,6 +5,7 @@ import { MotionProvider } from "@/components/motion/MotionProvider";
 import { CtaTracker } from "@/components/motion/CtaTracker";
 import { SiteJsonLd } from "@/components/seo/StructuredData";
 import { AnalyticsScripts } from "@/components/seo/AnalyticsScripts";
+import { ConsentBanner } from "@/components/consent/ConsentBanner";
 import { siteUrl, site } from "@/lib/site";
 
 // Body - Inter: highly legible, neutral, premium SaaS default.
@@ -115,6 +116,7 @@ export default function RootLayout({
         <AnalyticsScripts />
         <CtaTracker />
         <MotionProvider>{children}</MotionProvider>
+        <ConsentBanner />
       </body>
     </html>
   );

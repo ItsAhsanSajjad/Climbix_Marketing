@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Refund Policy",
   description: "How refunds are handled for Climbix Marketing services.",
   robots: { index: false, follow: true },
+  alternates: { canonical: "/refund-policy" },
 };
 
 /**

@@ -1,19 +1,25 @@
 import Script from "next/script";
 
 /**
- * Production tracking loader - readiness, not live wiring.
+ * Production tracking loader with Google Consent Mode v2.
+ *
+ * Order of operations:
+ *   1. An inline consent-default script runs BEFORE any tag: every Consent
+ *      Mode storage signal defaults to "denied". If the visitor already made
+ *      a choice (localStorage), it is applied immediately.
+ *   2. GTM / gtag load consent-aware: with consent denied they send only
+ *      cookieless pings; with consent granted they behave normally.
+ *   3. The Meta Pixel has no consent mode, so it is NOT loaded here at all -
+ *      src/lib/consent.ts injects it only after the visitor grants consent
+ *      (see ConsentBanner).
  *
  * Each tag loads ONLY when its env var is set, so the repo ships with zero
- * tracking IDs and nothing fires until you configure the deployment. Recommended
- * setup: load GTM and manage GA4 / Google Ads / Meta Pixel inside the container,
- * triggered by the dataLayer events from `src/lib/analytics.ts`
- * (cta_click, lead_submit, audit_request, thank_you_view). Standalone GA4 and
- * Meta Pixel snippets are included as a fallback if you prefer not to use GTM.
+ * tracking IDs and nothing loads until you configure the deployment.
  *
  * Set in the hosting env (see .env.example):
  *   NEXT_PUBLIC_GTM_ID         e.g. GTM-XXXXXXX
  *   NEXT_PUBLIC_GA4_ID         e.g. G-XXXXXXXXXX
- *   NEXT_PUBLIC_META_PIXEL_ID  e.g. 1234567890
+ *   NEXT_PUBLIC_META_PIXEL_ID  e.g. 1234567890 (loaded on consent only)
  *   NEXT_PUBLIC_GOOGLE_ADS_ID  e.g. AW-XXXXXXXXX (conversion in GTM/gtag)
  */
 export function AnalyticsScripts() {
@@ -21,9 +27,23 @@ export function AnalyticsScripts() {
   const ga4Id = process.env.NEXT_PUBLIC_GA4_ID;
   const adsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID;
   const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+  const anyTag = Boolean(gtmId || ga4Id || adsId || pixelId);
+
+  if (!anyTag) return null;
 
   return (
     <>
+      {/* Consent Mode v2 defaults - a plain inline script (not next/script,
+          whose beforeInteractive is reserved for the root layout head) so it
+          executes synchronously during HTML parse, before the afterInteractive
+          GTM/gtag tags below ever load. Content is a code-controlled constant. */}
+      <script
+        id="consent-defaults"
+        dangerouslySetInnerHTML={{
+          __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=window.gtag||gtag;gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});try{var c=localStorage.getItem('climbix-consent');if(c==='granted'||c==='denied'){gtag('consent','update',{ad_storage:c,ad_user_data:c,ad_personalization:c,analytics_storage:c});}}catch(e){}`,
+        }}
+      />
+
       {gtmId && (
         <>
           <Script id="gtm" strategy="afterInteractive">
@@ -55,23 +75,7 @@ export function AnalyticsScripts() {
         </>
       )}
 
-      {pixelId && (
-        <>
-          <Script id="meta-pixel" strategy="afterInteractive">
-            {`!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${pixelId}');fbq('track','PageView');`}
-          </Script>
-          <noscript>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              height="1"
-              width="1"
-              style={{ display: "none" }}
-              alt=""
-              src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`}
-            />
-          </noscript>
-        </>
-      )}
+      {/* Meta Pixel intentionally absent - consent-gated in src/lib/consent.ts. */}
     </>
   );
 }

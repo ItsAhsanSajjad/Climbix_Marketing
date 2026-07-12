@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 
-type Variant = "primary" | "secondary" | "onDark" | "ghost";
+type Variant = "primary" | "secondary" | "onDark";
 type Size = "md" | "lg" | "xl";
 
 const base =
-  "group/btn relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full font-semibold transition-all duration-200 will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 disabled:opacity-60 disabled:pointer-events-none";
+  "group/btn relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 disabled:opacity-60 disabled:pointer-events-none";
 
 const variants: Record<Variant, string> = {
   // The dominant CTA - cobalt fill, white text. Works on light and dark.
@@ -17,7 +17,6 @@ const variants: Record<Variant, string> = {
   // For placement on dark obsidian sections.
   onDark:
     "border border-white/25 bg-white/5 text-white hover:border-white/50 hover:bg-white/10 hover:-translate-y-0.5",
-  ghost: "text-graphite/70 hover:text-cobalt-600",
 };
 
 const sizes: Record<Size, string> = {

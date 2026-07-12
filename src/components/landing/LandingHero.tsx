@@ -70,7 +70,7 @@ export function LandingHero() {
               </p>
               <LeadForm
                 source="audit"
-                submitLabel="Find My Leaks"
+                submitLabel="Get My Free Audit"
                 className="mt-7"
               />
               <TrustBadges items={formBadges} tone="light" className="mt-6" />

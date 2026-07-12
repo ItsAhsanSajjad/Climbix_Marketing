@@ -1,15 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Field } from "@/components/ui/Field";
 import { GoalSelect } from "@/components/forms/GoalSelect";
 import { BudgetSelect } from "@/components/forms/BudgetSelect";
 import { IconArrow, IconCheck } from "@/components/ui/Icon";
 import { track } from "@/lib/analytics";
+import { site } from "@/lib/site";
 import { cn } from "@/lib/cn";
 
-type Errors = Partial<Record<"name" | "email" | "goal", string>>;
+type Errors = Partial<Record<"name" | "email" | "website" | "goal", string>>;
+type Status = "idle" | "submitting" | "error";
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -23,23 +25,32 @@ const UTM_KEYS = [
   "fbclid",
 ] as const;
 
+/** Human-readable message per server error code. */
+const ERROR_COPY: Record<string, string> = {
+  rate_limited:
+    "Too many attempts from your connection just now. Please wait a few minutes and try again.",
+  not_configured:
+    "Our form service isn't reachable right now. Please email us directly and we'll run your audit.",
+  delivery_failed:
+    "Your request couldn't be delivered. Please try again - or email us directly.",
+  network:
+    "We couldn't reach the server. Check your connection and try again - or email us directly.",
+};
+
 /**
- * Lead capture form - production-ready front end.
+ * Lead capture form. Submits to /api/lead (server-side validation, spam
+ * defense, delivery) and redirects to /thank-you ONLY after the server
+ * confirms delivery - a failed submission shows a visible, retryable error
+ * with a direct-email fallback, and never a false success screen.
  *
- * Submission: if NEXT_PUBLIC_LEAD_ENDPOINT is set, the payload is POSTed there;
- * otherwise it's a no-op send. Either way we fire the conversion event and route
- * to /thank-you. Marketing attribution (UTMs / gclid / fbclid / referrer) is
- * captured from the URL and sent with the lead. A hidden honeypot field traps
- * bots. Accessible: labelled fields, inline errors (role="alert"), focus moves
- * to the first invalid control, large tap targets, visible focus rings.
- *
- * TODO (launch): point NEXT_PUBLIC_LEAD_ENDPOINT at a real CRM/email endpoint
- * (e.g. a serverless route, HubSpot/Formspree, etc.) and add server-side
- * validation + a real spam check (e.g. Cloudflare Turnstile) on that endpoint.
+ * Attribution (UTMs / gclid / fbclid / referrer) is captured from the URL and
+ * sent with the lead. A hidden honeypot field traps bots. Accessible:
+ * labelled fields, inline errors (role="alert"), status announcements via
+ * aria-live, focus moves to the first invalid control, large tap targets.
  */
 export function LeadForm({
   source = "home",
-  submitLabel = "Book My Call",
+  submitLabel = "Get My Free Audit",
   compact = false,
   className,
 }: {
@@ -61,7 +72,9 @@ export function LeadForm({
   const [meta, setMeta] = useState<Record<string, string>>({});
   const [honeypot, setHoneypot] = useState("");
   const [errors, setErrors] = useState<Errors>({});
-  const [submitting, setSubmitting] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
+  const [serverError, setServerError] = useState<string>("");
+  const errorRef = useRef<HTMLDivElement>(null);
 
   // Capture campaign attribution from the landing URL (PPC clicks carry UTMs).
   useEffect(() => {
@@ -75,8 +88,19 @@ export function LeadForm({
     setMeta(m);
   }, []);
 
+  // Move focus to the error summary when a submission fails, so keyboard and
+  // screen-reader users land on the explanation and the retry actions.
+  useEffect(() => {
+    if (status === "error") errorRef.current?.focus();
+  }, [status, serverError]);
+
   const set = (k: keyof typeof values) => (v: string) =>
     setValues((prev) => ({ ...prev, [k]: v }));
+
+  // Two LeadForm instances can render on one page (hero + contact); prefix
+  // every field id so ids stay unique and error-focus hits this instance.
+  const prefix = `lead-${source}${compact ? "-c" : ""}`;
+  const fid = (k: string) => `${prefix}-${k}`;
 
   function validate(): Errors {
     const e: Errors = {};
@@ -89,42 +113,62 @@ export function LeadForm({
 
   async function onSubmit(ev: React.FormEvent) {
     ev.preventDefault();
+    if (status === "submitting") return; // no duplicate submissions
     // Honeypot: a real user never fills this hidden field; bots do. Bail silently.
     if (honeypot) return;
 
     const e = validate();
     setErrors(e);
     if (Object.keys(e).length > 0) {
-      document.getElementById(Object.keys(e)[0])?.focus();
+      document.getElementById(fid(Object.keys(e)[0]))?.focus();
       return;
     }
 
-    setSubmitting(true);
+    setStatus("submitting");
+    setServerError("");
     const payload = { ...values, source, ...meta };
 
-    // Optional real submission - enabled by setting NEXT_PUBLIC_LEAD_ENDPOINT.
-    const endpoint = process.env.NEXT_PUBLIC_LEAD_ENDPOINT;
-    if (endpoint) {
-      try {
-        await fetch(endpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
+    let errorCode = "network";
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = (await res.json().catch(() => null)) as
+        | { ok?: boolean; error?: string; fields?: Errors }
+        | null;
+
+      if (res.ok && data?.ok) {
+        track(source === "audit" ? "audit_request" : "lead_submit", {
+          source,
+          goal: values.goal,
+          budget: values.budget || "unspecified",
+          ...meta,
         });
-      } catch {
-        // Swallow network errors so the user still reaches /thank-you.
-        // TODO (launch): surface a retry/error state once the endpoint is live.
+        router.push(`/thank-you?from=${source}`);
+        return;
       }
+
+      errorCode = data?.error ?? `http_${res.status}`;
+      if (data?.fields) {
+        setErrors(data.fields);
+        const first = Object.keys(data.fields)[0];
+        if (first) document.getElementById(fid(first))?.focus();
+        setStatus("idle");
+        return;
+      }
+    } catch {
+      errorCode = "network";
     }
 
-    track(source === "audit" ? "audit_request" : "lead_submit", {
-      source,
-      goal: values.goal,
-      budget: values.budget || "unspecified",
-      ...meta,
-    });
-    router.push(`/thank-you?from=${source}`);
+    // Visible, retryable failure - entered values are preserved in state.
+    track("lead_submit_error", { source, code: errorCode });
+    setServerError(ERROR_COPY[errorCode] ?? ERROR_COPY.delivery_failed);
+    setStatus("error");
   }
+
+  const submitting = status === "submitting";
 
   return (
     <form onSubmit={onSubmit} noValidate className={cn("flex flex-col gap-4", className)}>
@@ -133,9 +177,11 @@ export function LeadForm({
 
       {/* Honeypot - visually hidden (clip, no overflow), excluded from a11y + tab order. */}
       <div aria-hidden className="sr-only">
-        <label htmlFor="company_site">Company website (leave blank)</label>
+        <label htmlFor={fid("company_site")}>
+          Company website (leave blank)
+        </label>
         <input
-          id="company_site"
+          id={fid("company_site")}
           name="company_site"
           type="text"
           tabIndex={-1}
@@ -147,7 +193,7 @@ export function LeadForm({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Field
-          id="name"
+          id={fid("name")}
           label="Name"
           required
           placeholder="Your full name"
@@ -157,7 +203,7 @@ export function LeadForm({
           error={errors.name}
         />
         <Field
-          id="email"
+          id={fid("email")}
           label="Business email"
           type="email"
           inputMode="email"
@@ -169,7 +215,7 @@ export function LeadForm({
           error={errors.email}
         />
         <Field
-          id="website"
+          id={fid("website")}
           label="Website URL"
           type="url"
           inputMode="url"
@@ -177,10 +223,11 @@ export function LeadForm({
           autoComplete="url"
           value={values.website}
           onChange={set("website")}
+          error={errors.website}
         />
         {!compact && (
           <Field
-            id="phone"
+            id={fid("phone")}
             label="Phone or WhatsApp"
             type="tel"
             inputMode="tel"
@@ -190,8 +237,33 @@ export function LeadForm({
             onChange={set("phone")}
           />
         )}
-        <GoalSelect value={values.goal} onChange={set("goal")} error={errors.goal} />
-        <BudgetSelect value={values.budget} onChange={set("budget")} />
+        <GoalSelect id={fid("goal")} value={values.goal} onChange={set("goal")} error={errors.goal} />
+        <BudgetSelect id={fid("budget")} value={values.budget} onChange={set("budget")} />
+      </div>
+
+      {/* Submission failure - visible, focusable, announced; offers retry + direct email. */}
+      <div aria-live="polite">
+        {status === "error" && (
+          <div
+            ref={errorRef}
+            tabIndex={-1}
+            role="alert"
+            className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+          >
+            <p className="font-semibold">Your request was not sent.</p>
+            <p className="mt-1">{serverError}</p>
+            <p className="mt-2">
+              Use the button below to try again, or email{" "}
+              <a
+                href={`mailto:${site.email}?subject=Free%20audit%20request`}
+                className="font-semibold underline underline-offset-2 hover:text-red-900"
+              >
+                {site.email}
+              </a>{" "}
+              - your details stay filled in.
+            </p>
+          </div>
+        )}
       </div>
 
       <button
@@ -199,7 +271,7 @@ export function LeadForm({
         disabled={submitting}
         className="group/btn relative mt-1 inline-flex h-14 items-center justify-center gap-2 overflow-hidden rounded-full bg-cobalt-500 px-8 text-base font-semibold text-white shadow-cobalt transition-all duration-200 hover:-translate-y-0.5 hover:bg-cobalt-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-70"
       >
-        {submitting ? "Sending..." : submitLabel}
+        {submitting ? "Sending..." : status === "error" ? "Try Again" : submitLabel}
         {!submitting && <IconArrow className="h-4 w-4" />}
       </button>
 

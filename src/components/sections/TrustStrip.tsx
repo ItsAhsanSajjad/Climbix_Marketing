@@ -1,45 +1,47 @@
-import { Container } from "@/components/ui/Container";
 import { IconCheck } from "@/components/ui/Icon";
-import { StaggerContainer, StaggerItem } from "@/components/motion/Stagger";
-import { trustStrip, platformBadges } from "@/lib/site";
+import { trustStrip } from "@/lib/site";
 
 /**
- * Positioning strip - credibility through method + platform readiness, never
- * fake partner logos. Row one: capability phrases divided by champagne dots.
- * Row two: platform-readiness pills ("Built for Google Ads traffic" - honest
- * capability language, no official partner-status claims).
+ * Trust / intelligence strip - a slow premium marquee of method + platform
+ * capability signals (never fake client logos). One concise row: the track
+ * holds two copies of the content for a seamless -50% loop; hover pauses it;
+ * reduced motion leaves a static first copy (overflow hides the duplicate).
+ * Second copy is aria-hidden so screen readers hear the list once.
  */
+const items = [...trustStrip];
+
+function Track({ hidden = false }: { hidden?: boolean }) {
+  return (
+    <ul
+      aria-hidden={hidden || undefined}
+      className="flex shrink-0 items-center gap-3 pr-3"
+    >
+      {items.map((item) => (
+        <li
+          key={item}
+          className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-platinum-300 bg-white px-3.5 py-1.5 text-sm font-medium text-graphite"
+        >
+          <IconCheck className="h-3.5 w-3.5 shrink-0 text-teal-500" />
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export function TrustStrip() {
   return (
-    <div className="border-b border-platinum-300 bg-ivory-50">
-      <Container>
-        <StaggerContainer
-          stagger={0.06}
-          className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2.5 pt-6 sm:gap-x-4"
-        >
-          {trustStrip.map((item, i) => (
-            <StaggerItem key={item} className="flex items-center gap-x-3 sm:gap-x-4">
-              {i > 0 && <span className="h-1 w-1 rounded-full bg-bronze-400" aria-hidden />}
-              <span className="text-[0.95rem] font-medium text-slate-600">{item}</span>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
+    <div className="marquee-group border-b border-platinum-300 bg-ivory-50 py-5">
+      <div className="relative overflow-hidden">
+        {/* soft edge fades */}
+        <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-ivory-50 to-transparent" />
+        <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-ivory-50 to-transparent" />
 
-        <StaggerContainer
-          stagger={0.05}
-          className="flex flex-wrap items-center justify-center gap-2 pb-6 pt-4"
-        >
-          {platformBadges.map((badge) => (
-            <StaggerItem
-              key={badge}
-              className="inline-flex items-center gap-1.5 rounded-full border border-platinum-300 bg-white px-3 py-1.5 text-sm font-medium text-graphite"
-            >
-              <IconCheck className="h-3.5 w-3.5 shrink-0 text-teal-500" />
-              {badge}
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
-      </Container>
+        <div className="animate-marquee flex w-max">
+          <Track />
+          <Track hidden />
+        </div>
+      </div>
     </div>
   );
 }
